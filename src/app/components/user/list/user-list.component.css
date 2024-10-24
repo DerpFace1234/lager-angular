@@ -1,0 +1,22 @@
+.search-input{
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 200px;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+th, td{
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
