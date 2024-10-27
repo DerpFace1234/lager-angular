@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { UserService } from '../../../services/user.service';
-import { User } from '../../../model/user.model';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../../../services/user.service';
+import {Admin, Customer, OrderProcessor, User, UserType} from '../../../model/user.model';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-create-user',
@@ -9,16 +10,56 @@ import { Router } from '@angular/router';
   styleUrls: ['./create-user.component.css']
 })
 export class CreateUserComponent{
-  user: User = new User('', '', '', '', new Date(), '', '', '');
-  constructor(private userService: UserService, private router: Router) {}
+  user: User | Admin | OrderProcessor | Customer = new User('', '', '', '', new Date(), '', '', '', UserType.Customer);
+  admin: Admin = new Admin('', '', '', '', new Date(), '', '', '', UserType.Admin, '');
+  orderProcessor: OrderProcessor = new OrderProcessor('', '', '', '', new Date(), '', '', '', UserType.OrderProcessor, [], [],'', '');
+  customer: Customer = new Customer('', '', '', '', new Date(), '', '', '', UserType.Admin, []);
+  userTypes = Object.values(UserType);
+  selectedUserType: UserType = UserType.Customer;
+  constructor(private userService: UserService, private fb: FormBuilder) {}
 
-  onSubmit(): void{
-    this.userService.createUser(this.user).subscribe(response =>{
-      console.log("User created successfully", response);
-      this.user = new User('', '', '', '', new Date(), '', '', '');
-      this.userService.triggerRefreshUserList();
-    }, error => {
-      console.error("Error creating user", error);
-    });
+  onUserTypeChange(){
+    switch(this.selectedUserType){
+      case UserType.Admin:
+        this.user = { ...this.admin };
+        break;
+      case UserType.OrderProcessor:
+        this.user = { ...this.orderProcessor };
+        break;
+      case UserType.Customer:
+        this.user = { ...this.customer };
+        break;
+    }
+  }
+
+  onSubmit(form: any): void{
+    if(form.valid){
+      if(this.selectedUserType == UserType.Customer){
+        this.userService.createCustomer(this.user).subscribe(
+          response => this.handleCreation(response),
+          error => this.handleError(error)
+        );
+      } if(this.selectedUserType == UserType.Admin){
+        this.userService.createAdmin(this.user).subscribe(
+          response => this.handleCreation(response),
+          error => this.handleError(error)
+        );
+      } else {
+        this.userService.createOrderProcessor(this.user).subscribe(
+          response => this.handleCreation(response),
+          error => this.handleError(error)
+        );
+      }
+    }
+  }
+
+  private handleCreation(response: any): void {
+    this.user = new User('', '', '', '', new Date(), '', '', '', UserType.Customer);
+    this.onUserTypeChange();
+    this.userService.triggerRefreshUserList();
+  }
+
+  private handleError(error: any): void {
+    console.error("Error creating user", error);
   }
 }

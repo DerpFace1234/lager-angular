@@ -31,8 +31,16 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
-  createUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, user);
+  createAdmin(admin: User): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/admin`, admin);
+  }
+
+  createOrderProcessor(processor: User): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/order-processor`, processor);
+  }
+
+  createCustomer(customer: User): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/customer`, customer);
   }
 
   deleteUser(id: number): Observable<void> {

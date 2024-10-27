@@ -1,6 +1,14 @@
 <h2> Create a new User </h2>
 
-<form (ngSubmit)="onSubmit()" #userForm="ngForm">
+<form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
+
+  <div>
+    <label for="userType">User Type:</label>
+    <select id="userType" [(ngModel)]="selectedUserType" name="userType" (change)="onUserTypeChange()" required>
+      <option *ngFor="let type of userTypes" [value]="type">{{ type }}</option>
+    </select>
+  </div>
+
     <div>
         <label for="firstName">First Name</label>
         <input type="text" id="firstName" required [(ngModel)]="user.firstName" name="firstName">
@@ -41,6 +49,21 @@
         <input type="text" id="password" required [(ngModel)]="user.password" name="password">
     </div>
 
+  <div *ngIf="selectedUserType === userTypes[0]">
+    <label for="adminRole">Admin Role:</label>
+    <input id="adminRole" [(ngModel)]="admin.adminRole" name="adminRole" required type="text">
+  </div>
+
+  <div *ngIf="selectedUserType === userTypes[1]">
+    <label for="processingArea">Processing Area:</label>
+    <input id="processingArea" [(ngModel)]="orderProcessor.processingArea" name="processingArea" required type="text">
+  </div>
+
+  <div *ngIf="selectedUserType === userTypes[1]">
+    <label for="shift">Shift:</label>
+    <input id="shift" [(ngModel)]="orderProcessor.shift" name="shift" required type="text">
+  </div>
+
     <br>
-    <button type="submit">Create User</button>
+    <button type="submit" [disabled]="userForm.invalid">Create User</button>
 </form>
