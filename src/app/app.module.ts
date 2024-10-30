@@ -9,6 +9,7 @@ import { CreateUserComponent } from './components/user/create/create-user.compon
 import {RouterLink, RouterOutlet} from '@angular/router';
 import { FrontPageComponent } from './components/front-page/front-page.component';
 import { UserMngmtComponent } from './components/user/user-mngmt.component';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { UserMngmtComponent } from './components/user/user-mngmt.component';
         RouterOutlet,
         RouterLink,
         ReactiveFormsModule,
+        NgOptimizedImage,
     ],
   providers: [],
   bootstrap: [AppComponent]

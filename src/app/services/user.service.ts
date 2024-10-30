@@ -1,30 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../model/user.model';
+import {Admin, OrderProcessor, User} from '../model/user.model';
 import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/api/users';  // URL des Spring Boot Servers
+  private apiUrl = 'http://localhost:8080/api/users';
 
   constructor(private http: HttpClient) { }
 
-  // Subject for triggering the refresh
   private refreshUserListSource = new Subject<void>();
 
-  // Observable for components to subscribe to
   refreshUserList$ = this.refreshUserListSource.asObservable();
 
-  // Method to call to trigger the refresh
   triggerRefreshUserList() {
     this.refreshUserListSource.next();
   }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
+  }
+
+  getAdmins(): Observable<Admin[]> {
+    return this.http.get<Admin[]>(`${this.apiUrl}/admin`);
+  }
+
+  getOrderProcessors(): Observable<OrderProcessor[]> {
+    return this.http.get<OrderProcessor[]>(`${this.apiUrl}/order-processor`);
   }
 
   getUserById(id: number): Observable<User> {
@@ -43,7 +48,7 @@ export class UserService {
     return this.http.post<User>(`${this.apiUrl}/customer`, customer);
   }
 
-  deleteUser(id: number): Observable<void> {
+  deleteUser(id: number | undefined): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

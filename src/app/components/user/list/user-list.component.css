@@ -1,22 +1,106 @@
-.search-input{
-  margin-bottom: 10px;
-  padding: 5px;
-  width: 200px;
-}
 
 table{
-  width: 100%;
   border-collapse: collapse;
+  border: 1px solid #000000;
+  table-layout: fixed;
   padding-left: 30px;
   padding-right: 30px;
+  border-radius: 20px;
+  width: 100%
 }
 
 th, td{
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   padding: 8px;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 th {
+  border: 1px solid #000000;
   background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.flex-columns {
+  display: flex;
+}
+
+.column {
+  padding: 10px;
+}
+
+.c66 {
+  flex: 2;
+}
+
+.c33{
+  flex: 1;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+input[type="text"] {
+  padding: 10px;
+  padding-right: 30px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 800px;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+  width: 27px;
+  height: 27px;
+  border-radius: 20px;
+}
+
+.checkboxes {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #ffffff;
+}
+
+.checkboxes label {
+  margin: 8px;
+  font-size: 14px;
+  color: #000000;
+}
+
+button {
+  margin: 15px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 400px;
 }
 

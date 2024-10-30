@@ -1,92 +1,154 @@
-<h2>User List</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List Users</title>
+</head>
+<body>
 
-<div>
-  <input
-    type = "text"
-    placeholder="Search..."
-    [(ngModel)]="searchQuery"
-    class="search-input"
+<div class="container">
+
+  <div class="input-icon-wrapper">
+    <input
+      type = "text"
+      placeholder="Search..."
+      [(ngModel)]="searchQuery"
+      class="search-input"
     />
+    <span class="icon" (click)="toggleCheckboxes()">
+      <img ngSrc="images/filter.png" alt="filter" height="20" width="20">
+    </span>
+  </div>
 
-    <label>
+  <div class="checkboxes" *ngIf="showCheckboxes">
+    <label class="custom-checkbox">
       <input
         type="checkbox"
         [(ngModel)]="filters[0]"
-        />
+      />
       First Name
     </label>
-    <label>
+    <label class="custom-checkbox">
       <input
         type="checkbox"
         [(ngModel)]="filters[1]"
       />
       Last Name
     </label>
-    <label>
+    <label class="custom-checkbox">
       <input
         type="checkbox"
         [(ngModel)]="filters[2]"
       />
       Address
     </label>
-    <label>
+    <label class="custom-checkbox">
       <input
         type="checkbox"
         [(ngModel)]="filters[3]"
       />
       Department
     </label>
-    <label>
+    <label class="custom-checkbox">
       <input
         type="checkbox"
         [(ngModel)]="filters[4]"
       />
       Birthday
     </label>
-    <label>
+    <label class="custom-checkbox">
       <input
         type="checkbox"
         [(ngModel)]="filters[5]"
       />
       Email
     </label>
-    <label>
+    <label class="custom-checkbox">
       <input
         type="checkbox"
         [(ngModel)]="filters[6]"
       />
       Phone
     </label>
+  </div>
 
+  <button (click)="deleteCheckedUsers()">Delete checked Users</button>
 </div>
 
 <br>
 
-<table>
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>Address</th>
-    <th>Department</th>
-    <th>Birthday</th>
-    <th>Email</th>
-    <th>Phone</th>
-    <th>Password</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let user of filteredUsers">
-    <td>{{ user.id }}</td>
-    <td>{{ user.firstName }}</td>
-    <td>{{ user.lastName }}</td>
-    <td>{{ user.address }}</td>
-    <td>{{ user.department }}</td>
-    <td>{{ user.birthday }}</td>
-    <td>{{ user.email }}</td>
-    <td>{{ user.phone }}</td>
-    <td>{{ user.password }}</td>
-  </tr>
-  </tbody>
-</table>
+<div>
+  <div class="flex-columns">
+    <div class="column c66">
+      <table>
+        <thead>
+        <tr>
+          <th>Select</th>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Address</th>
+          <th>Department</th>
+          <th>Birthday</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>
+            <input type="checkbox" [(ngModel)]="user.checked" />
+          </td>
+          <td>{{ user.id }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.address }}</td>
+          <td>{{ user.department }}</td>
+          <td>{{ user.birthday }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="column c33">
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Admin Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let admin of filteredAdmins">
+          <td>{{ admin.id }}</td>
+          <td>{{ admin.adminRole }}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <br>
+      <br>
+
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Processing Area</th>
+          <th>Shift</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let processors of filteredOrderProcessors">
+          <td>{{ processors.id }}</td>
+          <td>{{ processors.processingArea }}</td>
+          <td>{{ processors.shift }}</td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

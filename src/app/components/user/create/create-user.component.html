@@ -1,69 +1,85 @@
-<h2> Create a new User </h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create User Form</title>
+</head>
+<body>
 
-<form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
+<div class="form-container">
+  <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
+    <div class="flex-columns">
+      <div class="column">
+        <div class="form-group">
+          <label for="firstName">First Name:</label>
+          <input type="text" id="firstName" required [(ngModel)]="valueStorage.firstName" name="firstName">
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name:</label>
+          <input type="text" id="lastName" required [(ngModel)]="valueStorage.lastName" name="lastName">
+        </div>
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <input type="text" id="address" required [(ngModel)]="valueStorage.address" name="address">
+        </div>
+        <div class="form-group">
+          <label for="department">Department:</label>
+          <input type="text" id="department" required [(ngModel)]="valueStorage.department" name="department">
+        </div>
+        <div class="form-group">
+          <label for="birthday">Birthday:</label>
+          <input type="date" id="birthday" required [(ngModel)]="valueStorage.birthday" name="birthday">
+        </div>
+      </div>
 
-  <div>
-    <label for="userType">User Type:</label>
-    <select id="userType" [(ngModel)]="selectedUserType" name="userType" (change)="onUserTypeChange()" required>
-      <option *ngFor="let type of userTypes" [value]="type">{{ type }}</option>
-    </select>
-  </div>
-
-    <div>
-        <label for="firstName">First Name</label>
-        <input type="text" id="firstName" required [(ngModel)]="user.firstName" name="firstName">
+      <div class="column">
+        <div class="form-group">
+          <label for="userType">User Type:</label>
+          <select id="userType" [(ngModel)]="selectedUserType" name="userType" required>
+            <option *ngFor="let type of userTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="text" id="email" required [(ngModel)]="valueStorage.email" name="email">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone:</label>
+          <input type="text" id="phone" required [(ngModel)]="valueStorage.phone" name="phone">
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="text" id="password" required [(ngModel)]="valueStorage.password" name="password">
+        </div>
+      </div>
     </div>
 
-    <div>
-        <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" required [(ngModel)]="user.lastName" name="lastName">
+    <div class="form-group">
+      <div class="form-group line" *ngIf="selectedUserType === userTypes[0] || selectedUserType === userTypes[1]"></div>
+
+      <div class="form group" *ngIf="selectedUserType === userTypes[0]">
+        <label for="adminRole">Admin Role:</label>
+        <input id="adminRole" [(ngModel)]="valueStorage.adminRole" name="adminRole" required type="text">
+      </div>
+      <div class="form group" *ngIf="selectedUserType === userTypes[1]">
+        <label for="processingArea">Processing Area:</label>
+        <input id="processingArea" [(ngModel)]="valueStorage.processingArea" name="processingArea" required type="text">
+      </div>
+      <div *ngIf="selectedUserType === userTypes[1]">
+        <br>
+      </div>
+      <div class="form group" *ngIf="selectedUserType === userTypes[1]">
+        <label for="shift">Shift:</label>
+        <input id="shift" [(ngModel)]="valueStorage.shift" name="shift" required type="text">
+      </div>
     </div>
 
-    <div>
-        <label for="address">Address</label>
-        <input type="text" id="address" required [(ngModel)]="user.address" name="address">
+    <div class="form-group full-width">
+      <button type="submit">Create new User</button>
     </div>
+  </form>
+</div>
 
-    <div>
-        <label for="department">Department</label>
-        <input type="text" id="department" required [(ngModel)]="user.department" name="department">
-    </div>
-
-    <div>
-        <label for="birthday">Birthday</label>
-        <input type="date" id="birthday" required [(ngModel)]="user.birthday" name="birthday">
-    </div>
-
-    <div>
-        <label for="email">Email</label>
-        <input type="text" id="email" required [(ngModel)]="user.email" name="email">
-    </div>
-
-    <div>
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" required [(ngModel)]="user.phone" name="phone">
-    </div>
-
-    <div>
-        <label for="password">Password</label>
-        <input type="text" id="password" required [(ngModel)]="user.password" name="password">
-    </div>
-
-  <div *ngIf="selectedUserType === userTypes[0]">
-    <label for="adminRole">Admin Role:</label>
-    <input id="adminRole" [(ngModel)]="admin.adminRole" name="adminRole" required type="text">
-  </div>
-
-  <div *ngIf="selectedUserType === userTypes[1]">
-    <label for="processingArea">Processing Area:</label>
-    <input id="processingArea" [(ngModel)]="orderProcessor.processingArea" name="processingArea" required type="text">
-  </div>
-
-  <div *ngIf="selectedUserType === userTypes[1]">
-    <label for="shift">Shift:</label>
-    <input id="shift" [(ngModel)]="orderProcessor.shift" name="shift" required type="text">
-  </div>
-
-    <br>
-    <button type="submit" [disabled]="userForm.invalid">Create User</button>
-</form>
+</body>
+</html>

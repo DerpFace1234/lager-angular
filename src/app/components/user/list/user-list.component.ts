@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
-import { User } from '../../../model/user.model';
+import {Admin, OrderProcessor, User} from '../../../model/user.model';
 
 @Component({
     selector: 'app-user-list',
@@ -9,7 +9,10 @@ import { User } from '../../../model/user.model';
 })
 export class UserListComponent implements OnInit {
     users: User[] = [];
+    admins: Admin[] = [];
+    processors: OrderProcessor[] = [];
     searchQuery: string = "";
+    showCheckboxes: boolean = false;
     filters: {[key: string]: boolean} = {
       firstName: false,
       lastName: false,
@@ -23,10 +26,14 @@ export class UserListComponent implements OnInit {
     constructor(private userService: UserService) {}
 
     ngOnInit(): void {
-      this.loadUsers()
+      this.loadUsers();
+      this.loadAdmins();
+      this.loadOrderProcessors();
 
       this.userService.refreshUserList$.subscribe(() => {
         this.loadUsers();
+        this.loadAdmins();
+        this.loadOrderProcessors();
       });
     }
 
@@ -35,6 +42,37 @@ export class UserListComponent implements OnInit {
         this.users = data;
       }, (error) => {
         console.error('Failed to fetch users:', error);
+      });
+    }
+
+    loadAdmins() {
+      this.userService.getAdmins().subscribe((data: Admin[]) => {
+        this.admins = data;
+      }, (error) => {
+        console.error('Failed to fetch admins:', error);
+      });
+    }
+
+    loadOrderProcessors() {
+      this.userService.getOrderProcessors().subscribe((data: OrderProcessor[]) => {
+        this.processors = data;
+      }, (error) => {
+        console.error('Failed to fetch order procesors:', error);
+      });
+    }
+
+    toggleCheckboxes(): void {
+      this.showCheckboxes = !this.showCheckboxes;
+    }
+
+    deleteCheckedUsers(): void{
+      this.users.forEach(user => {
+        if (user.checked) {
+          this.userService.deleteUser(user.id).subscribe(
+            response => this.userService.triggerRefreshUserList(),
+            error => console.error("Error deleting user", error)
+          );
+        }
       });
     }
 
@@ -62,5 +100,15 @@ export class UserListComponent implements OnInit {
             (fN || lN || a || d || bd || e || p)
         );
       })
+    }
+
+    get filteredAdmins(){
+      const includeIds = new Set(this.filteredUsers.map(user => user.id))
+      return this.admins.filter(admin => includeIds.has(admin.id))
+    }
+
+    get filteredOrderProcessors(){
+      const includeIds = new Set(this.filteredUsers.map(user => user.id))
+      return this.processors.filter(processors => includeIds.has(processors.id))
     }
 }

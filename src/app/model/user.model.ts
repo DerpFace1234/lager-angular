@@ -18,8 +18,9 @@ export class User {
     phone: string;
     password: string;
     type: UserType;
+    checked: boolean;
 
-    constructor(firstName:string, lastName:string, address:string, department:string, birthday:Date, email:string, phone: string, password: string, type: UserType){
+    constructor(firstName:string, lastName:string, address:string, department:string, birthday:Date, email:string, phone: string, password: string, type: UserType, checked: boolean){
       this.firstName = firstName;
       this.lastName = lastName;
       this.address = address;
@@ -29,14 +30,15 @@ export class User {
       this.phone = phone;
       this.password = password;
       this.type = type;
+      this.checked = checked;
     }
 }
 
 export class Admin extends User{
     adminRole: string;
 
-    constructor(firstName:string, lastName:string, address:string, department:string, birthday:Date, email:string, phone: string, password: string, type: UserType, adminRole: string) {
-      super(firstName, lastName, address, department, birthday, email, phone, password, type);
+    constructor(firstName:string, lastName:string, address:string, department:string, birthday:Date, email:string, phone: string, password: string, type: UserType, checked: boolean, adminRole: string) {
+      super(firstName, lastName, address, department, birthday, email, phone, password, type, checked);
       this.adminRole = adminRole;
     }
 }
@@ -47,8 +49,8 @@ export class OrderProcessor extends User{
   processingArea: string;
   shift: string;
 
-  constructor(firstName:string, lastName:string, address:string, department:string, birthday:Date, email:string, phone: string, password: string, type: UserType, workingOnOrders: Order[], finishedOrders: Order[], processingArea: string, shift: string) {
-    super(firstName, lastName, address, department, birthday, email, phone, password, type);
+  constructor(firstName:string, lastName:string, address:string, department:string, birthday:Date, email:string, phone: string, password: string, type: UserType, checked: boolean, workingOnOrders: Order[], finishedOrders: Order[], processingArea: string, shift: string) {
+    super(firstName, lastName, address, department, birthday, email, phone, password, type, checked);
     this.workingOnOrders = workingOnOrders;
     this.finishedOrders = finishedOrders;
     this.processingArea = processingArea;
@@ -59,8 +61,8 @@ export class OrderProcessor extends User{
 export class Customer extends User{
   allOrders: Order[];
 
-  constructor(firstName:string, lastName:string, address:string, department:string, birthday:Date, email:string, phone: string, password: string, type: UserType, allOrders: Order[]) {
-    super(firstName, lastName, address, department, birthday, email, phone, password, type);
+  constructor(firstName:string, lastName:string, address:string, department:string, birthday:Date, email:string, phone: string, password: string, type: UserType, checked: boolean, allOrders: Order[]) {
+    super(firstName, lastName, address, department, birthday, email, phone, password, type, checked);
     this.allOrders = allOrders;
   }
 }
