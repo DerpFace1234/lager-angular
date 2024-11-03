@@ -48,6 +48,10 @@ export class UserService {
     return this.http.post<User>(`${this.apiUrl}/customer`, customer);
   }
 
+  updateUser(id: number | undefined, user: User): Observable<User>{
+    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+  }
+
   deleteUser(id: number | undefined): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

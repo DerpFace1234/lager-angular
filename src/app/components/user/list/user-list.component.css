@@ -1,3 +1,6 @@
+* {
+  font-family: 'Arial', sans-serif;
+}
 
 table{
   border-collapse: collapse;
@@ -6,7 +9,14 @@ table{
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 20px;
-  width: 100%
+  width: 100%;
+}
+
+table th:first-child,
+table td:first-child {
+  width: 6%;
+  min-width: 6%;
+  max-width: 6%;
 }
 
 th, td{
@@ -52,13 +62,14 @@ th {
   align-items: center;
 }
 
-input[type="text"] {
+.input-icon-wrapper input[type="text"] {
   padding: 10px;
   padding-right: 30px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 10px;
   width: 800px;
+  position: relative;
 }
 
 .icon {
@@ -76,7 +87,7 @@ input[type="text"] {
 }
 
 .checkboxes {
-  margin-top: 15px;
+  margin-top: 43px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -84,6 +95,7 @@ input[type="text"] {
   border-radius: 10px;
   border: 1px solid #ccc;
   background: #ffffff;
+  position: absolute;
 }
 
 .checkboxes label {
@@ -92,8 +104,8 @@ input[type="text"] {
   color: #000000;
 }
 
-button {
-  margin: 15px;
+.bt{
+  margin: 44px;
   padding: 10px 20px;
   background-color: #4CAF50;
   color: #fff;
@@ -102,5 +114,83 @@ button {
   font-size: 16px;
   cursor: pointer;
   width: 400px;
+  position: relative;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 0;
+}
+
+.overlay-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 1000px;
+  box-sizing: border-box;
+}
+
+.overlay-flex-columns {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.overlay-column {
+  flex: 1;
+  box-sizing: border-box;
+}
+
+.overlay label{
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.overlay-column input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.overlay-button-holder {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.overlay-button-holder button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 33%;
+  box-sizing: border-box;
+}
+
+.full-width {
+  display: flex;
+  justify-content: center;
 }
 

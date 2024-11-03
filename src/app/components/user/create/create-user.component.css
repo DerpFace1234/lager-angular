@@ -17,10 +17,11 @@ body {
 }
 
 .form-container {
+  margin-left: 50px;
+  margin-right: 50px;
   background-color: #ffffff;
   padding: 30px;
   width: 100%;
-  max-width: 1000px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -87,4 +88,18 @@ button:hover {
   height: 2px;
   background-color: #9a9ea0;
   border-radius: 2px;
+}
+
+.invalid-field {
+  border: 1px solid red;
+  outline: none;
+}
+
+.feedback-message{
+  font-weight: bold;
+  color: #007700;
+}
+
+.feedback-message:empty{
+  display: none;
 }

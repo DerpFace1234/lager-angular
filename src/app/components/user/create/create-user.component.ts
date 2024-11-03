@@ -16,7 +16,6 @@ export class CreateUserComponent{
     firstName: "",
     lastName: "",
     address: "",
-    department: "",
     birthday: new Date(),
     email: "",
     phone: "",
@@ -24,14 +23,16 @@ export class CreateUserComponent{
     type: UserType,
     adminRole: "",
     processingArea: "",
-    shift: ""
+    shift: "",
+    feedbackMessage: ""
   }
 
   onSubmit(form: any): void{
     if(form.valid){
-      if(this.selectedUserType == UserType.Customer){
+      this.valueStorage.feedbackMessage = "User successfully created!"
+      if(this.selectedUserType === UserType.Customer){
         const customer: Customer = new Customer(this.valueStorage.firstName, this.valueStorage.lastName,
-                                                this.valueStorage.address, this.valueStorage.department,
+                                                this.valueStorage.address,
                                                 this.valueStorage.birthday, this.valueStorage.email,
                                                 this.valueStorage.phone, this.valueStorage.password,
                                                 UserType.Customer, false, []);
@@ -39,27 +40,33 @@ export class CreateUserComponent{
           response => this.handleCreation(response),
           error => this.handleError(error)
         );
-      } if(this.selectedUserType == UserType.Admin){
+      } if(this.selectedUserType === UserType.Admin){
         const admin: Admin = new Admin(this.valueStorage.firstName, this.valueStorage.lastName,
-                                        this.valueStorage.address, this.valueStorage.department,
-                                        this.valueStorage.birthday, this.valueStorage.email,
-                                        this.valueStorage.phone, this.valueStorage.password,
-                                        UserType.Admin, false, this.valueStorage.adminRole);
+                                        this.valueStorage.address, this.valueStorage.birthday,
+                                        this.valueStorage.email, this.valueStorage.phone,
+                                        this.valueStorage.password, UserType.Admin,
+                                        false, this.valueStorage.adminRole);
         this.userService.createAdmin(admin).subscribe(
           response => this.handleCreation(response),
           error => this.handleError(error)
         );
-      } else {
+      } if(this.selectedUserType === UserType.OrderProcessor) {
         const processor: OrderProcessor = new OrderProcessor(this.valueStorage.firstName, this.valueStorage.lastName,
-          this.valueStorage.address, this.valueStorage.department,
-          this.valueStorage.birthday, this.valueStorage.email,
-          this.valueStorage.phone, this.valueStorage.password,
-          UserType.OrderProcessor, false, [], [], this.valueStorage.processingArea, this.valueStorage.shift);
+                                                            this.valueStorage.address, this.valueStorage.birthday,
+                                                            this.valueStorage.email, this.valueStorage.phone,
+                                                            this.valueStorage.password, UserType.OrderProcessor,
+                                                            false, [], [], this.valueStorage.processingArea,
+                                                            this.valueStorage.shift);
         this.userService.createOrderProcessor(processor).subscribe(
           response => this.handleCreation(response),
           error => this.handleError(error)
         );
       }
+    } else{
+      this.valueStorage.feedbackMessage = "Please fill in all fields."
+      Object.values(form.controls).forEach((control: any) => {
+        control.markAsTouched();
+      });
     }
   }
 
@@ -67,7 +74,6 @@ export class CreateUserComponent{
     this.valueStorage.firstName = "";
     this.valueStorage.lastName = "";
     this.valueStorage.address = "";
-    this.valueStorage.department = "";
     this.valueStorage.birthday = new Date();
     this.valueStorage.email = "";
     this.valueStorage.phone = "";

@@ -22,6 +22,7 @@
   </div>
 
   <div class="checkboxes" *ngIf="showCheckboxes">
+    <label class="custom-checkbox">Search by:</label>
     <label class="custom-checkbox">
       <input
         type="checkbox"
@@ -48,35 +49,64 @@
         type="checkbox"
         [(ngModel)]="filters[3]"
       />
-      Department
+      Birthday
     </label>
     <label class="custom-checkbox">
       <input
         type="checkbox"
         [(ngModel)]="filters[4]"
       />
-      Birthday
+      Email
     </label>
     <label class="custom-checkbox">
       <input
         type="checkbox"
         [(ngModel)]="filters[5]"
       />
-      Email
-    </label>
-    <label class="custom-checkbox">
-      <input
-        type="checkbox"
-        [(ngModel)]="filters[6]"
-      />
       Phone
     </label>
   </div>
 
-  <button (click)="deleteCheckedUsers()">Delete checked Users</button>
+  <button class="bt" (click)="deleteCheckedUsers()">Delete selected Users</button>
 </div>
 
 <br>
+
+<div class="overlay" *ngIf="showOverlayUser">
+  <div class="overlay-content">
+    <div class="overlay-flex-columns">
+      <div class="overlay-column">
+        <label>
+          ID: <input type="text" [(ngModel)]="editUser.id" readonly />
+        </label>
+        <label>
+          Name: <input type="text" [(ngModel)]="editUser.firstName" />
+        </label>
+        <label>
+          Lastname: <input type="text" [(ngModel)]="editUser.lastName" />
+        </label>
+        <label>
+          Address: <input type="text" [(ngModel)]="editUser.address" />
+        </label>
+      </div>
+      <div class="overlay-column">
+        <label>
+          Birthday: <input type="date" [(ngModel)]="editUser.birthday" />
+        </label>
+        <label>
+          Email: <input type="text" [(ngModel)]="editUser.email" />
+        </label>
+        <label>
+          Phone: <input type="text" [(ngModel)]="editUser.phone" />
+        </label>
+      </div>
+    </div>
+    <div class="overlay-button-holder">
+      <button (click)="saveChanges()">Save</button>
+      <button (click)="closeOverlay()">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <div>
   <div class="flex-columns">
@@ -89,7 +119,6 @@
           <th>First Name</th>
           <th>Last Name</th>
           <th>Address</th>
-          <th>Department</th>
           <th>Birthday</th>
           <th>Email</th>
           <th>Phone</th>
@@ -99,12 +128,12 @@
         <tr *ngFor="let user of filteredUsers">
           <td>
             <input type="checkbox" [(ngModel)]="user.checked" />
+            <button (click)="openEditUser(user)">✏️</button>
           </td>
           <td>{{ user.id }}</td>
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.address }}</td>
-          <td>{{ user.department }}</td>
           <td>{{ user.birthday }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.phone }}</td>

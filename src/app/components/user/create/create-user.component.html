@@ -13,19 +13,18 @@
       <div class="column">
         <div class="form-group">
           <label for="firstName">First Name:</label>
-          <input type="text" id="firstName" required [(ngModel)]="valueStorage.firstName" name="firstName">
+          <input type="text" id="firstName" required [(ngModel)]="valueStorage.firstName" #firstNameCtrl="ngModel" name="firstName"
+                  [ngClass]="{'invalid-field': firstNameCtrl.invalid && firstNameCtrl.touched}">
         </div>
         <div class="form-group">
           <label for="lastName">Last Name:</label>
-          <input type="text" id="lastName" required [(ngModel)]="valueStorage.lastName" name="lastName">
+          <input type="text" id="lastName" required [(ngModel)]="valueStorage.lastName" #lastNameCtrl="ngModel" name="lastName"
+                 [ngClass]="{'invalid-field': lastNameCtrl.invalid && lastNameCtrl.touched}">
         </div>
         <div class="form-group">
           <label for="address">Address:</label>
-          <input type="text" id="address" required [(ngModel)]="valueStorage.address" name="address">
-        </div>
-        <div class="form-group">
-          <label for="department">Department:</label>
-          <input type="text" id="department" required [(ngModel)]="valueStorage.department" name="department">
+          <input type="text" id="address" required [(ngModel)]="valueStorage.address" #addressCtrl="ngModel" name="address"
+                 [ngClass]="{'invalid-field': addressCtrl.invalid && addressCtrl.touched}">
         </div>
         <div class="form-group">
           <label for="birthday">Birthday:</label>
@@ -42,15 +41,18 @@
         </div>
         <div class="form-group">
           <label for="email">Email:</label>
-          <input type="text" id="email" required [(ngModel)]="valueStorage.email" name="email">
+          <input type="text" id="email" required [(ngModel)]="valueStorage.email" #emailCtrl="ngModel" name="email"
+                 [ngClass]="{'invalid-field': emailCtrl.invalid && emailCtrl.touched}">
         </div>
         <div class="form-group">
           <label for="phone">Phone:</label>
-          <input type="text" id="phone" required [(ngModel)]="valueStorage.phone" name="phone">
+          <input type="text" id="phone" required [(ngModel)]="valueStorage.phone" #phoneCtrl="ngModel" name="phone"
+                 [ngClass]="{'invalid-field': phoneCtrl.invalid && phoneCtrl.touched}">
         </div>
         <div class="form-group">
           <label for="password">Password:</label>
-          <input type="text" id="password" required [(ngModel)]="valueStorage.password" name="password">
+          <input type="text" id="password" required [(ngModel)]="valueStorage.password" #passwordCtrl="ngModel" name="password"
+                 [ngClass]="{'invalid-field': passwordCtrl.invalid && passwordCtrl.touched}">
         </div>
       </div>
     </div>
@@ -78,6 +80,7 @@
     <div class="form-group full-width">
       <button type="submit">Create new User</button>
     </div>
+    <div class="feedback-message">{{ valueStorage.feedbackMessage }}</div>
   </form>
 </div>
 
