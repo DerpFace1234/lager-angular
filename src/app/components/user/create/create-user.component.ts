@@ -9,7 +9,7 @@ import {Admin, Customer, OrderProcessor, User, UserType} from '../../../model/us
 })
 export class CreateUserComponent{
   userTypes:UserType[] = Object.values(UserType);
-  selectedUserType: UserType = UserType.Customer;
+  selectedUserType: UserType = UserType.CUSTOMER;
   constructor(private userService: UserService) {}
 
   valueStorage = {
@@ -29,36 +29,35 @@ export class CreateUserComponent{
 
   onSubmit(form: any): void{
     if(form.valid){
-      this.valueStorage.feedbackMessage = "User successfully created!"
-      if(this.selectedUserType === UserType.Customer){
+      if(this.selectedUserType === UserType.CUSTOMER){
         const customer: Customer = new Customer(this.valueStorage.firstName, this.valueStorage.lastName,
                                                 this.valueStorage.address,
                                                 this.valueStorage.birthday, this.valueStorage.email,
                                                 this.valueStorage.phone, this.valueStorage.password,
-                                                UserType.Customer, false, []);
+                                                UserType.CUSTOMER, []);
         this.userService.createCustomer(customer).subscribe(
-          response => this.handleCreation(response),
+          response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } if(this.selectedUserType === UserType.Admin){
+      } else if(this.selectedUserType === UserType.ADMIN){
         const admin: Admin = new Admin(this.valueStorage.firstName, this.valueStorage.lastName,
                                         this.valueStorage.address, this.valueStorage.birthday,
                                         this.valueStorage.email, this.valueStorage.phone,
-                                        this.valueStorage.password, UserType.Admin,
-                                        false, this.valueStorage.adminRole);
+                                        this.valueStorage.password, UserType.ADMIN,
+                                        this.valueStorage.adminRole);
         this.userService.createAdmin(admin).subscribe(
-          response => this.handleCreation(response),
+          response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } if(this.selectedUserType === UserType.OrderProcessor) {
+      } else if(this.selectedUserType === UserType.ORDER_PROCESSOR) {
         const processor: OrderProcessor = new OrderProcessor(this.valueStorage.firstName, this.valueStorage.lastName,
                                                             this.valueStorage.address, this.valueStorage.birthday,
                                                             this.valueStorage.email, this.valueStorage.phone,
-                                                            this.valueStorage.password, UserType.OrderProcessor,
-                                                            false, [], [], this.valueStorage.processingArea,
+                                                            this.valueStorage.password, UserType.ORDER_PROCESSOR,
+                                                            [], [], this.valueStorage.processingArea,
                                                             this.valueStorage.shift);
         this.userService.createOrderProcessor(processor).subscribe(
-          response => this.handleCreation(response),
+          response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
       }
@@ -70,7 +69,7 @@ export class CreateUserComponent{
     }
   }
 
-  private handleCreation(response: any): void {
+  private handleCreation(response: any, form: any): void {
     this.valueStorage.firstName = "";
     this.valueStorage.lastName = "";
     this.valueStorage.address = "";
@@ -82,9 +81,16 @@ export class CreateUserComponent{
     this.valueStorage.processingArea = "";
     this.valueStorage.shift = "";
     this.userService.triggerRefreshUserList();
+    Object.values(form.controls).forEach((control: any) => {
+      control.markAsUntouched();
+    });
+    this.valueStorage.feedbackMessage = "User successfully created!"
   }
 
   private handleError(error: any): void {
     console.error("Error creating user", error);
+    this.valueStorage.feedbackMessage = "Error creating user."
   }
+
+  protected readonly UserType = UserType;
 }

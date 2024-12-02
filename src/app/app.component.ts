@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {LoginService} from './services/login.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'lager-angular';
+  isLoginVisible = false;
+
+  constructor(private loginService: LoginService) {
+    this.loginService.loginVisible$.subscribe(visible => {
+      this.isLoginVisible = visible;
+    });
+  }
+
+  onCloseLogin() {
+    this.loginService.hideLogin();
+  }
 }

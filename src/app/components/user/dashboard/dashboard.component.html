@@ -1,0 +1,38 @@
+<div *ngIf="customer">
+  <h2>Welcome, Customer {{ customer.email }}!</h2>
+  <div>
+    <p>{{customer.firstName}}</p>
+    <p>{{customer.lastName}}</p>
+    <p>{{customer.address}}</p>
+    <p>{{customer.birthday}}</p>
+    <p>{{customer.email}}</p>
+    <p>{{customer.phone}}</p>
+  </div>
+</div>
+
+<div *ngIf="admin">
+  <h2>Welcome, Admin {{ admin.email }}!</h2>
+  <div>
+    <p>{{admin.firstName}}</p>
+    <p>{{admin.lastName}}</p>
+    <p>{{admin.address}}</p>
+    <p>{{admin.birthday}}</p>
+    <p>{{admin.email}}</p>
+    <p>{{admin.phone}}</p>
+    <p>{{admin.adminRole}}</p>
+  </div>
+</div>
+
+<div *ngIf="orderProcessor">
+  <h2>Welcome, Order Processor {{ orderProcessor.email }}!</h2>
+  <div>
+    <p>{{orderProcessor.firstName}}</p>
+    <p>{{orderProcessor.lastName}}</p>
+    <p>{{orderProcessor.address}}</p>
+    <p>{{orderProcessor.birthday}}</p>
+    <p>{{orderProcessor.email}}</p>
+    <p>{{orderProcessor.phone}}</p>
+    <p>{{orderProcessor.processingArea}}</p>
+    <p>{{orderProcessor.shift}}</p>
+  </div>
+</div>

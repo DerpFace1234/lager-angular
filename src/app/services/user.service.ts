@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Admin, OrderProcessor, User} from '../model/user.model';
+import {Admin, Customer, OrderProcessor, User} from '../model/user.model';
 import { Subject } from 'rxjs';
+import {catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class UserService {
     this.refreshUserListSource.next();
   }
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl);
+  getCustomers(): Observable<Customer[]> {
+    return this.http.get<Customer[]>(`${this.apiUrl}/customer`);
   }
 
   getAdmins(): Observable<Admin[]> {
@@ -30,10 +31,6 @@ export class UserService {
 
   getOrderProcessors(): Observable<OrderProcessor[]> {
     return this.http.get<OrderProcessor[]>(`${this.apiUrl}/order-processor`);
-  }
-
-  getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
   createAdmin(admin: User): Observable<User> {
@@ -48,11 +45,29 @@ export class UserService {
     return this.http.post<User>(`${this.apiUrl}/customer`, customer);
   }
 
-  updateUser(id: number | undefined, user: User): Observable<User>{
-    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+  updateCustomer(id: number | undefined, user: Customer): Observable<Customer>{
+    return this.http.put<Customer>(`${this.apiUrl}/customer/${id}`, user);
+  }
+
+  updateAdmin(id: number | undefined, user: Admin): Observable<Admin>{
+    return this.http.put<Admin>(`${this.apiUrl}/admin/${id}`, user);
+  }
+
+  updateOrderProcessor(id: number | undefined, user: OrderProcessor): Observable<OrderProcessor>{
+    return this.http.put<OrderProcessor>(`${this.apiUrl}/order-processor/${id}`, user);
   }
 
   deleteUser(id: number | undefined): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  login(email: string, password: string): Observable<any> {
+    const body = { email, password };
+    return this.http.post<any>(this.apiUrl, body).pipe(
+      catchError((error) => {
+        console.error('Login error:', error);
+        throw error;
+      })
+    );
   }
 }

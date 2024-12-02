@@ -1,1 +1,6 @@
+<app-header></app-header>
+<app-login
+  [isVisible]="isLoginVisible"
+  (closeOverlay)="onCloseLogin()">
+</app-login>
 <router-outlet></router-outlet>

@@ -2,7 +2,9 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Cocogoose', sans-serif;
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
@@ -10,7 +12,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  background-color: #ffffff;
   padding: 20px;
   width: 100%;
   margin: 0;
@@ -61,13 +63,14 @@ input {
 
 button {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #0078D4;
   color: #fff;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
   width: 100%;
+  font-weight: bold;
 }
 
 select {
@@ -97,7 +100,7 @@ button:hover {
 
 .feedback-message{
   font-weight: bold;
-  color: #007700;
+  color: #0078D4;
 }
 
 .feedback-message:empty{

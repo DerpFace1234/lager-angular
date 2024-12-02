@@ -58,20 +58,20 @@
     </div>
 
     <div class="form-group">
-      <div class="form-group line" *ngIf="selectedUserType === userTypes[0] || selectedUserType === userTypes[1]"></div>
+      <div class="form-group line" *ngIf="selectedUserType === UserType.ADMIN || selectedUserType === UserType.ORDER_PROCESSOR"></div>
 
-      <div class="form group" *ngIf="selectedUserType === userTypes[0]">
+      <div class="form group" *ngIf="selectedUserType === UserType.ADMIN">
         <label for="adminRole">Admin Role:</label>
         <input id="adminRole" [(ngModel)]="valueStorage.adminRole" name="adminRole" required type="text">
       </div>
-      <div class="form group" *ngIf="selectedUserType === userTypes[1]">
+      <div class="form group" *ngIf="selectedUserType === UserType.ORDER_PROCESSOR">
         <label for="processingArea">Processing Area:</label>
         <input id="processingArea" [(ngModel)]="valueStorage.processingArea" name="processingArea" required type="text">
       </div>
-      <div *ngIf="selectedUserType === userTypes[1]">
+      <div *ngIf="selectedUserType === UserType.ORDER_PROCESSOR">
         <br>
       </div>
-      <div class="form group" *ngIf="selectedUserType === userTypes[1]">
+      <div class="form group" *ngIf="selectedUserType === UserType.ORDER_PROCESSOR">
         <label for="shift">Shift:</label>
         <input id="shift" [(ngModel)]="valueStorage.shift" name="shift" required type="text">
       </div>

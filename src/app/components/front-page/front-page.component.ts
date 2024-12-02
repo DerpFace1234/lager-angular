@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {LoginService} from '../../services/login.service';
 
 @Component({
   selector: 'app-front-page',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './front-page.component.css'
 })
 export class FrontPageComponent {
-
+  constructor() {}
 }
