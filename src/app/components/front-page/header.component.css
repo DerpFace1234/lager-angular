@@ -89,10 +89,10 @@ img:hover{
 
 .slide-panel {
   position: absolute;
-  top: calc(96px + 10px);
+  top: calc(96px + 2px);
   right: 0%;
   width: 25%;
-  height: calc(100vh - calc(96px + 10px));
+  height: calc(100vh - calc(96px + 2px));
   background-color: #ffffff;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
