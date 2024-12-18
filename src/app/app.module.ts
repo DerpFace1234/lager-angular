@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +13,8 @@ import {NgOptimizedImage} from "@angular/common";
 import {LoginComponent} from './components/user/login/login.component';
 import {DashboardComponent} from './components/user/dashboard/dashboard.component';
 import {HeaderComponent} from './components/front-page/header.component';
+import {AuthInterceptor} from './components/auth/auth.component.auth-inceptor';
+import {CreateComponentComponent} from './components/component/upload/create-component.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import {HeaderComponent} from './components/front-page/header.component';
     FrontPageComponent,
     LoginComponent,
     DashboardComponent,
-    HeaderComponent
+    HeaderComponent,
+    CreateComponentComponent
   ],
     imports: [
         BrowserModule,
@@ -35,7 +38,11 @@ import {HeaderComponent} from './components/front-page/header.component';
         ReactiveFormsModule,
         NgOptimizedImage,
     ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

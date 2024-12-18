@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService} from '../../../services/login.service';
 import {UserType} from '../../../model/user.model';
@@ -21,11 +21,10 @@ export class LoginComponent {
   onSubmit(): void {
     this.loginService.login(this.email, this.password).subscribe({
       next: (response: any) => {
-        sessionStorage.setItem('token', response.token);
-        sessionStorage.setItem('customer', JSON.stringify(response.customer));
-        sessionStorage.setItem('admin', JSON.stringify(response.admin));
-        sessionStorage.setItem('orderProcessor', JSON.stringify(response.orderProcessor));
         this.close();
+        this.email = "";
+        this.password = "";
+        this.errorMessage = "";
         this.router.navigate(['/dashboard']);
         this.loginService.triggerRefreshLogin();
       },

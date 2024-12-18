@@ -11,36 +11,26 @@ export class LoginService {
   loginVisible$ = this.loginVisible.asObservable();
   private refreshLoginSource = new Subject<void>();
   refreshLogin$ = this.refreshLoginSource.asObservable();
-  private apiUrl = 'http://localhost:8080/api/auth/login';
+  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrlInfo = 'http://localhost:8080/api/users/info';
+  public userPresent: boolean = false;
 
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { email, password });
+    return this.http.post<any>(`${this.apiUrl}/login`, { email, password }, { withCredentials: true });
   }
 
-  getCustomer(): Customer {
-    return JSON.parse(sessionStorage.getItem('customer') || '{}');
+  logout() {
+    return this.http.post(`${this.apiUrl}/logout`, { withCredentials: true });
   }
 
-  getAdmin(): Admin {
-    return JSON.parse(sessionStorage.getItem('admin') || '{}');
+  checkSession(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/check`, { withCredentials: true });
   }
 
-  getOrderProcessor(): OrderProcessor {
-    return JSON.parse(sessionStorage.getItem('orderProcessor') || '{}');
-  }
-
-  getToken(): string {
-    return sessionStorage.getItem('token') || '';
-  }
-
-  logout(): void {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('customer');
-    sessionStorage.removeItem('admin');
-    sessionStorage.removeItem('orderProcessor');
-    this.triggerRefreshLogin();
+  getUser(): Observable<Customer | Admin | OrderProcessor> {
+    return this.http.get<Customer | Admin | OrderProcessor>(this.apiUrlInfo, { withCredentials: true });
   }
 
   showLogin() {

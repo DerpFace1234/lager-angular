@@ -6,20 +6,19 @@
 </head>
 <body>
 <header>
-  <div class="wrapper-container">
+  <div class="wrapper-container" (mouseenter)="onWrapperHover()" (mouseleave)="onWrapperLeave()">
     <div class="wrapper">
       <img src="images/TempLogo.png" width="156" height="80px" alt="TempLogo" title="TempLogo" (click)="toPage('')"/>
       <div class="wrapper-right">
-        <div class="user" *ngIf="!userPresent" (click)="openLogin()">Login</div>
-        <div class="user" *ngIf="userPresent" (click)="toPage('/dashboard')">User</div>
-        <div class="user" *ngIf="userPresent" (click)="logout()">Logout</div>
+        <div class="user" *ngIf="!isUserPresent()" (click)="openLogin()">Login</div>
+        <div class="user" *ngIf="isUserPresent()" (click)="toPage('/dashboard')">User</div>
+        <div class="user" *ngIf="isUserPresent()" (click)="logout()">Logout</div>
         <div class="hover" (mouseenter)="onHoverPanel()" (mouseleave)="onHoverLeave()">🛒 0,00€</div>
         <div class="slide-panel" [ngClass]="{ 'visible': isPanelVisible }">Slide Panel</div>
       </div>
     </div>
   </div>
-  <div class="line"></div>
-  <div class="wrapper-container">
+  <div class="wrapper-container-bottom" [ngClass]="{ 'bottom-visible': isBottomPanelVisible }">
     <div class="wrapper-bottom">
       <div class="bottom-menus" (click)="toPage('/user-mngmt')">User Management</div>
       <div class="bottom-menus" (click)="toPage('')">GPUs</div>

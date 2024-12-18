@@ -10,18 +10,25 @@ import {Subject, Subscription} from 'rxjs';
 })
 export class HeaderComponent {
 
-  public userPresent: boolean = false;
   private subscriptions: Subscription = new Subscription();
   private timer: any;
   public isPanelVisible: boolean = false;
+  public isBottomPanelVisible = false;
 
   constructor(private loginService: LoginService, private router: Router) {}
 
   ngOnInit(): void {
-    this.checkUserPresence();
+    this.loginService.checkSession().subscribe(
+      (auth: boolean) => (this.loginService.userPresent = auth),
+      (error) => console.error('Error during checkSession:', error)
+    );
+
     this.subscriptions.add(
       this.loginService.refreshLogin$.subscribe(() => {
-        this.checkUserPresence();
+        this.loginService.checkSession().subscribe(
+          (auth: boolean) => (this.loginService.userPresent = auth),
+          (error) => console.error('Error during refreshLogin check:', error)
+        );
       })
     );
   }
@@ -34,21 +41,19 @@ export class HeaderComponent {
     this.router.navigate([nav]);
   }
 
-  private checkUserPresence(): void {
-    this.userPresent = !!(
-      sessionStorage.getItem('customer') ||
-      sessionStorage.getItem('admin') ||
-      sessionStorage.getItem('orderProcessor')
-    );
-  }
-
   openLogin() {
     this.loginService.showLogin();
   }
 
-  logout(){
-    this.loginService.logout();
-    this.toPage('');
+  logout() {
+    this.loginService.logout().subscribe(
+      () => {
+        console.log('Logged out successfully');
+        this.loginService.userPresent = false;
+        this.toPage('');
+      },
+      (error) => console.error('Error during logout:', error)
+    );
   }
 
   onHoverPanel(): void {
@@ -59,5 +64,19 @@ export class HeaderComponent {
     this.timer = setTimeout(() => {
       this.isPanelVisible = false;
     }, 200);
+  }
+
+  onWrapperHover(): void {
+    this.isBottomPanelVisible = true;
+  }
+
+  onWrapperLeave(): void {
+    setTimeout(() => {
+      this.isBottomPanelVisible = false;
+    }, 200);
+  }
+
+  isUserPresent(): boolean{
+    return this.loginService.userPresent;
   }
 }

@@ -67,3 +67,24 @@
   font-weight: 0;
   font-style: normal;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  position: relative;
+  z-index: 2;
+}
+
+app-login {
+  position: fixed;
+  z-index: 3;
+}
+
+.router-container {
+  margin-top: 98px;
+  z-index: 1;
+}

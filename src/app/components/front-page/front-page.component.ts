@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {LoginService} from '../../services/login.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-front-page',
@@ -7,5 +7,9 @@ import {LoginService} from '../../services/login.service';
   styleUrl: './front-page.component.css'
 })
 export class FrontPageComponent {
-  constructor() {}
+  constructor(private router: Router) {}
+
+  toPage(nav: string){
+    this.router.navigate([nav]);
+  }
 }

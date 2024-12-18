@@ -7,5 +7,13 @@ import {LoginService} from '../../../services/login.service';
     styleUrl: './user-mngmt.component.css'
 })
 export class UserMngmtComponent {
+  isListVisible: boolean = false;
 
+  onClickPanel(): void{
+    this.isListVisible = true;
+  }
+
+  onClickClose(): void{
+    this.isListVisible = false;
+  }
 }

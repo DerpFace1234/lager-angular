@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { LoginService} from '../../../services/login.service';
+import {Component, OnInit} from '@angular/core';
+import {LoginService} from '../../../services/login.service';
 import {Admin, Customer, OrderProcessor, UserType} from '../../../model/user.model';
 
 @Component({
@@ -15,9 +15,17 @@ export class DashboardComponent implements OnInit {
   constructor(private loginService: LoginService) {}
 
   ngOnInit(): void {
-    this.customer = this.loginService.getCustomer();
-    this.admin = this.loginService.getAdmin();
-    this.orderProcessor = this.loginService.getOrderProcessor();
+    this.loginService.getUser().subscribe((data: Customer | Admin | OrderProcessor) => {
+      if(data instanceof Customer){
+        this.customer = data;
+      } else if(data instanceof Admin){
+        this.admin = data;
+      } else {
+        this.orderProcessor = data;
+      }
+    }, (error) => {
+      console.error('Failed to fetch logged in user:', error);
+    });
   }
 
   protected readonly UserType = UserType;

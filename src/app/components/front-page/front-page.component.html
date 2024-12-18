@@ -1,4 +1,12 @@
-<div>
-  <h1>Welcome to My Angular App!</h1>
-  <p>This is the front page.</p>
+<body>
+<div class="container">
+  <div class="split left">
+    <img src="images/nvidia-gpu.jpg" alt="Image 1" (click)="toPage('/all-components')">
+    <div class="text">Browse all Components</div>
+  </div>
+  <div class="split right" (click)="toPage('/configurer')">
+    <img src="images/rgb-computer.jpg" alt="Image 2">
+    <div class="text">Configure your own Build</div>
+  </div>
 </div>
+</body>
