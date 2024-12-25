@@ -21,7 +21,7 @@ body {
   align-items: center;
   margin: 0 50px 0 50px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .input-wrapper input[type="text"] {
@@ -31,6 +31,7 @@ body {
   border-radius: 10px;
   position: relative;
   width: 100%;
+  font-weight: normal;
 }
 
 .checkbox-container{
@@ -59,7 +60,7 @@ body {
 
 .scroll-container {
   width: 100%;
-  height: 520px;
+  height: 620px;
   padding-right: 20px;
   overflow-x: auto;
   display: flex;
@@ -91,7 +92,7 @@ body {
 .scroll-item button{
   width: 40px;
   height: 40px;
-  background-color: #0078D4;
+  background-color: #007bff;
   border: none;
   border-radius: 5px;
   display: flex;
@@ -101,8 +102,8 @@ body {
   margin: 5px;
 }
 
-.scroll-item button:hover{
-  background-color: #45a049;
+body button:hover{
+  background-color: #1731ff;
 }
 
 .info {
@@ -167,7 +168,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,14 +189,11 @@ body {
 
 .overlay-flex-columns {
   display: flex;
-  flex-direction: row;
   gap: 20px;
-  box-sizing: border-box;
 }
 
 .overlay-column {
   flex: 1;
-  box-sizing: border-box;
 }
 
 .overlay label{
@@ -234,5 +232,9 @@ body {
   cursor: pointer;
   width: 100%;
   box-sizing: border-box;
+}
+
+.underline {
+  text-decoration: underline;
 }
 

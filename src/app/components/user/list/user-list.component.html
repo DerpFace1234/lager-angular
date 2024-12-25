@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>List Users</title>
-</head>
 <body>
 
 <div class="input-wrapper">
@@ -15,7 +8,6 @@
     class="search-input"
   />
 </div>
-
 <br>
 
 <div class="user-display">
@@ -35,23 +27,13 @@
             </div>
             <div class="column c10">
               <div class="bt-container">
-                <button (click)="openDeleteOverlay()">🗑️</button>
+                <button (click)="openDeleteOverlay(customer.id, customer.firstName, customer.lastName)">🗑️</button>
                 <button (click)="openEditCustomer(customer)">✏️</button>
               </div>
             </div>
           </div>
-          <div class="overlay" *ngIf="showDeleteOverlay">
-            <div class="overlay-content">
-              <div class="overlay-flex-columns m-b-20" style="justify-content: center; align-items: center; font-size: 16px;">
-                Are you sure you want to delete customer {{customer.firstName}} {{customer.lastName}}?
-              </div>
-              <div class="overlay-button-holder">
-                <button style="background-color: red" (click)="deleteUser(customer.id)">Delete</button>
-                <button (click)="closeOverlay()">Cancel</button>
-              </div>
-            </div>
-          </div>
         </div>
+
         <div class="scroll-item" *ngFor="let admin of filteredAdmins">
           <div class="flex-columns">
             <div class="column c50">
@@ -65,23 +47,13 @@
             </div>
             <div class="column c10">
               <div class="bt-container">
-                <button (click)="openDeleteOverlay()">🗑️</button>
+                <button (click)="openDeleteOverlay(admin.id, admin.firstName, admin.lastName)">🗑️</button>
                 <button (click)="openEditAdmin(admin)">✏️</button>
               </div>
             </div>
           </div>
-          <div class="overlay" *ngIf="showDeleteOverlay">
-            <div class="overlay-content">
-              <div class="overlay-flex-columns m-b-20" style="justify-content: center; align-items: center; font-size: 16px;">
-                Are you sure you want to delete customer {{admin.firstName}} {{admin.lastName}}?
-              </div>
-              <div class="overlay-button-holder">
-                <button style="background-color: red" (click)="deleteUser(admin.id)">Delete</button>
-                <button (click)="closeOverlay()">Cancel</button>
-              </div>
-            </div>
-          </div>
         </div>
+
         <div class="scroll-item" *ngFor="let processor of filteredProcessors">
           <div class="flex-columns">
             <div class="column c50">
@@ -96,28 +68,23 @@
             </div>
             <div class="column c10">
               <div class="bt-container">
-                <button (click)="openDeleteOverlay()">🗑️</button>
+                <button (click)="openDeleteOverlay(processor.id, processor.firstName, processor.lastName)">🗑️</button>
                 <button (click)="openEditProcessor(processor)">✏️</button>
                 </div>
             </div>
           </div>
-          <div class="overlay" *ngIf="showDeleteOverlay">
-            <div class="overlay-content">
-              <div class="overlay-flex-columns m-b-20" style="justify-content: center; align-items: center; font-size: 16px;">
-                Are you sure you want to delete customer {{processor.firstName}} {{processor.lastName}}?
-              </div>
-              <div class="overlay-button-holder">
-                <button style="background-color: red" (click)="deleteUser(processor.id)">Delete</button>
-                <button (click)="closeOverlay()">Cancel</button>
-              </div>
-            </div>
-          </div>
         </div>
+
       </div>
     </div>
+
     <div class="c20 m-l-20">
       <div class="checkbox-container">
+        <div (click)="toggleTypes()"
+             [class.underline]="tabs['types']" style="cursor: pointer;">
         <b>Display Types of Users:</b>
+        </div>
+        <div *ngIf="tabs['types']" @fadeInOut>
         <div class="checkbox-item">
           <input type="checkbox" id="displayCustomers" [(ngModel)]="filters['displayCustomers']"/>
           <label for="displayCustomers">Customers</label>
@@ -130,7 +97,12 @@
           <input type="checkbox" id="displayProcessors" [(ngModel)]="filters['displayOrderProcessors']"/>
           <label for="displayProcessors">Order Processors</label>
         </div>
+        </div>
+        <div (click)="toggleAttributes()"
+             [class.underline]="tabs['attr']" style="cursor: pointer;">
         <b>Filter by common attributes:</b>
+        </div>
+        <div *ngIf="tabs['attr']" @fadeInOut>
         <div class="checkbox-item">
           <input type="checkbox" id="firstName2" [(ngModel)]="filters['firstName']"/>
           <label for="firstName2">First Name</label>
@@ -155,12 +127,23 @@
           <input type="checkbox" id="phone2" [(ngModel)]="filters['phone']"/>
           <label for="phone2">Phone</label>
         </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<br>
+<div class="overlay" *ngIf="showDeleteOverlay">
+  <div class="overlay-content">
+    <div class="overlay-flex-columns form-group" style="justify-content: center; align-items: center; font-size: 16px;">
+      Are you sure you want to delete User[{{toBeDeleted.id}}] {{toBeDeleted.firstName}} {{toBeDeleted.lastName}}?
+    </div>
+    <div class="overlay-button-holder">
+      <button style="background-color: red" (click)="deleteUser(toBeDeleted.id)">Delete</button>
+      <button (click)="closeOverlay()">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <div class="overlay" *ngIf="showOverlayCustomer">
   <div class="overlay-content">
@@ -287,5 +270,5 @@
     </div>
   </div>
 </div>
+
 </body>
-</html>

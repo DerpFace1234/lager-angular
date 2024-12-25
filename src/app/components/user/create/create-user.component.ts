@@ -1,11 +1,19 @@
 import {Component} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {Admin, Customer, OrderProcessor, UserType} from '../../../model/user.model';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.css']
+  styleUrls: ['./create-user.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({ opacity: 0 })),
+      transition(':enter', [animate('300ms ease-in')]),
+      transition(':leave', [animate('300ms ease-out')]),
+    ])
+  ],
 })
 export class CreateUserComponent{
   userTypes:UserType[] = Object.values(UserType);
@@ -86,7 +94,6 @@ export class CreateUserComponent{
     });
     this.valueStorage.feedbackMessage = "User successfully created!"
   }
-
   private handleError(error: any): void {
     console.error("Error creating user", error);
     this.valueStorage.feedbackMessage = "Error creating user."

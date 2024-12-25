@@ -1,4 +1,3 @@
-import {Component} from '@angular/core';
 
 export enum ComponentType{
   CASE = "CASE", CPU = "CPU", CPUCOOLER = "CPUCOOLER", FAN = "FAN", GPU = "GPU",
@@ -11,16 +10,16 @@ export class Components {
   quantityStock: number;
   price: number;
   reorderQuantity: number;
-  image: Uint8Array;
-  type: ComponentType;
+  image: string;
+  componentType: ComponentType;
 
-  constructor(name:string, quantityStock: number, price:number, reorderQuantity: number, image: Uint8Array, type:ComponentType,){
+  constructor(name:string, quantityStock: number, price:number, reorderQuantity: number, image: string, componentType:ComponentType,){
     this.name = name;
     this.quantityStock = quantityStock;
     this.price = price;
     this.reorderQuantity = reorderQuantity;
     this.image = image;
-    this.type = type;
+    this.componentType = componentType;
   }
 }
 
@@ -39,9 +38,14 @@ export enum PSUFormFactor{
 
 export class Case extends Components{
   casSidepanel: CaseSidepanel;
-  color: String;
-  formFactor: MotherboardFormFactor;
+  color: string;
+  motherboardFormFactor: MotherboardFormFactor;
+  maxCoolerHeight: number;
   maxCardLength: number;
+  fans80: number;
+  fans120: number;
+  fans140: number;
+  usb2Port: number;
   usb3Gen1Port: number;
   usb3Gen2Port: number;
   usb3Gen2x2Port: number;
@@ -50,15 +54,21 @@ export class Case extends Components{
   driveBays25: number;
   compatiblePSUFormFactors: PSUFormFactor[];
 
-  constructor(name:string, quantityStock: number, price:number, reorderQuantity: number, image: Uint8Array, type:ComponentType,
-              casSidepanel: CaseSidepanel, color: string, formFactor: MotherboardFormFactor, maxCardLength: number, usb3Gen1Port: number,
+  constructor(name:string, quantityStock: number, price:number, reorderQuantity: number, image: string, type:ComponentType,
+              casSidepanel: CaseSidepanel, color: string, formFactor: MotherboardFormFactor, maxCoolerHeight:number, maxCardLength: number,
+              fans80:number, fans120:number, fans140:number, usb2Port: number, usb3Gen1Port: number,
               usb3Gen2Port: number, usb3Gen2x2Port: number, usbTypeCPort: number, driveBays35: number, driveBays25: number,
               compatiblePSUFormFactors: PSUFormFactor[]){
     super(name, quantityStock, price, reorderQuantity, image, type);
     this.casSidepanel = casSidepanel;
     this.color = color;
-    this.formFactor = formFactor;
+    this.motherboardFormFactor = formFactor;
+    this.maxCoolerHeight = maxCoolerHeight;
     this.maxCardLength = maxCardLength;
+    this.fans80 = fans80;
+    this.fans120 = fans120;
+    this.fans140 = fans140;
+    this.usb2Port = usb2Port;
     this.usb3Gen1Port = usb3Gen1Port;
     this.usb3Gen2Port = usb3Gen2Port;
     this.usb3Gen2x2Port = usb3Gen2x2Port;
@@ -83,10 +93,10 @@ export class CPU extends Components{
   socket: Socket;
   l2Cache: number;
   l3Cache: number;
-  iGPU: boolean;
+  igpu: boolean;
   maxMemory: number;
 
-  constructor(name:string, quantityStock: number, price:number, reorderQuantity: number, image: Uint8Array, type:ComponentType,
+  constructor(name:string, quantityStock: number, price:number, reorderQuantity: number, image: string, type:ComponentType,
               clock: number, boostClock: number, tdp: number, cores: number, threads: number, socket: Socket,
               l2Cache: number, l3Cache: number, iGPU: boolean, maxMemory: number){
     super(name, quantityStock, price, reorderQuantity, image, type);
@@ -98,7 +108,7 @@ export class CPU extends Components{
     this.socket = socket;
     this.l2Cache = l2Cache;
     this.l3Cache = l3Cache;
-    this.iGPU = iGPU;
+    this.igpu = iGPU;
     this.maxMemory = maxMemory;
   }
 }
@@ -106,14 +116,14 @@ export class CPU extends Components{
 export class CPUCooler extends Components{
   fanRPM: number;
   noise: number;
-  color: String;
+  color: string;
   height: number;
   sockets: Socket[];
-  isFanless: boolean;
-  isWatercooled: boolean;
+  fanless: boolean;
+  watercooled: boolean;
 
-  constructor(name:string, quantityStock:number, price:number, reorderQuantity:number, image:Uint8Array, type:ComponentType,
-              fanRPM:number, noise:number,color:String, height:number, sockets:Socket[],
+  constructor(name:string, quantityStock:number, price:number, reorderQuantity:number, image:string, type:ComponentType,
+              fanRPM:number, noise:number,color:string, height:number, sockets:Socket[],
               isFanless:boolean, isWatercooled:boolean){
     super(name, quantityStock, price, reorderQuantity, image, type);
     this.fanRPM = fanRPM;
@@ -121,8 +131,8 @@ export class CPUCooler extends Components{
     this.height = height;
     this.color = color;
     this.sockets = sockets;
-    this.isFanless = isFanless;
-    this.isWatercooled = isWatercooled;
+    this.fanless = isFanless;
+    this.watercooled = isWatercooled;
   }
 }
 
@@ -137,7 +147,7 @@ export class Fan extends Components{
   splitterPresent: boolean;
   color: string;
 
-  constructor(name:string, quantityStock:number, price:number, reorderQuantity:number, image:Uint8Array, type:ComponentType,
+  constructor(name:string, quantityStock:number, price:number, reorderQuantity:number, image:string, type:ComponentType,
               size:number, rpm:number, airflow:number, noise:number, rgbPresent: boolean,
               pwm4PinPresent: boolean, dc3pinPresent: boolean, splitterPresent:boolean, color:string){
     super(name, quantityStock, price, reorderQuantity, image, type);
@@ -155,7 +165,7 @@ export class Fan extends Components{
 
 export enum GPUMemoryGeneration{
   GDDR3 = "GDDR3", GDDR4 = "GDDR4", GDDR5 = "GDDR5", GDDR5X = "GGDR5X", GDDR6 = "GDDR6",
-  GDDR6X = "GDDR6X", HBM = "HBM", HBM2E = "HBM2E", LPDDR = "LPDDR"
+  GDDR6X = "GDDR6X", GDDR7 = "GDDR7", HBM = "HBM", HBM2E = "HBM2E", LPDDR = "LPDDR"
 }
 
 export class GPU extends Components{
@@ -171,7 +181,7 @@ export class GPU extends Components{
   usbCPorts: number;
   slots: number;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: Uint8Array, type:ComponentType,
+  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
               memory: number, memoryGeneration: GPUMemoryGeneration, clock: number, boostClock: number,
               color: string, length: number, tdp: number, hdmiPorts: number, dpPorts: number, usbCPorts: number, slots: number) {
     super(name, quantityStock, price, reorderQuantity, image, type);
@@ -190,28 +200,30 @@ export class GPU extends Components{
 }
 
 export enum MemoryGeneration{
-  DDR = "DDR", DDR2 = "DDR2", DDR3 = "DDR3", DDR4 = "DDR4", DDR5 = "DDR5", LPDDR = "LPDDR"
+  DDR = "DDR", DDR2 = "DDR2", DDR3 = "DDR3", DDR4 = "DDR4", DDR5 = "DDR5"
 }
 
 export class Memory extends Components{
+  memory:number;
   speed:number;
   generation: MemoryGeneration;
   modules:number;
   colors:string;
   latency:number;
   voltage:number;
-  hasHeatSpreaders:boolean;
+  heatSpreaders:boolean;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: Uint8Array, type:ComponentType,
+  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType, memory:number,
               speed: number, generation: MemoryGeneration, modules: number, colors: string, latency: number, voltage: number, hasHeatSpreaders: boolean) {
     super(name, quantityStock, price, reorderQuantity, image, type);
+    this.memory = memory;
     this.speed = speed;
     this.generation = generation;
     this.modules = modules;
     this.colors = colors;
     this.latency = latency;
     this.voltage = voltage;
-    this.hasHeatSpreaders = hasHeatSpreaders;
+    this.heatSpreaders = hasHeatSpreaders;
   }
 }
 
@@ -236,7 +248,7 @@ export enum StorageFormFactor{
 }
 
 export enum WIFI{
-  WIFI4 = "WIFI4", WIFI5 = "WIFI5", WIFI6 = "WIFI6", WIFI6E = "WIFI6E", WIFI7 = "WIFI7"
+  NONE = "NONE",WIFI4 = "WIFI4", WIFI5 = "WIFI5", WIFI6 = "WIFI6", WIFI6E = "WIFI6E", WIFI7 = "WIFI7"
 }
 
 export class Motherboard extends Components{
@@ -250,7 +262,7 @@ export class Motherboard extends Components{
   pciex8: number;
   pciex4: number;
   pciex1: number;
-  storageFormfactos: StorageFormFactor[];
+  storageFormFactors: StorageFormFactor[];
   sata: number;
   usb2Header: number;
   usb3Gen1Header: number;
@@ -260,7 +272,7 @@ export class Motherboard extends Components{
   wifi: WIFI;
   raidSupported: boolean;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: Uint8Array, type:ComponentType,
+  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
               socket: Socket, formFactor: MotherboardFormFactor, motherboardChipset: MotherboardChipset, memoryGeneration: MemoryGeneration, memorySlots: number, memorySpeeds: number[], pciex16: number, pciex8: number, pciex4: number, pciex1: number, storageFormfactos: StorageFormFactor[], sata: number, usb2Header: number, usb3Gen1Header: number, usb3Gen2Header: number, usb3Gen2x2Header: number, usbTypeCHeader: number, wifi: WIFI, raidSupported: boolean) {
     super(name, quantityStock, price, reorderQuantity, image, type);
     this.socket = socket;
@@ -273,7 +285,7 @@ export class Motherboard extends Components{
     this.pciex8 = pciex8;
     this.pciex4 = pciex4;
     this.pciex1 = pciex1;
-    this.storageFormfactos = storageFormfactos;
+    this.storageFormFactors = storageFormfactos;
     this.sata = sata;
     this.usb2Header = usb2Header;
     this.usb3Gen1Header = usb3Gen1Header;
@@ -297,7 +309,7 @@ export class PSU extends Components{
   modular: boolean;
   color: string;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: Uint8Array, type:ComponentType,
+  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
               wattage: number, efficiency: number, formFactor: PSUFormFactor, pcie6Pins: number, eps8Pins: number, sataConnectors: number, molex4Pins: number, hpr12vPresent: boolean, modular: boolean, color: string) {
     super(name, quantityStock, price, reorderQuantity, image, type);
     this.wattage = wattage;
@@ -326,15 +338,15 @@ export class Storage extends Components{
   capacity: number;
   storageInterface: StorageInterface;
   storageformFactor: StorageFormFactor;
-  withHeatSink: boolean;
+  heatSink: boolean;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: Uint8Array, type:ComponentType,
+  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
               storageType: StorageType, capacity: number, storageInterface: StorageInterface, storageformFactor: StorageFormFactor, withHeatSink: boolean) {
     super(name, quantityStock, price, reorderQuantity, image, type);
     this.storageType = storageType;
     this.capacity = capacity;
     this.storageInterface = storageInterface;
     this.storageformFactor = storageformFactor;
-    this.withHeatSink = withHeatSink;
+    this.heatSink = withHeatSink;
   }
 }

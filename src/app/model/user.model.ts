@@ -1,4 +1,3 @@
-import {last} from 'rxjs';
 import {Order} from './order.model';
 
 export enum UserType{
@@ -12,7 +11,7 @@ export class User {
     firstName: string;
     lastName: string;
     address: string;
-    birthday: Date
+    birthday: Date;
     email: string;
     phone: string;
     password: string;

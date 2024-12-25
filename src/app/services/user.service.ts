@@ -10,11 +10,8 @@ import {catchError} from 'rxjs/operators';
 })
 export class UserService {
   private apiUrl = 'http://localhost:8080/api/users';
-
   constructor(private http: HttpClient) { }
-
   private refreshUserListSource = new Subject<void>();
-
   refreshUserList$ = this.refreshUserListSource.asObservable();
 
   triggerRefreshUserList() {

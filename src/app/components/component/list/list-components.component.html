@@ -1,0 +1,1163 @@
+<body>
+
+<div class="input-wrapper-s">
+  <input
+    type = "text"
+    placeholder="Search..."
+    [(ngModel)]="searchQuery"
+    class="search-input"
+  />
+</div>
+<br>
+
+<div class="user-display">
+  <div class="flex-columns">
+    <div class="c80">
+      <div #scrollContainer class="scroll-container" tabindex="0">
+
+        <div class="scroll-item" *ngFor="let comp of filteredCases">
+          <div class="flex-columns">
+            <div class="column c10 i">
+              <img [src]="'data:image/png;base64,' + comp.image" alt="Case Image">
+            </div>
+            <div class="column c50">
+              <div>[{{comp.id}}] Case</div>
+              <div>{{comp.name}}</div>
+              <div>Form Factor: {{comp.motherboardFormFactor}}</div>
+              <div>Color: {{comp.color}}</div>
+            </div>
+            <div class="column c30">
+              <div></div>
+              <div>Quantity: {{comp.quantityStock}}</div>
+              <div>Reorder Quantity: {{comp.reorderQuantity}}</div>
+              <div>Price: {{comp.price}}</div>
+            </div>
+            <div class="column c10 i">
+              <div class="bt-container">
+                <button (click)="openDeleteOverlay(comp.id, comp.name)">🗑️</button>
+                <button (click)="openEditCase(comp)">✏️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-item" *ngFor="let comp of filteredCPUs">
+          <div class="flex-columns">
+            <div class="column c10 i">
+              <img [src]="'data:image/png;base64,' + comp.image" alt="CPU Image">
+            </div>
+            <div class="column c50">
+              <div>[{{comp.id}}] CPU</div>
+              <div>{{comp.name}}</div>
+              <div>Socket: {{comp.socket}}</div>
+              <div>{{comp.clock}} MHz - {{comp.boostClock}} MHz</div>
+            </div>
+            <div class="column c30">
+              <div></div>
+              <div>Quantity: {{comp.quantityStock}}</div>
+              <div>Reorder Quantity: {{comp.reorderQuantity}}</div>
+              <div>Price: {{comp.price}}</div>
+            </div>
+            <div class="column c10 i">
+              <div class="bt-container">
+                <button (click)="openDeleteOverlay(comp.id, comp.name)">🗑️</button>
+                <button (click)="openEditCPU(comp)">✏️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-item" *ngFor="let comp of filteredCPUCoolers">
+          <div class="flex-columns">
+            <div class="column c10 i">
+              <img [src]="'data:image/png;base64,' + comp.image" alt="CPUCooler Image">
+            </div>
+            <div class="column c50">
+              <div>[{{comp.id}}] CPU Cooler</div>
+              <div>{{comp.name}}</div>
+              <div>Sockets: <ng-container *ngFor="let s of comp.sockets">{{s}}, </ng-container></div>
+              <div>{{comp.fanRPM}} RPM, {{comp.height}} mm</div>
+            </div>
+            <div class="column c30">
+              <div></div>
+              <div>Quantity: {{comp.quantityStock}}</div>
+              <div>Reorder Quantity: {{comp.reorderQuantity}}</div>
+              <div>Price: {{comp.price}}</div>
+            </div>
+            <div class="column c10 i">
+              <div class="bt-container">
+                <button (click)="openDeleteOverlay(comp.id, comp.name)">🗑️</button>
+                <button (click)="openEditCPUCooler(comp)">✏️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-item" *ngFor="let comp of filteredFans">
+          <div class="flex-columns">
+            <div class="column c10 i">
+              <img [src]="'data:image/png;base64,' + comp.image" alt="Fan Image">
+            </div>
+            <div class="column c50">
+              <div>[{{comp.id}}] Fan</div>
+              <div>{{comp.name}}</div>
+              <div>{{comp.rpm}} RPM, Size {{comp.size}}</div>
+              <div>
+                <ng-container *ngIf="comp.rgbPresent">RGB, </ng-container>
+                <ng-container *ngIf="comp.pwm4PinPresent">PWM, </ng-container>
+                <ng-container *ngIf="comp.dc3PinPresent">DC, </ng-container>
+                <ng-container *ngIf="comp.splitterPresent">Splitter </ng-container>
+              </div>
+            </div>
+            <div class="column c30">
+              <div></div>
+              <div>Quantity: {{comp.quantityStock}}</div>
+              <div>Reorder Quantity: {{comp.reorderQuantity}}</div>
+              <div>Price: {{comp.price}}</div>
+            </div>
+            <div class="column c10 i">
+              <div class="bt-container">
+                <button (click)="openDeleteOverlay(comp.id, comp.name)">🗑️</button>
+                <button (click)="openEditFan(comp)">✏️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-item" *ngFor="let comp of filteredGPUs">
+          <div class="flex-columns">
+            <div class="column c10 i">
+              <img [src]="'data:image/png;base64,' + comp.image" alt="GPU Image">
+            </div>
+            <div class="column c50">
+              <div>[{{comp.id}}] GPU</div>
+              <div>{{comp.name}}</div>
+              <div>{{comp.memory}} GB {{comp.memoryGeneration}}</div>
+              <div>{{comp.clock}} MHz - {{comp.boostClock}} MHz</div>
+            </div>
+            <div class="column c30">
+              <div></div>
+              <div>Quantity: {{comp.quantityStock}}</div>
+              <div>Reorder Quantity: {{comp.reorderQuantity}}</div>
+              <div>Price: {{comp.price}}</div>
+            </div>
+            <div class="column c10 i">
+              <div class="bt-container">
+                <button (click)="openDeleteOverlay(comp.id, comp.name)">🗑️</button>
+                <button (click)="openEditGPU(comp)">✏️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-item" *ngFor="let comp of filteredMemories">
+          <div class="flex-columns">
+            <div class="column c10 i">
+              <img [src]="'data:image/png;base64,' + comp.image" alt="Memory Image">
+            </div>
+            <div class="column c50">
+              <div>[{{comp.id}}] Memory</div>
+              <div>{{comp.name}}</div>
+              <div>{{comp.generation}}</div>
+              <div>{{comp.memory}} GB {{comp.speed}}MT/s</div>
+            </div>
+            <div class="column c30">
+              <div></div>
+              <div>Quantity: {{comp.quantityStock}}</div>
+              <div>Reorder Quantity: {{comp.reorderQuantity}}</div>
+              <div>Price: {{comp.price}}</div>
+            </div>
+            <div class="column c10 i">
+              <div class="bt-container">
+                <button (click)="openDeleteOverlay(comp.id, comp.name)">🗑️</button>
+                <button (click)="openEditMemory(comp)">✏️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-item" *ngFor="let comp of filteredMotherboards">
+          <div class="flex-columns">
+            <div class="column c10 i">
+              <img [src]="'data:image/png;base64,' + comp.image" alt="Motherboard Image">
+            </div>
+            <div class="column c50">
+              <div>[{{comp.id}}] Motherboard</div>
+              <div>{{comp.name}}</div>
+              <div>{{comp.socket}}, {{comp.motherboardChipset}}</div>
+              <div>{{comp.formFactor}},  {{comp.memoryGeneration}}</div>
+            </div>
+            <div class="column c30">
+              <div></div>
+              <div>Quantity: {{comp.quantityStock}}</div>
+              <div>Reorder Quantity: {{comp.reorderQuantity}}</div>
+              <div>Price: {{comp.price}}</div>
+            </div>
+            <div class="column c10 i">
+              <div class="bt-container">
+                <button (click)="openDeleteOverlay(comp.id, comp.name)">🗑️</button>
+                <button (click)="openEditMotherboard(comp)">✏️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-item" *ngFor="let comp of filteredPSUs">
+          <div class="flex-columns">
+            <div class="column c10 i">
+              <img [src]="'data:image/png;base64,' + comp.image" alt="PSU Image">
+            </div>
+            <div class="column c50">
+              <div>[{{comp.id}}] PSU</div>
+              <div>{{comp.name}}</div>
+              <div>{{comp.formFactor}}, {{comp.wattage}}W, {{comp.efficiency}}%</div>
+            </div>
+            <div class="column c30">
+              <div></div>
+              <div>Quantity: {{comp.quantityStock}}</div>
+              <div>Reorder Quantity: {{comp.reorderQuantity}}</div>
+              <div>Price: {{comp.price}}</div>
+            </div>
+            <div class="column c10 i">
+              <div class="bt-container">
+                <button (click)="openDeleteOverlay(comp.id, comp.name)">🗑️</button>
+                <button (click)="openEditPSU(comp)">✏️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-item" *ngFor="let comp of filteredStorages">
+          <div class="flex-columns">
+            <div class="column c10 i">
+              <img [src]="'data:image/png;base64,' + comp.image" alt="PSU Image">
+            </div>
+            <div class="column c50">
+              <div>[{{comp.id}}] PSU</div>
+              <div>{{comp.name}}</div>
+              <div>{{comp.storageformFactor}}, {{comp.storageInterface}}W, {{comp.storageType}}%</div>
+              <div>{{comp.capacity}}</div>
+            </div>
+            <div class="column c30">
+              <div></div>
+              <div>Quantity: {{comp.quantityStock}}</div>
+              <div>Reorder Quantity: {{comp.reorderQuantity}}</div>
+              <div>Price: {{comp.price}}</div>
+            </div>
+            <div class="column c10 i">
+              <div class="bt-container">
+                <button (click)="openDeleteOverlay(comp.id, comp.name)">🗑️</button>
+                <button (click)="openEditStorage(comp)">✏️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="c20 m-l-20">
+      <div class="checkbox-container">
+        <div (click)="toggleTypes()"
+             [class.underline]="tabs['types']" style="cursor: pointer;">
+          <b>Display Types of Components:</b>
+        </div>
+        <div *ngIf="tabs['types']" @fadeInOut>
+          <div class="checkbox-item">
+            <input type="checkbox" id="displayCases" [(ngModel)]="filters['displayCases']"/>
+            <label for="displayCases">Cases</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="displayCPUs" [(ngModel)]="filters['displayCPUs']"/>
+            <label for="displayCPUs">CPUs</label>
+          </div>
+          <div class="checkbox-item m-b-20">
+            <input type="checkbox" id="displayCPUCoolers" [(ngModel)]="filters['displayCPUCoolers']"/>
+            <label for="displayCPUCoolers">CPU Coolers</label>
+          </div>
+          <div class="checkbox-item m-b-20">
+            <input type="checkbox" id="displayFans" [(ngModel)]="filters['displayFans']"/>
+            <label for="displayFans">Fans</label>
+          </div>
+          <div class="checkbox-item m-b-20">
+            <input type="checkbox" id="displayGPUs" [(ngModel)]="filters['displayGPUs']"/>
+            <label for="displayGPUs">GPUs</label>
+          </div>
+          <div class="checkbox-item m-b-20">
+            <input type="checkbox" id="displayMemories" [(ngModel)]="filters['displayMemories']"/>
+            <label for="displayMemories">Memory</label>
+          </div>
+          <div class="checkbox-item m-b-20">
+            <input type="checkbox" id="displayMotherboards" [(ngModel)]="filters['displayMotherboards']"/>
+            <label for="displayMotherboards">Motherboards</label>
+          </div>
+          <div class="checkbox-item m-b-20">
+            <input type="checkbox" id="displayPSUs" [(ngModel)]="filters['displayPSUs']"/>
+            <label for="displayPSUs">PSUs</label>
+          </div>
+          <div class="checkbox-item m-b-20">
+            <input type="checkbox" id="displayStorages" [(ngModel)]="filters['displayStorages']"/>
+            <label for="displayStorages">Storages</label>
+          </div>
+        </div>
+        <div (click)="toggleAttributes()"
+             [class.underline]="tabs['attr']" style="cursor: pointer;">
+          <b>Filter by common attributes:</b>
+        </div>
+        <div *ngIf="tabs['attr']" @fadeInOut>
+          <div class="checkbox-item">
+            <input type="checkbox" id="id2" [(ngModel)]="filters['id']"/>
+            <label for="id2">ID</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="name2" [(ngModel)]="filters['name']"/>
+            <label for="name2">Name</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="quantity" [(ngModel)]="filters['stockQuantity']"/>
+            <label for="quantity">Quantity</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="price" [(ngModel)]="filters['price']"/>
+            <label for="price">Price</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="reorder" [(ngModel)]="filters['reorderQuantity']"/>
+            <label for="reorder">Reorder Quantity</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Overlay -->
+<div class="overlay" *ngIf="showDeleteOverlay">
+  <div class="overlay-content">
+    <div class="overlay-flex-columns form-group" style="justify-content: center; align-items: center; font-size: 16px;">
+      Are you sure you want to delete Component[{{toBeDeleted.id}}] {{toBeDeleted.name}} ?
+    </div>
+    <div class="overlay-button-holder">
+      <button style="background-color: red" (click)="deleteComponent(toBeDeleted.id)">Delete</button>
+      <button (click)="closeOverlay()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="showOverlayEdit">
+  <div class="form-container">
+      <div class="flex-columns">
+
+        <div class="column">
+          <div class="form-group">
+            <label for="img">Upload Image:</label>
+            <div
+              class="upload-zone"
+              [class.drag-over]="isDragOver"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave()"
+              (drop)="onDrop($event)"
+              (click)="fileInput.click()">
+              <input type="file" id="img" #fileInput (change)="onFileChange($event)" hidden/>
+              <div class="upload-message">
+                <p *ngIf="!imagePreviewUrl">{{ errorMessage }}</p>
+                <img *ngIf="imagePreviewUrl" [src]="imagePreviewUrl" alt="Image preview" class="preview-image">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <button class="button" type="button" (click)="delete()">Remove Image</button>
+          </div>
+
+          <ng-container *ngIf="showOverlayCase">
+          <div class="form-group">
+            <label for="compType">Component Type:</label>
+            <input id="compType" [(ngModel)]="editCase.componentType" name="compType" readonly/>
+          </div>
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required [(ngModel)]="editCase.name" #nameCtrl="ngModel" name="name"
+                   [ngClass]="{'invalid-field': nameCtrl.invalid && nameCtrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="quantityStock">Stock Quantity:</label>
+            <input type="number" id="quantityStock" required [(ngModel)]="editCase.quantityStock" name="quantityStock">
+          </div>
+          <div class="form-group">
+            <label for="price2">Price:</label>
+            <input type="number" id="price2" required [(ngModel)]="editCase.price" name="price2">
+          </div>
+          <div class="form-group">
+            <label for="reorderQuantity">Reorder Quantity:</label>
+            <input type="number" id="reorderQuantity" required [(ngModel)]="editCase.reorderQuantity" name="reorderQuantity">
+          </div>
+          </ng-container>
+          <ng-container *ngIf="showOverlayCPU">
+          <div class="form-group">
+            <label for="compTypeX">Component Type:</label>
+            <input id="compTypeX" [(ngModel)]="editCPU.componentType" name="compTypeX" readonly/>
+          </div>
+          <div class="form-group">
+            <label for="nameX">Name:</label>
+            <input type="text" id="nameX" required [(ngModel)]="editCPU.name" #nameXCtrl="ngModel" name="nameX"
+                   [ngClass]="{'invalid-field': nameXCtrl.invalid && nameXCtrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="quantityStockX">Stock Quantity:</label>
+            <input type="number" id="quantityStockX" required [(ngModel)]="editCPU.quantityStock" name="quantityStockX">
+          </div>
+          <div class="form-group">
+            <label for="priceX">Price:</label>
+            <input type="number" id="priceX" required [(ngModel)]="editCPU.price" name="priceX">
+          </div>
+          <div class="form-group">
+            <label for="reorderQuantityX">Reorder Quantity:</label>
+            <input type="number" id="reorderQuantityX" required [(ngModel)]="editCPU.reorderQuantity" name="reorderQuantityX">
+          </div>
+          </ng-container>
+          <ng-container *ngIf="showOverlayCPUCooler">
+          <div class="form-group">
+            <label for="compTypeXX">Component Type:</label>
+            <input id="compTypeXX" [(ngModel)]="editCPUCooler.componentType" name="compTypeXX" readonly/>
+          </div>
+          <div class="form-group">
+            <label for="nameXX">Name:</label>
+            <input type="teXXt" id="nameXX" required [(ngModel)]="editCPUCooler.name" #nameXXCtrl="ngModel" name="nameXX"
+                   [ngClass]="{'invalid-field': nameXXCtrl.invalid && nameXXCtrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="quantityStockXX">Stock Quantity:</label>
+            <input type="number" id="quantityStockXX" required [(ngModel)]="editCPUCooler.quantityStock" name="quantityStockXX">
+          </div>
+          <div class="form-group">
+            <label for="priceXX">Price:</label>
+            <input type="number" id="priceXX" required [(ngModel)]="editCPUCooler.price" name="priceXX">
+          </div>
+          <div class="form-group">
+            <label for="reorderQuantityXX">Reorder Quantity:</label>
+            <input type="number" id="reorderQuantityXX" required [(ngModel)]="editCPUCooler.reorderQuantity" name="reorderQuantityXX">
+          </div>
+          </ng-container>
+          <ng-container *ngIf="showOverlayFan">
+          <div class="form-group">
+            <label for="compTypeY">Component Type:</label>
+            <input id="compTypeY" [(ngModel)]="editFan.componentType" name="compTypeY" readonly/>
+          </div>
+          <div class="form-group">
+            <label for="nameY">Name:</label>
+            <input type="teYt" id="nameY" required [(ngModel)]="editFan.name" #nameYCtrl="ngModel" name="nameY"
+                   [ngClass]="{'invalid-field': nameYCtrl.invalid && nameYCtrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="quantityStockY">Stock Quantity:</label>
+            <input type="number" id="quantityStockY" required [(ngModel)]="editFan.quantityStock" name="quantityStockY">
+          </div>
+          <div class="form-group">
+            <label for="priceY">Price:</label>
+            <input type="number" id="priceY" required [(ngModel)]="editFan.price" name="priceY">
+          </div>
+          <div class="form-group">
+            <label for="reorderQuantityY">Reorder Quantity:</label>
+            <input type="number" id="reorderQuantityY" required [(ngModel)]="editFan.reorderQuantity" name="reorderQuantityY">
+          </div>
+          </ng-container>
+          <ng-container *ngIf="showOverlayGPU">
+          <div class="form-group">
+            <label for="compTypeYX">Component Type:</label>
+            <input id="compTypeYX" [(ngModel)]="editGPU.componentType" name="compTypeYX" readonly/>
+          </div>
+          <div class="form-group">
+            <label for="nameYX">Name:</label>
+            <input type="teYt" id="nameYX" required [(ngModel)]="editGPU.name" #nameYXCtrl="ngModel" name="nameYX"
+                   [ngClass]="{'invalid-field': nameYXCtrl.invalid && nameYXCtrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="quantityStockYX">Stock Quantity:</label>
+            <input type="number" id="quantityStockYX" required [(ngModel)]="editGPU.quantityStock" name="quantityStockYX">
+          </div>
+          <div class="form-group">
+            <label for="priceYX">Price:</label>
+            <input type="number" id="priceYX" required [(ngModel)]="editGPU.price" name="priceYX">
+          </div>
+          <div class="form-group">
+            <label for="reorderQuantityYX">Reorder Quantity:</label>
+            <input type="number" id="reorderQuantityYX" required [(ngModel)]="editGPU.reorderQuantity" name="reorderQuantityYX">
+          </div>
+          </ng-container>
+          <ng-container *ngIf="showOverlayMemory">
+          <div class="form-group">
+            <label for="compTypeYY">Component Type:</label>
+            <input id="compTypeYY" [(ngModel)]="editMemory.componentType" name="compTypeYY" readonly/>
+          </div>
+          <div class="form-group">
+            <label for="nameYY">Name:</label>
+            <input type="teYt" id="nameYY" required [(ngModel)]="editMemory.name" #nameYYCtrl="ngModel" name="nameYY"
+                   [ngClass]="{'invalid-field': nameYYCtrl.invalid && nameYYCtrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="quantityStockYY">Stock Quantity:</label>
+            <input type="number" id="quantityStockYY" required [(ngModel)]="editMemory.quantityStock" name="quantityStockYY">
+          </div>
+          <div class="form-group">
+            <label for="priceYY">Price:</label>
+            <input type="number" id="priceYY" required [(ngModel)]="editMemory.price" name="priceYY">
+          </div>
+          <div class="form-group">
+            <label for="reorderQuantityYY">Reorder Quantity:</label>
+            <input type="number" id="reorderQuantityYY" required [(ngModel)]="editMemory.reorderQuantity" name="reorderQuantityYY">
+          </div>
+          </ng-container>
+          <ng-container *ngIf="showOverlayMotherboard">
+          <div class="form-group">
+            <label for="compTypeYYX">Component Type:</label>
+            <input id="compTypeYYX" [(ngModel)]="editMotherboard.componentType" name="compTypeYYX" readonly/>
+          </div>
+          <div class="form-group">
+            <label for="nameYYX">Name:</label>
+            <input type="teYt" id="nameYYX" required [(ngModel)]="editMotherboard.name" #nameYYXCtrl="ngModel" name="nameYYX"
+                   [ngClass]="{'invalid-field': nameYYXCtrl.invalid && nameYYXCtrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="quantityStockYYX">Stock Quantity:</label>
+            <input type="number" id="quantityStockYYX" required [(ngModel)]="editMotherboard.quantityStock" name="quantityStockYYX">
+          </div>
+          <div class="form-group">
+            <label for="priceYYX">Price:</label>
+            <input type="number" id="priceYYX" required [(ngModel)]="editMotherboard.price" name="priceYYX">
+          </div>
+          <div class="form-group">
+            <label for="reorderQuantitYYXY">Reorder Quantity:</label>
+            <input type="number" id="reorderQuantitYYXY" required [(ngModel)]="editMotherboard.reorderQuantity" name="reorderQuantitYYXY">
+          </div>
+          </ng-container>
+          <ng-container *ngIf="showOverlayPSU">
+          <div class="form-group">
+            <label for="compTypeYYY">Component Type:</label>
+            <input id="compTypeYYY" [(ngModel)]="editPSU.componentType" name="compTypeYYY" readonly/>
+          </div>
+          <div class="form-group">
+            <label for="nameYYY">Name:</label>
+            <input type="teYt" id="nameYYY" required [(ngModel)]="editPSU.name" #nameYYYCtrl="ngModel" name="nameYYY"
+                   [ngClass]="{'invalid-field': nameYYYCtrl.invalid && nameYYYCtrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="quantityStockYYY">Stock Quantity:</label>
+            <input type="number" id="quantityStockYYY" required [(ngModel)]="editPSU.quantityStock" name="quantityStockYYY">
+          </div>
+          <div class="form-group">
+            <label for="priceYYY">Price:</label>
+            <input type="number" id="priceYYY" required [(ngModel)]="editPSU.price" name="priceYYY">
+          </div>
+          <div class="form-group">
+            <label for="reorderQuantitYYYY">Reorder Quantity:</label>
+            <input type="number" id="reorderQuantitYYYY" required [(ngModel)]="editPSU.reorderQuantity" name="reorderQuantitYYYY">
+          </div>
+          </ng-container>
+          <ng-container *ngIf="showOverlayStorage">
+          <div class="form-group">
+            <label for="compTypeZ">Component Type:</label>
+            <input id="compTypeZ" [(ngModel)]="editStorage.componentType" name="compTypeZ" readonly/>
+          </div>
+          <div class="form-group">
+            <label for="nameZ">Name:</label>
+            <input type="teYt" id="nameZ" required [(ngModel)]="editStorage.name" #nameZCtrl="ngModel" name="nameZ"
+                   [ngClass]="{'invalid-field': nameZCtrl.invalid && nameZCtrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="quantityStockZ">Stock Quantity:</label>
+            <input type="number" id="quantityStockZ" required [(ngModel)]="editStorage.quantityStock" name="quantityStockZ">
+          </div>
+          <div class="form-group">
+            <label for="priceZ">Price:</label>
+            <input type="number" id="priceZ" required [(ngModel)]="editStorage.price" name="priceZ">
+          </div>
+          <div class="form-group">
+            <label for="reorderQuantitZY">Reorder Quantity:</label>
+            <input type="number" id="reorderQuantitZY" required [(ngModel)]="editStorage.reorderQuantity" name="reorderQuantitZY">
+          </div>
+          </ng-container>
+
+        </div>
+
+        <div class="column" *ngIf="showOverlayCase">
+          <div class="form-group">
+            <label for="casePanel">Case Sidepanel Type:</label>
+            <select id="casePanel" [(ngModel)]="editCase.casSidepanel" #casePanelCtrl name="casePanel" required>
+              <option *ngFor="let type of componentsService.sidepanels" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="motherboardForm">Motherboard Form Factor:</label>
+            <select id="motherboardForm" [(ngModel)]="editCase.motherboardFormFactor" #motherboardFormCtrl name="motherboardForm" required>
+              <option *ngFor="let type of componentsService.motherboardFormFactors" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="color">Color:</label>
+            <input type="text" id="color" required [(ngModel)]="editCase.color" #colorCtrl="ngModel" name="color"
+                   [ngClass]="{'invalid-field': colorCtrl.invalid && colorCtrl.touched}">
+          </div>
+          <div class="form-group flex space-between">
+            <div class="w45">
+              <label for="coolerheight">Maximum Cooler Height (mm):</label>
+              <input type="number" id="coolerheight" required [(ngModel)]="editCase.maxCoolerHeight" name="coolerheight">
+            </div>
+            <div class="w45">
+              <label for="gpu-length">Maximum GPU Length (mm):</label>
+              <input type="number" id="gpu-length" required [(ngModel)]="editCase.maxCardLength" name="gpu-length">
+            </div>
+          </div>
+          <div class="form-group flex space-between">
+            <div class="w20">
+              <label for="usb2">USB 2 Ports:</label>
+              <input type="number" id="usb2" required [(ngModel)]="editCase.usb2Port" name="usb2">
+            </div>
+
+            <div class="w20">
+              <label for="usb3g1">USB 3 Gen 1 Ports:</label>
+              <input type="number" id="usb3g1" required [(ngModel)]="editCase.usb3Gen1Port" name="usb3g1">
+            </div>
+            <div class="w20">
+              <label for="usb3g2">USB 3 Gen 2 Ports:</label>
+              <input type="number" id="usb3g2" required [(ngModel)]="editCase.usb3Gen2Port" name="usb3g2">
+            </div>
+            <div class="w20">
+              <label for="usb3g2x2">USB 3 Gen 2x2 Ports:</label>
+              <input type="number" id="usb3g2x2" required [(ngModel)]="editCase.usb3Gen2x2Port" name="usb3g2x2">
+            </div>
+          </div>
+          <div class="form-group flex space space-between">
+            <div class="w20">
+              <label for="usbTypeC">USB Type C Ports:</label>
+              <input type="number" id="usbTypeC" required [(ngModel)]="editCase.usbTypeCPort" name="usbTypeC">
+            </div>
+            <div class="w20">
+              <label for="fans80">Fans 80mm:</label>
+              <input type="number" id="fans80" required [(ngModel)]="editCase.fans80" name="fans80">
+            </div>
+            <div class="w20">
+              <label for="fans120">Fans 120mm:</label>
+              <input type="number" id="fans120" required [(ngModel)]="editCase.fans120" name="fans120">
+            </div>
+            <div class="w20">
+              <label for="fans140">Fans 140mm:</label>
+              <input type="number" id="fans140" required [(ngModel)]="editCase.fans140" name="fans140">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="drive35">3.5" Drive Bays:</label>
+            <input type="number" id="drive35" required [(ngModel)]="editCase.driveBays35" name="drive35">
+          </div>
+          <div class="form-group">
+            <label for="drive25">2.5" Drive Bays:</label>
+            <input type="number" id="drive25" required [(ngModel)]="editCase.driveBays25" name="drive25">
+          </div>
+          <div class="form-group">
+            <label for="autocomplete-input-case">Compatible PSU Form Factors:</label>
+            <div class="autocomplete-container">
+              <div class="input-wrapper">
+                <div class="selected-items">
+                <span *ngFor="let item of editCase.compatiblePSUFormFactors" class="selected-item">
+                  {{ item }}
+                  <button type="button" class="remove-button" (click)="removeItem(item, editCase.compatiblePSUFormFactors)">x</button>
+                </span>
+                </div>
+                <input
+                  type="text"
+                  id="autocomplete-input-case"
+                  [(ngModel)]="inputValue"
+                  (input)="onInputChange(suggestions, inputValue, componentsService.psuFormFactors, editCase.compatiblePSUFormFactors)"
+                  name="itemInput"
+                  autocomplete="off"
+                  placeholder="Select compatible PSU Form Factors" />
+              </div>
+
+              <ul class="suggestions" *ngIf="suggestions.length">
+                <li *ngFor="let suggestion of suggestions" (click)="addItem(suggestion, editCase.compatiblePSUFormFactors)">
+                  {{ suggestion }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="column" *ngIf="showOverlayCPU">
+          <div class="form-group">
+            <label for="socket">Socket:</label>
+            <select id="socket" [(ngModel)]="editCPU.socket" #socketCtrl name="socket" required>
+              <option *ngFor="let type of componentsService.sockets" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="clock">Core Clock (MHz):</label>
+            <input type="number" id="clock" required [(ngModel)]="editCPU.clock" name="clock">
+          </div>
+          <div class="form-group">
+            <label for="boost-clock">Boost Clock (MHz):</label>
+            <input type="number" id="boost-clock" required [(ngModel)]="editCPU.boostClock" name="boost-clock">
+          </div>
+          <div class="form-group">
+            <label for="tdp">TDP (W):</label>
+            <input type="number" id="tdp" required [(ngModel)]="editCPU.tdp" name="tdp">
+          </div>
+          <div class="form-group">
+            <label for="cores">Cores:</label>
+            <input type="number" id="cores" required [(ngModel)]="editCPU.cores" name="cores">
+          </div>
+          <div class="form-group">
+            <label for="threads">Threads:</label>
+            <input type="number" id="threads" required [(ngModel)]="editCPU.threads" name="threads">
+          </div>
+          <div class="form-group">
+            <label for="maxmem">Maximum Memory (GB):</label>
+            <input type="number" id="maxmem" required [(ngModel)]="editCPU.maxMemory" name="maxmem">
+          </div>
+          <div class="form-group flex space-between">
+            <div class="w45">
+              <label for="l2">L2 Cache (MB):</label>
+              <input type="number" id="l2" required [(ngModel)]="editCPU.l2Cache" name="l2">
+            </div>
+            <div class="w45">
+              <label for="l3">L3 Cache (MB):</label>
+              <input type="number" id="l3" required [(ngModel)]="editCPU.l3Cache" name="l3">
+            </div>
+          </div>
+          <div class="form-group flex">
+            <div class="checks flex">
+              <label for="hasiGPU">iGPU:</label>
+              <input type="checkbox" id="hasiGPU" [(ngModel)]="editCPU.igpu" name="iGPU" />
+            </div>
+          </div>
+        </div>
+
+        <div class="column" *ngIf="showOverlayCPUCooler">
+          <div style="height: 313px;"></div>
+          <div class="form-group">
+            <label for="fanrpm">Fan RPM:</label>
+            <input type="number" id="fanrpm" required [(ngModel)]="editCPUCooler.fanRPM" name="fanrpm">
+          </div>
+          <div class="form-group">
+            <label for="height">Height (mm):</label>
+            <input type="number" id="height" required [(ngModel)]="editCPUCooler.height" name="height">
+          </div>
+          <div class="form-group">
+            <label for="autocomplete-input-cpucooler">Compatible Sockets:</label>
+            <div class="autocomplete-container">
+              <div class="input-wrapper">
+                <div class="selected-items">
+                <span *ngFor="let item of editCPUCooler.sockets" class="selected-item">
+                  {{ item }}
+                  <button type="button" class="remove-button" (click)="removeItem(item, editCPUCooler.sockets)">x</button>
+                </span>
+                </div>
+                <input
+                  type="text"
+                  id="autocomplete-input-cpucooler"
+                  [(ngModel)]="inputValue"
+                  (input)="onInputChange(suggestions, inputValue, componentsService.sockets, editCPUCooler.sockets)"
+                  name="itemInput"
+                  autocomplete="off"
+                  placeholder="Select compatible Sockets..." />
+              </div>
+
+              <ul class="suggestions" *ngIf="suggestions.length">
+                <li *ngFor="let suggestion of suggestions" (click)="addItem(suggestion, editCPUCooler.sockets)">
+                  {{ suggestion }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="color2">Color:</label>
+            <input type="text" id="color2" required [(ngModel)]="editCPUCooler.color" #color2Ctrl="ngModel" name="color2"
+                   [ngClass]="{'invalid-field': color2Ctrl.invalid && color2Ctrl.touched}">
+          </div>
+          <div class="form-group flex">
+            <div class="checks flex">
+              <label for="isFanless">Fanless:</label>
+              <input type="checkbox" id="isFanless" [(ngModel)]="editCPUCooler.fanless" name="isFanless" />
+            </div>
+            <div class="checks flex">
+              <label for="watercooled">Watercooled:</label>
+              <input type="checkbox" id="watercooled" [(ngModel)]="editCPUCooler.watercooled" name="watercooled" />
+            </div>
+          </div>
+        </div>
+
+        <div class="column" *ngIf="showOverlayFan">
+          <div style="height: 235px;"></div>
+          <div class="form-group">
+            <label for="fanrpm2">Fan RPM:</label>
+            <input type="number" id="fanrpm2" required [(ngModel)]="editFan.rpm" name="fanrpm2">
+          </div>
+          <div class="form-group">
+            <label for="size">Size (mm):</label>
+            <input type="number" id="size" required [(ngModel)]="editFan.size" name="size">
+          </div>
+          <div class="form-group">
+            <label for="airflow">Airflow:</label>
+            <input type="number" id="airflow" required [(ngModel)]="editFan.airflow" name="airflow">
+          </div>
+          <div class="form-group">
+            <label for="noise2">Noise (dB):</label>
+            <input type="number" id="noise2" required [(ngModel)]="editFan.noise" name="noise2">
+          </div>
+          <div class="form-group">
+            <label for="color3">Color:</label>
+            <input type="text" id="color3" required [(ngModel)]="editFan.color" #color3Ctrl="ngModel" name="color3"
+                   [ngClass]="{'invalid-field': color3Ctrl.invalid && color3Ctrl.touched}">
+          </div>
+          <div class="form-group flex">
+            <div class="checks flex">
+              <label for="rgbpresent">RGB:</label>
+              <input type="checkbox" id="rgbpresent" [(ngModel)]="editFan.rgbPresent" name="rgbpresent" />
+            </div>
+            <div class="checks flex">
+              <label for="pwm">PWM:</label>
+              <input type="checkbox" id="pwm" [(ngModel)]="editFan.pwm4PinPresent" name="pwm" />
+            </div>
+            <div class="checks flex">
+              <label for="dc">DC:</label>
+              <input type="checkbox" id="dc" [(ngModel)]="editFan.dc3PinPresent" name="dc" />
+            </div>
+            <div class="checks flex">
+              <label for="splitter">Splitter:</label>
+              <input type="checkbox" id="splitter" [(ngModel)]="editFan.splitterPresent" name="splitter" />
+            </div>
+          </div>
+        </div>
+
+        <div class="column" *ngIf="showOverlayGPU">
+          <div class="form-group">
+            <label for="memory">GPU Memory (GB):</label>
+            <input type="number" id="memory" required [(ngModel)]="editGPU.memory" name="memory">
+          </div>
+          <div class="form-group">
+            <label for="memoryGen">GPU Memory Generation:</label>
+            <select id="memoryGen" [(ngModel)]="editGPU.memoryGeneration" #memoryGenCtrl name="memoryGen" required>
+              <option *ngFor="let type of componentsService.gpuMemories" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="clock2">Core Clock (MHz):</label>
+            <input type="number" id="clock2" required [(ngModel)]="editGPU.clock" name="clock2">
+          </div>
+          <div class="form-group">
+            <label for="boost-clock2">Boost Clock (MHz):</label>
+            <input type="number" id="boost-clock2" required [(ngModel)]="editGPU.boostClock" name="boost-clock2">
+          </div>
+          <div class="form-group">
+            <label for="tdp2">TDP (W):</label>
+            <input type="number" id="tdp2" required [(ngModel)]="editGPU.tdp" name="tdp2">
+          </div>
+          <div class="form-group">
+            <label for="length">Length (mm):</label>
+            <input type="number" id="length" required [(ngModel)]="editGPU.length" name="length">
+          </div>
+          <div class="form-group flex space-between">
+            <div class="w31">
+              <label for="hdmi">HDMI Ports:</label>
+              <input type="number" id="hdmi" required [(ngModel)]="editGPU.hdmiPorts" name="hdmi">
+            </div>
+            <div class="w31">
+              <label for="dp">DP Ports:</label>
+              <input type="number" id="dp" required [(ngModel)]="editGPU.dpPorts" name="dp">
+            </div>
+            <div class="w31">
+              <label for="c">USB Type C Ports:</label>
+              <input type="number" id="c" required [(ngModel)]="editGPU.usbCPorts" name="c">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="slots">Slots:</label>
+            <input type="number" id="slots" required [(ngModel)]="editGPU.slots" name="slots">
+          </div>
+          <div class="form-group">
+            <label for="color4">Color:</label>
+            <input type="text" id="color4" required [(ngModel)]="editGPU.color" #color4Ctrl="ngModel" name="color4"
+                   [ngClass]="{'invalid-field': color4Ctrl.invalid && color4Ctrl.touched}">
+          </div>
+        </div>
+
+        <div class="column" *ngIf="showOverlayMemory">
+          <div class="form-group">
+            <label for="memory2">Memory Size (GB):</label>
+            <input type="number" id="memory2" required [(ngModel)]="editMemory.memory" name="memory2">
+          </div>
+          <div class="form-group">
+            <label for="generation">Memory Generation:</label>
+            <select id="generation" [(ngModel)]="editMemory.generation" name="generation" required>
+              <option *ngFor="let type of componentsService.memoryGens" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="speed">Memory Speed:</label>
+            <select id="speed" [(ngModel)]="editMemory.speed" name="speed" required>
+              <option *ngFor="let type of componentsService.memSpeedMap.get(editMemory.generation)" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="modules">Modules:</label>
+            <input type="number" id="modules" required [(ngModel)]="editMemory.modules" name="modules">
+          </div>
+          <div class="form-group">
+            <label for="color5">Color:</label>
+            <input type="text" id="color5" required [(ngModel)]="editMemory.colors" #color5Ctrl="ngModel" name="color5"
+                   [ngClass]="{'invalid-field': color5Ctrl.invalid && color5Ctrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="latency">CAS Latency:</label>
+            <input type="number" id="latency" required [(ngModel)]="editMemory.latency" name="latency">
+          </div>
+          <div class="form-group">
+            <label for="voltage">Voltage:</label>
+            <input type="number" id="voltage" required [(ngModel)]="editMemory.voltage" name="hdmi">
+          </div>
+          <div class="form-group flex">
+            <div class="checks flex">
+              <label for="heatspreader">Heatspreader:</label>
+              <input type="checkbox" id="heatspreader" [(ngModel)]="editMemory.heatSpreaders" name="heatspreader" />
+            </div>
+          </div>
+        </div>
+
+        <div class="column" *ngIf="showOverlayMotherboard">
+          <div class="form-group flex space-between">
+            <div class="w45">
+              <label for="socketm">Socket:</label>
+              <select id="socketm" [(ngModel)]="editMotherboard.socket" name="socketm" required>
+                <option *ngFor="let type of componentsService.sockets" [value]="type">{{ type }}</option>
+              </select>
+            </div>
+            <div class="w45">
+              <label for="chipset">Motherboard Chipset:</label>
+              <select id="chipset" [(ngModel)]="editMotherboard.motherboardChipset" name="chipset" required>
+                <option *ngFor="let type of componentsService.chipsetMap.get(editMotherboard.socket)" [value]="type">{{ type }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group flex space-between">
+            <div class="w45">
+              <label for="memgen">Memory Generation:</label>
+              <select id="memgen" [(ngModel)]="editMotherboard.memoryGeneration" name="memgen" required>
+                <option *ngFor="let type of componentsService.memoryGens" [value]="type">{{ type }}</option>
+              </select>
+            </div>
+            <div class="w45">
+              <label for="memslots">Memory Slots:</label>
+              <input type="number" id="memslots" required [(ngModel)]="editMotherboard.memorySlots" name="memslots">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="autocomplete-input-mem">Compatible Memory Speeds:</label>
+            <div class="autocomplete-container">
+              <div class="input-wrapper">
+                <div class="selected-items">
+                <span *ngFor="let item of editMotherboard.memorySpeeds" class="selected-item">
+                  {{ item }}
+                  <button type="button" class="remove-button" (click)="removeItem(item, editMotherboard.memorySpeeds)">x</button>
+                </span>
+                </div>
+                <input
+                  type="text"
+                  id="autocomplete-input-mem"
+                  [(ngModel)]="inputValue"
+                  (input)="onInputChange(suggestions, inputValue, componentsService.memSpeedMap.get(editMotherboard.memoryGeneration) ?? [], editMotherboard.memorySpeeds)"
+                  name="itemInput"
+                  autocomplete="off"
+                  placeholder="Select compatible Memory Speeds" />
+              </div>
+
+              <ul class="suggestions" *ngIf="suggestions.length">
+                <li *ngFor="let suggestion of suggestions" (click)="addItem(suggestion, editMotherboard.memorySpeeds)">
+                  {{ suggestion }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="autocomplete-input-storage">Compatible Storage Form Factors:</label>
+            <div class="autocomplete-container">
+              <div class="input-wrapper">
+                <div class="selected-items">
+                <span *ngFor="let item of editMotherboard.storageFormFactors" class="selected-item">
+                  {{ item }}
+                  <button type="button" class="remove-button" (click)="removeItem(item, editMotherboard.storageFormFactors)">x</button>
+                </span>
+                </div>
+                <input
+                  type="text"
+                  id="autocomplete-input-storage"
+                  [(ngModel)]="inputValue2"
+                  (input)="onInputChange(suggestions2, inputValue2, componentsService.storageFormFactors, editMotherboard.storageFormFactors)"
+                  name="itemInput"
+                  autocomplete="off"
+                  placeholder="Select compatible Storage Form Factors" />
+              </div>
+
+              <ul class="suggestions" *ngIf="suggestions2.length">
+                <li *ngFor="let suggestion of suggestions2" (click)="addItem(suggestion, editMotherboard.storageFormFactors)">
+                  {{ suggestion }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group flex space-between">
+            <div class="w20">
+              <label for="pcie16">PCIe x16:</label>
+              <input type="number" id="pcie16" required [(ngModel)]="editMotherboard.pciex16" name="pcie16">
+            </div>
+            <div class="w20">
+              <label for="pcie8">PCIe x8:</label>
+              <input type="number" id="pcie8" required [(ngModel)]="editMotherboard.pciex8" name="pcie8">
+            </div>
+            <div class="w20">
+              <label for="pcie4">PCIe x4:</label>
+              <input type="number" id="pcie4" required [(ngModel)]="editMotherboard.pciex4" name="pcie4">
+            </div>
+            <div class="w20">
+              <label for="pcie1">PCIe x1:</label>
+              <input type="number" id="pcie1" required [(ngModel)]="editMotherboard.pciex1" name="pcie1">
+            </div>
+          </div>
+          <div class="form-group flex space-between">
+            <div class="w20">
+              <label for="usb2h">USB 2 Header:</label>
+              <input type="number" id="usb2h" required [(ngModel)]="editMotherboard.usb2Header" name="usb2h">
+            </div>
+            <div class="w20">
+              <label for="usb3g1h">USB 3 Gen 1 Header:</label>
+              <input type="number" id="usb3g1h" required [(ngModel)]="editMotherboard.usb3Gen1Header" name="usb3g1h">
+            </div>
+            <div class="w20">
+              <label for="usb3g2h">USB 3 Gen 2 Header:</label>
+              <input type="number" id="usb3g2h" required [(ngModel)]="editMotherboard.usb3Gen2Header" name="usb3g2h">
+            </div>
+            <div class="w20">
+              <label for="usb3g2x2h">USB 3 Gen 2x2 Header:</label>
+              <input type="number" id="usb3g2x2h" required [(ngModel)]="editMotherboard.usb3Gen2x2Header" name="usb3g2x2h">
+            </div>
+          </div>
+          <div class="form-group flex space-between">
+            <div class="w45">
+              <label for="usbch">USB Type C Header:</label>
+              <input type="number" id="usbch" required [(ngModel)]="editMotherboard.usbTypeCHeader" name="usbch">
+            </div>
+            <div class="w45">
+              <label for="sata">Sata:</label>
+              <input type="number" id="sata" required [(ngModel)]="editMotherboard.sata" name="sata">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="wifi">Wifi:</label>
+            <select id="wifi" [(ngModel)]="editMotherboard.wifi" name="wifi" required>
+              <option *ngFor="let type of componentsService.wifis" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group flex">
+            <div class="checks flex">
+              <label for="raid">Raid:</label>
+              <input type="checkbox" id="raid" [(ngModel)]="editMotherboard.raidSupported" name="raid" />
+            </div>
+          </div>
+        </div>
+
+        <div class="column" *ngIf="showOverlayPSU">
+          <div class="form-group">
+            <label for="color6">Color:</label>
+            <input type="text" id="color6" required [(ngModel)]="editPSU.color" #color6Ctrl="ngModel" name="color6"
+                   [ngClass]="{'invalid-field': color6Ctrl.invalid && color6Ctrl.touched}">
+          </div>
+          <div class="form-group">
+            <label for="watt">Wattage:</label>
+            <input type="number" id="watt" required [(ngModel)]="editPSU.wattage" name="watt">
+          </div>
+          <div class="form-group">
+            <label for="efficiency">Efficiency (%):</label>
+            <input type="number" id="efficiency" required [(ngModel)]="editPSU.efficiency" name="efficiency">
+          </div>
+          <div class="form-group">
+            <label for="form">Form Factor:</label>
+            <select id="form" [(ngModel)]="editPSU.formFactor" name="form" required>
+              <option *ngFor="let type of componentsService.psuFormFactors" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="pciepins">PCie 6+2 Pins:</label>
+            <input type="number" id="pciepins" required [(ngModel)]="editPSU.pcie6Pins" name="pciepins">
+          </div>
+          <div class="form-group">
+            <label for="eps">EPS 8 Pins:</label>
+            <input type="number" id="eps" required [(ngModel)]="editPSU.eps8Pins" name="eps">
+          </div>
+          <div class="form-group">
+            <label for="satapins">SATA Connectors:</label>
+            <input type="number" id="satapins" required [(ngModel)]="editPSU.sataConnectors" name="satapins">
+          </div>
+          <div class="form-group">
+            <label for="molex">Molex 4 Pins:</label>
+            <input type="number" id="molex" required [(ngModel)]="editPSU.molex4Pins" name="molex">
+          </div>
+          <div class="form-group flex">
+            <div class="checks flex">
+              <label for="12vhpr">12VHPR:</label>
+              <input type="checkbox" id="12vhpr" [(ngModel)]="editPSU.hpr12vPresent" name="12vhpr" />
+            </div>
+            <div class="checks flex">
+              <label for="modular">Modular:</label>
+              <input type="checkbox" id="modular" [(ngModel)]="editPSU.modular" name="modular" />
+            </div>
+          </div>
+        </div>
+
+        <div class="column" *ngIf="showOverlayStorage">
+          <div style="height: 313px;"></div>
+          <div class="form-group">
+            <label for="strge">Storage Type:</label>
+            <select id="strge" [(ngModel)]="editStorage.storageType" name="strge" required>
+              <option *ngFor="let type of componentsService.storageTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cap">Capacity (GB):</label>
+            <input type="number" id="cap" required [(ngModel)]="editStorage.capacity" name="cap">
+          </div>
+          <div class="form-group">
+            <label for="interface">Storage Interface:</label>
+            <select id="interface" [(ngModel)]="editStorage.storageInterface" name="interface" required>
+              <option *ngFor="let type of componentsService.storageInterfaces" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="storageform">Storage Form Factor:</label>
+            <select id="storageform" [(ngModel)]="editStorage.storageformFactor" name="storageform" required>
+              <option *ngFor="let type of componentsService.storageFormFactors" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group flex">
+            <div class="checks flex">
+              <label for="sink">Heatsink:</label>
+              <input type="checkbox" id="sink" [(ngModel)]="editStorage.heatSink" name="sink" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    <div class="overlay-button-holder">
+      <button class="button" *ngIf="showOverlayCase" (click)="saveChanges(ComponentType.CASE)">Save</button>
+      <button class="button" *ngIf="showOverlayCPU" (click)="saveChanges(ComponentType.CPU)">Save</button>
+      <button class="button" *ngIf="showOverlayCPUCooler" (click)="saveChanges(ComponentType.CPUCOOLER)">Save</button>
+      <button class="button" *ngIf="showOverlayFan" (click)="saveChanges(ComponentType.FAN)">Save</button>
+      <button class="button" *ngIf="showOverlayGPU" (click)="saveChanges(ComponentType.GPU)">Save</button>
+      <button class="button" *ngIf="showOverlayMemory" (click)="saveChanges(ComponentType.MEMORY)">Save</button>
+      <button class="button" *ngIf="showOverlayMotherboard" (click)="saveChanges(ComponentType.MOTHERBOARD)">Save</button>
+      <button class="button" *ngIf="showOverlayPSU" (click)="saveChanges(ComponentType.PSU)">Save</button>
+      <button class="button" *ngIf="showOverlayStorage" (click)="saveChanges(ComponentType.STORAGE)">Save</button>
+      <button class="button" (click)="closeOverlay()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+</body>
+

@@ -14,7 +14,11 @@ import {LoginComponent} from './components/user/login/login.component';
 import {DashboardComponent} from './components/user/dashboard/dashboard.component';
 import {HeaderComponent} from './components/front-page/header.component';
 import {AuthInterceptor} from './components/auth/auth.component.auth-inceptor';
-import {CreateComponentComponent} from './components/component/upload/create-component.component';
+import {CreateComponentsComponent} from './components/component/upload/create-components.component';
+import {ConfigurerComponent} from './components/configurer/configurer.component';
+import {ListComponentsComponent} from './components/component/list/list-components.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ComponentsMgtComponent} from './components/component/management/components-mgt.component';
 
 @NgModule({
   declarations: [
@@ -26,18 +30,22 @@ import {CreateComponentComponent} from './components/component/upload/create-com
     LoginComponent,
     DashboardComponent,
     HeaderComponent,
-    CreateComponentComponent
+    CreateComponentsComponent,
+    ConfigurerComponent,
+    ListComponentsComponent,
+    ComponentsMgtComponent
   ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        FormsModule,
-        AppRoutingModule,
-        RouterOutlet,
-        RouterLink,
-        ReactiveFormsModule,
-        NgOptimizedImage,
-    ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    AppRoutingModule,
+    RouterOutlet,
+    RouterLink,
+    ReactiveFormsModule,
+    NgOptimizedImage,
+    BrowserAnimationsModule,
+  ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,

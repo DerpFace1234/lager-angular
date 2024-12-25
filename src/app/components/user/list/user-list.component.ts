@@ -1,12 +1,20 @@
-import {Component, ComponentRef, ElementRef, HostListener, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {Admin, Customer, OrderProcessor, User, UserType} from '../../../model/user.model';
 import {Subscription} from 'rxjs';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  styleUrls: ['./user-list.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({ opacity: 0 })),
+      transition(':enter', [animate('300ms ease-in')]),
+      transition(':leave', [animate('300ms ease-out')]),
+    ])
+  ],
 })
 export class UserListComponent implements OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
@@ -14,6 +22,10 @@ export class UserListComponent implements OnInit {
   admins: Admin[] = [];
   processors: OrderProcessor[] = [];
   searchQuery: string = "";
+  tabs: {[key: string]: boolean} = {
+    types: true,
+    attr: true,
+  }
   filters: {[key: string]: boolean} = {
     firstName: false,
     lastName: false,
@@ -24,6 +36,11 @@ export class UserListComponent implements OnInit {
     displayCustomers: true,
     displayAdmins: true,
     displayOrderProcessors: true,
+  }
+  toBeDeleted:{id:number|undefined, firstName:string, lastName:string} = {
+    id: 0,
+    firstName: "",
+    lastName: "",
   }
 
   showDeleteOverlay: boolean = false;
@@ -50,7 +67,6 @@ export class UserListComponent implements OnInit {
       })
     );
   }
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -62,7 +78,6 @@ export class UserListComponent implements OnInit {
       console.error('Failed to fetch customers:', error);
     });
   }
-
   loadAdmins() {
     this.userService.getAdmins().subscribe((data: Admin[]) => {
       this.admins = data;
@@ -70,59 +85,12 @@ export class UserListComponent implements OnInit {
       console.error('Failed to fetch admins:', error);
     });
   }
-
   loadOrderProcessors() {
     this.userService.getOrderProcessors().subscribe((data: OrderProcessor[]) => {
       this.processors = data;
     }, (error) => {
       console.error('Failed to fetch order procesors:', error);
     });
-  }
-
-  @HostListener('keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    const scrollAmount = 100;
-
-    if (this.scrollContainer) {
-      if (event.key === 'ArrowDown') {
-        this.scrollContainer.nativeElement.scrollBy({
-          top: scrollAmount,
-          behavior: 'smooth'
-        });
-      } else if (event.key === 'ArrowUp') {
-        this.scrollContainer.nativeElement.scrollBy({
-          top: -scrollAmount,
-          behavior: 'smooth'
-        });
-      }
-    }
-  }
-
-  openDeleteOverlay(){
-    this.showDeleteOverlay = true;
-  }
-
-  deleteUser(id: number | undefined){
-    this.userService.deleteUser(id).subscribe(
-      response => this.userService.triggerRefreshUserList(),
-      error => console.error("Error deleting user", error)
-    );
-    this.closeOverlay()
-  }
-
-  openEditCustomer(user: Customer){
-    this.editCustomer = {...user};
-    this.showOverlayCustomer = true;
-  }
-
-  openEditAdmin(user: Admin){
-    this.editAdmin = {...user};
-    this.showOverlayAdmin = true;
-  }
-
-  openEditProcessor(user: OrderProcessor){
-    this.editOrderProcessor = {...user};
-    this.showOverlayProcessor = true;
   }
 
   saveChanges(type: UserType){
@@ -144,12 +112,55 @@ export class UserListComponent implements OnInit {
     }
     this.closeOverlay();
   }
-
+  deleteUser(id: number | undefined){
+    this.userService.deleteUser(id).subscribe(
+      response => this.userService.triggerRefreshUserList(),
+      error => console.error("Error deleting user", error)
+    );
+    this.closeOverlay()
+  }
+  openDeleteOverlay(id: number | undefined, firstName: string, lastName: string){
+    this.toBeDeleted.id = id;
+    this.toBeDeleted.firstName = firstName;
+    this.toBeDeleted.lastName = lastName;
+    this.showDeleteOverlay = true;
+  }
   closeOverlay() {
     this.showDeleteOverlay = false;
     this.showOverlayCustomer = false;
     this.showOverlayAdmin = false;
     this.showOverlayProcessor = false;
+  }
+  @HostListener('keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    const scrollAmount = 200;
+
+    if (this.scrollContainer) {
+      if (event.key === 'ArrowDown') {
+        this.scrollContainer.nativeElement.scrollBy({
+          top: scrollAmount,
+          behavior: 'smooth'
+        });
+      } else if (event.key === 'ArrowUp') {
+        this.scrollContainer.nativeElement.scrollBy({
+          top: -scrollAmount,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }
+
+  openEditCustomer(user: Customer){
+    this.editCustomer = {...user};
+    this.showOverlayCustomer = true;
+  }
+  openEditAdmin(user: Admin){
+    this.editAdmin = {...user};
+    this.showOverlayAdmin = true;
+  }
+  openEditProcessor(user: OrderProcessor){
+    this.editOrderProcessor = {...user};
+    this.showOverlayProcessor = true;
   }
 
   get filteredCustomers(){
@@ -159,7 +170,6 @@ export class UserListComponent implements OnInit {
       return []
     }
   }
-
   get filteredAdmins(){
     if(this.filters['displayAdmins']){
       return this.filteredUsers(this.admins);
@@ -167,7 +177,6 @@ export class UserListComponent implements OnInit {
       return []
     }
   }
-
   get filteredProcessors(){
     if(this.filters['displayOrderProcessors']){
       return this.filteredUsers(this.processors);
@@ -175,14 +184,13 @@ export class UserListComponent implements OnInit {
       return []
     }
   }
-
   filteredUsers<T extends User>(users: T[]): T[]{
     return users.filter(user => {
       const query = this.searchQuery.toLowerCase();
       const fN = user.firstName.toLowerCase().includes(query);
       const lN = user.lastName.toLowerCase().includes(query);
       const a = user.address.toLowerCase().includes(query);
-      const bd = user.birthday.toString().includes(query);
+      const bd = this.formatDate(new Date(user.birthday)).includes(query);
       const e = user.email.toLowerCase().includes(query);
       const p = user.phone.toLowerCase().includes(query);
       const matchesFirstName = this.filters['firstName'] && fN;
@@ -199,5 +207,18 @@ export class UserListComponent implements OnInit {
       );
     })
   }
+  formatDate(date: any): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
 
+    return `${day}.${month}.${year}`;
+  }
+
+  toggleTypes(): void{
+    this.tabs['types'] = !this.tabs['types'];
+  }
+  toggleAttributes(): void{
+    this.tabs['attr'] = !this.tabs['attr'];
+  }
 }
