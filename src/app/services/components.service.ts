@@ -2,15 +2,27 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 import {
-  Case, CaseSidepanel, ComponentType,
+  Case,
+  CaseSidepanel,
+  ComponentType,
   CPU,
   CPUCooler,
   Fan,
-  GPU, GPUMemoryGeneration,
-  Memory, MemoryGeneration,
-  Motherboard, MotherboardChipset, MotherboardFormFactor,
-  PSU, PSUFormFactor, Socket,
-  Storage, StorageFormFactor, StorageInterface, StorageType, WIFI
+  GPU,
+  GPUMemoryGeneration,
+  Memory,
+  MemoryGeneration,
+  Motherboard,
+  MotherboardChipset,
+  MotherboardFormFactor,
+  PSU,
+  PSUFormFactor,
+  Socket,
+  Storage,
+  StorageFormFactor,
+  StorageInterface,
+  StorageType,
+  WIFI
 } from '../model/component.model';
 
 @Injectable({
@@ -32,7 +44,6 @@ export class ComponentsService {
   public storageFormFactors:StorageFormFactor[] = Object.values(StorageFormFactor);
   public wifis:WIFI[] = Object.values(WIFI);
   public storageTypes:StorageType[] = Object.values(StorageType);
-  public storageInterfaces:StorageInterface[] = Object.values(StorageInterface);
   public chipsetMap: Map<Socket, MotherboardChipset[]> = new Map([
     [Socket.AM4,[MotherboardChipset.A300, MotherboardChipset.A320, MotherboardChipset.A520, MotherboardChipset.B350, MotherboardChipset.B450, MotherboardChipset.B550,
       MotherboardChipset.X300, MotherboardChipset.X370, MotherboardChipset.X470, MotherboardChipset.X570]],
@@ -51,7 +62,7 @@ export class ComponentsService {
       MotherboardChipset.Z590, MotherboardChipset.Q470, MotherboardChipset.W480]],
     [Socket.LGA1700, [MotherboardChipset.H610, MotherboardChipset.B660, MotherboardChipset.B760, MotherboardChipset.Z690, MotherboardChipset.Z790,
       MotherboardChipset.W680, MotherboardChipset.Q670]],
-    [Socket.LGA1800, [MotherboardChipset.Z890, MotherboardChipset.B880, MotherboardChipset.H870, MotherboardChipset.Q870]]
+    [Socket.LGA1851, [MotherboardChipset.Z890, MotherboardChipset.B880, MotherboardChipset.H870, MotherboardChipset.Q870]]
   ]);
   public memSpeedMap: Map<MemoryGeneration, number[]> = new Map([
     [MemoryGeneration.DDR,[200, 266, 333, 400]],
@@ -60,6 +71,29 @@ export class ComponentsService {
     [MemoryGeneration.DDR4,[1600, 1866, 2133, 2400, 2666, 2933, 3200, 3600, 4000, 4266, 4400]],
     [MemoryGeneration.DDR5,[4800, 5200, 5600, 6000, 6400, 7200, 7600, 8400, 8800, 9600]],
   ]);
+  public socketMemMap: Map<Socket, MemoryGeneration[]> = new Map([
+    [Socket.AM5, [MemoryGeneration.DDR5]],
+    [Socket.AM4, [MemoryGeneration.DDR4]],
+    [Socket.LGA1150,[MemoryGeneration.DDR3]],
+    [Socket.LGA1151,[MemoryGeneration.DDR4]],
+    [Socket.LGA1155,[MemoryGeneration.DDR3]],
+    [Socket.LGA1156,[MemoryGeneration.DDR3]],
+    [Socket.LGA2011,[MemoryGeneration.DDR3]],
+    [Socket.LGA2066,[MemoryGeneration.DDR4]],
+    [Socket.LGA1200,[MemoryGeneration.DDR4]],
+    [Socket.LGA1200,[MemoryGeneration.DDR4]],
+    [Socket.LGA1700,[MemoryGeneration.DDR5, MemoryGeneration.DDR4]],
+    [Socket.LGA1851,[MemoryGeneration.DDR5]],
+  ]);
+  public storageFormMap: Map<StorageType, StorageFormFactor[]> = new Map([
+    [StorageType.SSD,[StorageFormFactor.M2230, StorageFormFactor.M2242, StorageFormFactor.M2260, StorageFormFactor.M2280, StorageFormFactor.M22110, StorageFormFactor.INCH25]],
+    [StorageType.HDD,[StorageFormFactor.INCH35]],
+  ]);
+  public storageInterfaceMap: Map<StorageType, StorageInterface[]> = new Map([
+    [StorageType.SSD,[StorageInterface.M2, StorageInterface.SATA]],
+    [StorageType.HDD,[StorageInterface.SATA]],
+  ]);
+  estimatedWattage: number = 0;
 
   triggerRefreshUserList() {
     this.refreshComponentsListSource.next();
@@ -91,6 +125,34 @@ export class ComponentsService {
   }
   getStorages(): Observable<Storage[]> {
     return this.http.get<Storage[]>(`${this.apiUrl}/storages`);
+  }
+
+  getCPUById(id: number): Observable<CPU> {
+    return this.http.get<CPU>(`${this.apiUrl}/cpus/${id}`);
+  }
+  getCaseById(id: number): Observable<Case> {
+    return this.http.get<Case>(`${this.apiUrl}/cases/${id}`);
+  }
+  getCPUCoolerById(id: number): Observable<CPUCooler> {
+    return this.http.get<CPUCooler>(`${this.apiUrl}/cpu-coolers/${id}`);
+  }
+  getFanById(id: number): Observable<Fan> {
+    return this.http.get<Fan>(`${this.apiUrl}/fans/${id}`);
+  }
+  getGPUById(id: number): Observable<GPU> {
+    return this.http.get<GPU>(`${this.apiUrl}/gpus/${id}`);
+  }
+  getMemoryById(id: number): Observable<Memory> {
+    return this.http.get<Memory>(`${this.apiUrl}/memories/${id}`);
+  }
+  getMotherboardById(id: number): Observable<Motherboard> {
+    return this.http.get<Motherboard>(`${this.apiUrl}/motherboards/${id}`);
+  }
+  getPSUById(id: number): Observable<PSU> {
+    return this.http.get<PSU>(`${this.apiUrl}/psus/${id}`);
+  }
+  getStorageById(id: number): Observable<Storage> {
+    return this.http.get<Storage>(`${this.apiUrl}/storages/${id}`);
   }
 
   createCase(comp: Case): Observable<Case> {
@@ -151,5 +213,16 @@ export class ComponentsService {
 
   deleteComponent(id: number | undefined): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  storeComponentInLS(key: string, value: any): void {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+  getComponentFromLS<T>(key: string): T | null {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) as T : null;
+  }
+  removeComponentFromLS(key: string): void {
+    localStorage.removeItem(key);
   }
 }

@@ -1,4 +1,11 @@
-<header><app-header></app-header></header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular</title>
+</head>
+<body>
+<div class="header"><app-header></app-header></div>
 <app-login
   [isVisible]="isLoginVisible"
   (closeOverlay)="onCloseLogin()">
@@ -6,3 +13,5 @@
 <div class="router-container">
   <router-outlet></router-outlet>
 </div>
+</body>
+</html>

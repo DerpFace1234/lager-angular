@@ -1,8 +1,14 @@
 <body>
+
+<div class="comp-create">
+  <div class="text" (click)="toPageBlank('/comp-create')" style="font-weight: bold;">Create Component</div>
+  <div class="text" (click)="toPageBlank('/comp-list')" >Component List</div>
+</div>
+
 <div class="form-container">
   <form (ngSubmit)="onSubmit(compForm)" #compForm="ngForm">
     <div class="flex-columns">
-      <!-- Attributes that all have in common, displayed on the right half -->
+      <!-- Attributes that all have in common, displayed on the left half -->
       <div class="column">
         <div class="form-group">
           <label for="img">Upload Image:</label>
@@ -25,7 +31,7 @@
         </div>
         <div class="form-group">
           <label for="compType">Component Type:</label>
-          <select id="compType" [(ngModel)]="selectedCompType" name="compType" required>
+          <select id="compType" [(ngModel)]="valueStorage.type" name="compType" required>
             <option *ngFor="let type of componentService.compTypes" [value]="type">{{ type }}</option>
           </select>
         </div>
@@ -48,8 +54,8 @@
         </div>
       </div>
 
-      <!-- Individual Attributes, displayed on the left half if applicable-->
-      <div class="column" *ngIf="selectedCompType === ComponentType.CASE">
+      <!-- Individual Attributes, displayed on the right half if applicable-->
+      <div class="column" *ngIf="valueStorage.type === ComponentType.CASE">
         <div class="form-group">
           <label for="casePanel">Case Sidepanel Type:</label>
           <select id="casePanel" [(ngModel)]="valueStorage.casSidepanel" #casePanelCtrl name="casePanel" required>
@@ -151,7 +157,7 @@
         </div>
       </div>
 
-      <div class="column" *ngIf="selectedCompType === ComponentType.CPU">
+      <div class="column" *ngIf="valueStorage.type === ComponentType.CPU">
         <div class="form-group">
           <label for="socket">Socket:</label>
           <select id="socket" [(ngModel)]="valueStorage.socket" #socketCtrl name="socket" required>
@@ -200,7 +206,7 @@
         </div>
       </div>
 
-      <div class="column" *ngIf="selectedCompType === ComponentType.CPUCOOLER">
+      <div class="column" *ngIf="valueStorage.type === ComponentType.CPUCOOLER">
         <div style="height: 313px;"></div>
         <div class="form-group">
           <label for="fanrpm">Fan RPM:</label>
@@ -254,7 +260,7 @@
         </div>
       </div>
 
-      <div class="column" *ngIf="selectedCompType === ComponentType.FAN">
+      <div class="column" *ngIf="valueStorage.type === ComponentType.FAN">
         <div style="height: 235px;"></div>
         <div class="form-group">
           <label for="fanrpm2">Fan RPM:</label>
@@ -297,7 +303,7 @@
         </div>
       </div>
 
-      <div class="column" *ngIf="selectedCompType === ComponentType.GPU">
+      <div class="column" *ngIf="valueStorage.type === ComponentType.GPU">
         <div class="form-group">
           <label for="memory">GPU Memory (GB):</label>
           <input type="number" id="memory" required [(ngModel)]="valueStorage.memory" name="memory">
@@ -349,14 +355,14 @@
         </div>
       </div>
 
-      <div class="column" *ngIf="selectedCompType === ComponentType.MEMORY">
+      <div class="column" *ngIf="valueStorage.type === ComponentType.MEMORY">
         <div class="form-group">
           <label for="memory2">Memory Size (GB):</label>
           <input type="number" id="memory2" required [(ngModel)]="valueStorage.memory" name="memory2">
         </div>
         <div class="form-group">
           <label for="generation">Memory Generation:</label>
-          <select id="generation" [(ngModel)]="valueStorage.memoryGeneration" name="generation" required>
+          <select id="generation" [(ngModel)]="valueStorage.memoryGeneration" (ngModelChange)="onMemoryGenChange($event)" name="generation" required>
             <option *ngFor="let type of componentService.memoryGens" [value]="type">{{ type }}</option>
           </select>
         </div>
@@ -391,26 +397,32 @@
         </div>
       </div>
 
-      <div class="column" *ngIf="selectedCompType === ComponentType.MOTHERBOARD">
+      <div class="column" *ngIf="valueStorage.type === ComponentType.MOTHERBOARD">
         <div class="form-group flex space-between">
-          <div class="w45">
-          <label for="socketm">Socket:</label>
-          <select id="socketm" [(ngModel)]="valueStorage.socket" name="socketm" required>
-            <option *ngFor="let type of componentService.sockets" [value]="type">{{ type }}</option>
-          </select>
-        </div>
-        <div class="w45">
-          <label for="chipset">Motherboard Chipset:</label>
-          <select id="chipset" [(ngModel)]="valueStorage.motherboardChipset" name="chipset" required>
-            <option *ngFor="let type of componentService.chipsetMap.get(valueStorage.socket)" [value]="type">{{ type }}</option>
-          </select>
-        </div>
+          <div class="w31">
+            <label for="socketm">Socket:</label>
+            <select id="socketm" [(ngModel)]="valueStorage.socket" (ngModelChange)="onSocketChange($event)" name="socketm" required>
+              <option *ngFor="let type of componentService.sockets" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="w31">
+            <label for="chipset">Motherboard Chipset:</label>
+            <select id="chipset" [(ngModel)]="valueStorage.motherboardChipset" name="chipset" required>
+              <option *ngFor="let type of componentService.chipsetMap.get(valueStorage.socket)" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="w31">
+            <label for="fac">Form Factor:</label>
+            <select id="fac" [(ngModel)]="valueStorage.motherboardFormFactor" name="fac" required>
+              <option *ngFor="let type of componentService.motherboardFormFactors" [value]="type">{{ type }}</option>
+            </select>
+          </div>
         </div>
         <div class="form-group flex space-between">
           <div class="w45">
           <label for="memgen">Memory Generation:</label>
           <select id="memgen" [(ngModel)]="valueStorage.memoryGeneration" name="memgen" required>
-            <option *ngFor="let type of componentService.memoryGens" [value]="type">{{ type }}</option>
+            <option *ngFor="let type of componentService.socketMemMap.get(valueStorage.socket)" [value]="type">{{ type }}</option>
           </select>
           </div>
         <div class="w45">
@@ -445,50 +457,56 @@
             </ul>
           </div>
         </div>
-        <div class="form-group">
-          <label for="autocomplete-input-storage">Compatible Storage Form Factors:</label>
-          <div class="autocomplete-container">
-            <div class="input-wrapper">
-              <div class="selected-items">
+        <div class="form-group flex space-between">
+          <div class="w74">
+            <label for="autocomplete-input-storage">Compatible Storage Form Factors:</label>
+            <div class="autocomplete-container">
+              <div class="input-wrapper">
+                <div class="selected-items">
                 <span *ngFor="let item of valueStorage.storageFormFactors" class="selected-item">
                   {{ item }}
                   <button type="button" class="remove-button" (click)="removeItem(item, valueStorage.storageFormFactors)">x</button>
                 </span>
+                </div>
+                <input
+                  type="text"
+                  id="autocomplete-input-storage"
+                  [(ngModel)]="inputValue2"
+                  (input)="onInputChange(suggestions2, inputValue2, componentService.storageFormFactors, valueStorage.storageFormFactors)"
+                  name="itemInput"
+                  autocomplete="off"
+                  placeholder="Select compatible Storage Form Factors" />
               </div>
-              <input
-                type="text"
-                id="autocomplete-input-storage"
-                [(ngModel)]="inputValue2"
-                (input)="onInputChange(suggestions2, inputValue2, componentService.storageFormFactors, valueStorage.storageFormFactors)"
-                name="itemInput"
-                autocomplete="off"
-                placeholder="Select compatible Storage Form Factors" />
-            </div>
 
-            <ul class="suggestions" *ngIf="suggestions2.length">
-              <li *ngFor="let suggestion of suggestions2" (click)="addItem(suggestion, valueStorage.storageFormFactors)">
-                {{ suggestion }}
-              </li>
-            </ul>
+              <ul class="suggestions" *ngIf="suggestions2.length">
+                <li *ngFor="let suggestion of suggestions2" (click)="addItem(suggestion, valueStorage.storageFormFactors)">
+                  {{ suggestion }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="w20">
+            <label for="m2slot">M.2 Slots:</label>
+            <input type="number" id="m2slot" required [(ngModel)]="valueStorage.m2slots" name="m2slot">
           </div>
         </div>
         <div class="form-group flex space-between">
           <div class="w20">
-          <label for="pcie16">PCIe x16:</label>
-          <input type="number" id="pcie16" required [(ngModel)]="valueStorage.pciex16" name="pcie16">
+            <label for="pcie16">PCIe x16:</label>
+            <input type="number" id="pcie16" required [(ngModel)]="valueStorage.pciex16" name="pcie16">
           </div>
-        <div class="w20">
-          <label for="pcie8">PCIe x8:</label>
-          <input type="number" id="pcie8" required [(ngModel)]="valueStorage.pciex8" name="pcie8">
-        </div>
-        <div class="w20">
-          <label for="pcie4">PCIe x4:</label>
-          <input type="number" id="pcie4" required [(ngModel)]="valueStorage.pciex4" name="pcie4">
-        </div>
-        <div class="w20">
-          <label for="pcie1">PCIe x1:</label>
-          <input type="number" id="pcie1" required [(ngModel)]="valueStorage.pciex1" name="pcie1">
-        </div>
+          <div class="w20">
+            <label for="pcie8">PCIe x8:</label>
+            <input type="number" id="pcie8" required [(ngModel)]="valueStorage.pciex8" name="pcie8">
+          </div>
+          <div class="w20">
+            <label for="pcie4">PCIe x4:</label>
+            <input type="number" id="pcie4" required [(ngModel)]="valueStorage.pciex4" name="pcie4">
+          </div>
+          <div class="w20">
+            <label for="pcie1">PCIe x1:</label>
+            <input type="number" id="pcie1" required [(ngModel)]="valueStorage.pciex1" name="pcie1">
+          </div>
         </div>
         <div class="form-group flex space-between">
           <div class="w20">
@@ -509,14 +527,22 @@
         </div>
         </div>
         <div class="form-group flex space-between">
-          <div class="w45">
-          <label for="usbch">USB Type C Header:</label>
-          <input type="number" id="usbch" required [(ngModel)]="valueStorage.usbTypeCHeader" name="usbch">
+          <div class="w20">
+            <label for="usbch">USB Type C Header:</label>
+            <input type="number" id="usbch" required [(ngModel)]="valueStorage.usbTypeCHeader" name="usbch">
           </div>
-        <div class="w45">
-          <label for="sata">Sata:</label>
-          <input type="number" id="sata" required [(ngModel)]="valueStorage.sata" name="sata">
-        </div>
+          <div class="w20">
+            <label for="pwmH">PWM Header:</label>
+            <input type="number" id="pwmH" required [(ngModel)]="valueStorage.pwmHeader" name="pwmH">
+          </div>
+          <div class="w20">
+            <label for="rgbH">RGB Header:</label>
+            <input type="number" id="rgbH" required [(ngModel)]="valueStorage.rgbHeader" name="rgbH">
+          </div>
+          <div class="w20">
+            <label for="sata">Sata:</label>
+            <input type="number" id="sata" required [(ngModel)]="valueStorage.sata" name="sata">
+          </div>
         </div>
         <div class="form-group">
           <label for="wifi">Wifi:</label>
@@ -532,7 +558,7 @@
         </div>
       </div>
 
-      <div class="column" *ngIf="selectedCompType === ComponentType.PSU">
+      <div class="column" *ngIf="valueStorage.type === ComponentType.PSU">
         <div class="form-group">
           <label for="color6">Color:</label>
           <input type="text" id="color6" required [(ngModel)]="valueStorage.color" #color6Ctrl="ngModel" name="color6"
@@ -580,28 +606,38 @@
         </div>
       </div>
 
-      <div class="column" *ngIf="selectedCompType === ComponentType.STORAGE">
+      <div class="column" *ngIf="valueStorage.type === ComponentType.STORAGE">
         <div style="height: 313px;"></div>
         <div class="form-group">
           <label for="strge">Storage Type:</label>
-          <select id="strge" [(ngModel)]="valueStorage.storageType" name="strge" required>
+          <select id="strge" [(ngModel)]="valueStorage.storageType" (ngModelChange)="onStorageTypeChange($event)" name="strge" required>
             <option *ngFor="let type of componentService.storageTypes" [value]="type">{{ type }}</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="cap">Capacity (GB):</label>
-          <input type="number" id="cap" required [(ngModel)]="valueStorage.capacity" name="cap">
+        <div class="form-group flex space-between">
+          <div class="w31">
+            <label for="cap">Capacity (GB):</label>
+            <input type="number" id="cap" required [(ngModel)]="valueStorage.capacity" name="cap">
+          </div>
+          <div class="w31">
+            <label for="read">Read (MB/s):</label>
+            <input type="number" id="read" required [(ngModel)]="valueStorage.read" name="read">
+          </div>
+          <div class="w31">
+            <label for="write">Write (MB/s):</label>
+            <input type="number" id="write" required [(ngModel)]="valueStorage.write" name="write">
+          </div>
         </div>
         <div class="form-group">
           <label for="interface">Storage Interface:</label>
           <select id="interface" [(ngModel)]="valueStorage.storageInterface" name="interface" required>
-            <option *ngFor="let type of componentService.storageInterfaces" [value]="type">{{ type }}</option>
+            <option *ngFor="let type of componentService.storageInterfaceMap.get(valueStorage.storageType)" [value]="type">{{ type }}</option>
           </select>
         </div>
         <div class="form-group">
           <label for="storageform">Storage Form Factor:</label>
           <select id="storageform" [(ngModel)]="valueStorage.storageformFactor" name="storageform" required>
-            <option *ngFor="let type of componentService.storageFormFactors" [value]="type">{{ type }}</option>
+            <option *ngFor="let type of componentService.storageFormMap.get(valueStorage.storageType)" [value]="type">{{ type }}</option>
           </select>
         </div>
         <div class="form-group flex">

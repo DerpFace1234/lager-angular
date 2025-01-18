@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create User Form</title>
-</head>
 <body>
+
+<div class="user-create">
+  <div class="text" style="font-weight: bold;">Create User</div>
+  <div class="text" (click)="toPageBlank('/user-list')" >User List</div>
+</div>
+
 
 <div class="form-container">
   <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
@@ -85,4 +84,3 @@
 </div>
 
 </body>
-</html>

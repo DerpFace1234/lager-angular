@@ -1,0 +1,3259 @@
+<body>
+<div class="top">{{type}}</div>
+
+
+<div class="user-display">
+  <div class="flex-columns">
+
+    <!-- CPU -->
+    <ng-container *ngIf="CPUs">
+      <div class="c10">
+        <div class="checkbox-container">
+          <div style="margin-top: 15px; font-weight: bold; font-size: 25px;">Filters</div>
+          <div class="line2"></div>
+          <ng-container>
+            <div (click)="toggleTabs('price')"
+                 [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PRICE:</b>
+            </div>
+            <div *ngIf="tabs['price']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['minSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['maxSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice')"
+                     [style.width.%]="getWidth('minSelectedPrice', 'maxSelectedPrice', 'minPrice', 'maxPrice')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('sockets')"
+                 [class.underline]="tabs['sockets']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>SOCKETS:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['sockets']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(socketFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="socketFilter[key]" (ngModelChange)="filteredCPUs"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('clock')"
+                 [class.underline]="tabs['clock']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>CORE CLOCK:</b>
+            </div>
+            <div *ngIf="tabs['clock']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedClock']"
+                  [min]="sliderFilters['minClock']"
+                  [max]="sliderFilters['maxClock']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedClock', 'minClock', 'maxClock') * 0.82"
+                >
+                  {{ sliderFilters['minSelectedClock'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedClock']"
+                  [min]="sliderFilters['minClock']"
+                  [max]="sliderFilters['maxClock']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedClock', 'minClock', 'maxClock') * 0.82"
+                >
+                  {{ sliderFilters['maxSelectedClock'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedClock', 'minClock', 'maxClock')"
+                     [style.width.%]="getWidth('minSelectedClock', 'maxSelectedClock', 'minClock', 'maxClock')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('boost')"
+                 [class.underline]="tabs['boost']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>BOOST CLOCK:</b>
+            </div>
+            <div *ngIf="tabs['boost']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedBoost']"
+                  [min]="sliderFilters['minBoost']"
+                  [max]="sliderFilters['maxBoost']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedBoost', 'minBoost', 'maxBoost') * 0.82"
+                >
+                  {{ sliderFilters['minSelectedBoost'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedBoost']"
+                  [min]="sliderFilters['minBoost']"
+                  [max]="sliderFilters['maxBoost']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedBoost', 'minBoost', 'maxBoost') * 0.82"
+                >
+                  {{ sliderFilters['maxSelectedBoost'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedBoost', 'minBoost', 'maxBoost')"
+                     [style.width.%]="getWidth('minSelectedBoost', 'maxSelectedBoost', 'minBoost', 'maxBoost')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('tdp')"
+                 [class.underline]="tabs['tdp']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>TDP:</b>
+            </div>
+            <div *ngIf="tabs['tdp']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedTDP']"
+                  [min]="sliderFilters['minTDP']"
+                  [max]="sliderFilters['maxTDP']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedTDP', 'minTDP', 'maxTDP') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedTDP'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedTDP']"
+                  [min]="sliderFilters['minTDP']"
+                  [max]="sliderFilters['maxTDP']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedTDP', 'minTDP', 'maxTDP') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedTDP'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedTDP', 'minTDP', 'maxTDP')"
+                     [style.width.%]="getWidth('minSelectedTDP', 'maxSelectedTDP', 'minTDP', 'maxTDP')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('memory')"
+                 [class.underline]="tabs['memory']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>MAX MEMORY:</b>
+            </div>
+            <div *ngIf="tabs['memory']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedMemory']"
+                  [min]="sliderFilters['minMemory']"
+                  [max]="sliderFilters['maxMemory']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedMemory', 'minMemory', 'maxMemory') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedMemory'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedMemory']"
+                  [min]="sliderFilters['minMemory']"
+                  [max]="sliderFilters['maxMemory']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedMemory', 'minMemory', 'maxMemory') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedMemory'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedMemory', 'minMemory', 'maxMemory')"
+                     [style.width.%]="getWidth('minSelectedMemory', 'maxSelectedMemory', 'minMemory', 'maxMemory')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('cores')"
+                 [class.underline]="tabs['cores']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>CORES:</b>
+            </div>
+            <div *ngIf="tabs['cores']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedCores']"
+                  [min]="sliderFilters['minCores']"
+                  [max]="sliderFilters['maxCores']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedCores', 'minCores', 'maxCores') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedCores'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedCores']"
+                  [min]="sliderFilters['minCores']"
+                  [max]="sliderFilters['maxCores']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedCores', 'minCores', 'maxCores') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedCores'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedCores', 'minCores', 'maxCores')"
+                     [style.width.%]="getWidth('minSelectedCores', 'maxSelectedCores', 'minCores', 'maxCores')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('threads')"
+                 [class.underline]="tabs['threads']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>THREADS:</b>
+            </div>
+            <div *ngIf="tabs['threads']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedThreads']"
+                  [min]="sliderFilters['minThreads']"
+                  [max]="sliderFilters['maxThreads']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedThreads', 'minThreads', 'maxThreads') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedThreads'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedThreads']"
+                  [min]="sliderFilters['minThreads']"
+                  [max]="sliderFilters['maxThreads']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedThreads', 'minThreads', 'maxThreads') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedThreads'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedThreads', 'minThreads', 'maxThreads')"
+                     [style.width.%]="getWidth('minSelectedThreads', 'maxSelectedThreads', 'minThreads', 'maxThreads')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('l2')"
+                 [class.underline]="tabs['l2']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>L2 CACHE:</b>
+            </div>
+            <div *ngIf="tabs['l2']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.1"
+                  [(ngModel)]="sliderFilters['minSelectedL2']"
+                  [min]="sliderFilters['minL2']"
+                  [max]="sliderFilters['maxL2']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedL2', 'minL2', 'maxL2') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedL2'] }}
+                </div>
+                <input
+                  type="range"
+                  step="0.1"
+                  [(ngModel)]="sliderFilters['maxSelectedL2']"
+                  [min]="sliderFilters['minL2']"
+                  [max]="sliderFilters['maxL2']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedL2', 'minL2', 'maxL2') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedL2'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedL2', 'minL2', 'maxL2')"
+                     [style.width.%]="getWidth('minSelectedL2', 'maxSelectedL2', 'minL2', 'maxL2')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('l3')"
+                 [class.underline]="tabs['l3']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>L3 CACHE:</b>
+            </div>
+            <div *ngIf="tabs['l3']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.1"
+                  [(ngModel)]="sliderFilters['minSelectedL3']"
+                  [min]="sliderFilters['minL3']"
+                  [max]="sliderFilters['maxL3']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedL3', 'minL3', 'maxL3') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedL3'] }}
+                </div>
+                <input
+                  type="range"
+                  step="0.1"
+                  [(ngModel)]="sliderFilters['maxSelectedL3']"
+                  [min]="sliderFilters['minL3']"
+                  [max]="sliderFilters['maxL3']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedL3', 'minL3', 'maxL3') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedL3'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedL3', 'minL3', 'maxL3')"
+                     [style.width.%]="getWidth('minSelectedL3', 'maxSelectedL3', 'minL3', 'maxL3')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('igpu')"
+                 [class.underline]="tabs['igpu']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>iGPU:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['igpu']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(checkboxFilter1)">
+                  <input type="checkbox" [id]=key [(ngModel)]="checkboxFilter1[key]" (ngModelChange)="filteredCPUs"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+        </div>
+      </div>
+
+      <div class="c90">
+        <table>
+          <thead>
+          <tr>
+            <th class="w30">
+              <div class="input-wrapper-s">
+                <input
+                  type = "text"
+                  placeholder="Search {{filteredCPUs.length}} CPU's..."
+                  [(ngModel)]="searchQuery"
+                  class="search-input"
+                />
+              </div>
+            </th>
+            <th>Core Clock</th>
+            <th>Boost Clock</th>
+            <th>Cores</th>
+            <th>Threads</th>
+            <th>Price</th>
+            <th class="w7"></th>
+            <th class="w7"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of filteredCPUs">
+            <td class="w30">
+              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+                <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
+                <div class="name">{{item.name}}</div>
+              </div>
+            </td>
+            <td>{{item.clock}} MHz</td>
+            <td>{{item.boostClock}} MHz</td>
+            <td>{{item.cores}}</td>
+            <td>{{item.threads}}</td>
+            <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
+            <td class="w7"><div><button class="add" (click)="addToConfig('cpu', item)">Add to Build</button></div></td>
+            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <!-- CPU Cooler -->
+    <ng-container *ngIf="CPUCoolers">
+      <div class="c10">
+        <div class="checkbox-container">
+          <div style="margin-top: 15px; font-weight: bold; font-size: 25px;">Filters</div>
+          <div class="line2"></div>
+          <ng-container>
+            <div (click)="toggleTabs('price')"
+                 [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PRICE:</b>
+            </div>
+            <div *ngIf="tabs['price']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['minSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredCPUCoolers"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['maxSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice')"
+                     [style.width.%]="getWidth('minSelectedPrice', 'maxSelectedPrice', 'minPrice', 'maxPrice')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('sockets')"
+                 [class.underline]="tabs['sockets']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>SOCKETS:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['sockets']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(socketFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="socketFilter[key]" (ngModelChange)="filteredCPUCoolers"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('rpm')"
+                 [class.underline]="tabs['rpm']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>RPM:</b>
+            </div>
+            <div *ngIf="tabs['rpm']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedRPM']"
+                  [min]="sliderFilters['minRPM']"
+                  [max]="sliderFilters['maxRPM']"
+                  (input)="filteredCPUCoolers"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedRPM', 'minRPM', 'maxRPM') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedRPM'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedRPM']"
+                  [min]="sliderFilters['minRPM']"
+                  [max]="sliderFilters['maxRPM']"
+                  (input)="filteredCPUCoolers"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedRPM', 'minRPM', 'maxRPM') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedRPM'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedRPM', 'minRPM', 'maxRPM')"
+                     [style.width.%]="getWidth('minSelectedRPM', 'maxSelectedRPM', 'minRPM', 'maxRPM')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('height')"
+                 [class.underline]="tabs['height']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>HEIGHT:</b>
+            </div>
+            <div *ngIf="tabs['height']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedHeight']"
+                  [min]="sliderFilters['minHeight']"
+                  [max]="sliderFilters['maxHeight']"
+                  (input)="filteredCPUCoolers"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedHeight', 'minHeight', 'maxHeight') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedHeight'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedHeight']"
+                  [min]="sliderFilters['minHeight']"
+                  [max]="sliderFilters['maxHeight']"
+                  (input)="filteredCPUCoolers"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedHeight', 'minHeight', 'maxHeight') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedHeight'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedHeight', 'minHeight', 'maxHeight')"
+                     [style.width.%]="getWidth('minSelectedHeight', 'maxSelectedHeight', 'minHeight', 'maxHeight')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('fanless')"
+                 [class.underline]="tabs['fanless']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>Fanless:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['fanless']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(checkboxFilter1)">
+                  <input type="checkbox" [id]=key [(ngModel)]="checkboxFilter1[key]" (ngModelChange)="filteredCPUCoolers"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('watercooled')"
+                 [class.underline]="tabs['watercooled']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>Watercooled:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['watercooled']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(checkboxFilter2)">
+                  <input type="checkbox" [id]=key [(ngModel)]="checkboxFilter2[key]" (ngModelChange)="filteredCPUCoolers"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+        </div>
+      </div>
+
+      <div class="c90">
+        <table>
+          <thead>
+          <tr>
+            <th class="w30">
+              <div class="input-wrapper-s">
+                <input
+                  type = "text"
+                  placeholder="Search {{filteredCPUCoolers.length}} CPU Coolers..."
+                  [(ngModel)]="searchQuery"
+                  class="search-input"
+                />
+              </div>
+            </th>
+            <th>RPM</th>
+            <th>Height/Size</th>
+            <th>Watercooled?</th>
+            <th>Fanless?</th>
+            <th>Color</th>
+            <th>Price</th>
+            <th class="w7"></th>
+            <th class="w7"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of filteredCPUCoolers">
+            <td class="w30">
+              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+                <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
+                <div class="name">{{item.name}}</div>
+              </div>
+            </td>
+            <td>{{item.fanRPM}} RPM</td>
+            <td>{{item.height}} mm</td>
+            <td>
+              <input type="checkbox" [checked]="item.watercooled" disabled="disabled">
+            </td>
+            <td>
+              <input type="checkbox" [checked]="item.fanless" disabled="disabled">
+            </td>
+            <td>{{item.color}}</td>
+            <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
+            <td class="w7"><div><button class="add" (click)="addToConfig('cpu-cooler', item)">Add to Build</button></div></td>
+            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <!-- Motherboard -->
+    <ng-container *ngIf="Motherboards">
+      <div class="c10">
+        <div class="checkbox-container">
+          <div style="margin-top: 15px; font-weight: bold; font-size: 25px;">Filters</div>
+          <div class="line2"></div>
+          <ng-container>
+            <div (click)="toggleTabs('price')"
+                 [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PRICE:</b>
+            </div>
+            <div *ngIf="tabs['price']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['minSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['maxSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice')"
+                     [style.width.%]="getWidth('minSelectedPrice', 'maxSelectedPrice', 'minPrice', 'maxPrice')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('sockets')"
+                 [class.underline]="tabs['sockets']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>SOCKETS:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['sockets']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(socketFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="socketFilter[key]" (ngModelChange)="onMoboSocketChange()"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('chipsets')"
+                 [class.underline]="tabs['chipsets']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>CHIPSET:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['chipsets']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(motherboardChipsetFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="motherboardChipsetFilter[key]" (ngModelChange)="filteredMotherboards"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('formFactor')"
+                 [class.underline]="tabs['formFactor']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>FORM FACTOR:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['formFactor']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(motherboardFormFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="motherboardFormFilter[key]" (ngModelChange)="filteredMotherboards"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('memoryGen')"
+                 [class.underline]="tabs['memoryGen']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MEMORY GENERATION:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['memoryGen']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(memGenFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="memGenFilter[key]" (ngModelChange)="filteredMotherboards"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('memorySlots')"
+                 [class.underline]="tabs['memorySlots']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MEMORY SLOTS:</b>
+            </div>
+            <div *ngIf="tabs['memorySlots']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedMemSlots']"
+                  [min]="sliderFilters['minMemSlots']"
+                  [max]="sliderFilters['maxMemSlots']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedMemSlots', 'minMemSlots', 'maxMemSlots') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedMemSlots'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedMemSlots']"
+                  [min]="sliderFilters['minMemSlots']"
+                  [max]="sliderFilters['maxMemSlots']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedMemSlots', 'minMemSlots', 'maxMemSlots') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedMemSlots'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedMemSlots', 'minMemSlots', 'maxMemSlots')"
+                     [style.width.%]="getWidth('minSelectedMemSlots', 'maxSelectedMemSlots', 'minMemSlots', 'maxMemSlots')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('pciex16')"
+                 [class.underline]="tabs['pciex16']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PCIe x16:</b>
+            </div>
+            <div *ngIf="tabs['pciex16']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedPciex16']"
+                  [min]="sliderFilters['minPciex16']"
+                  [max]="sliderFilters['maxPciex16']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPciex16', 'minPciex16', 'maxPciex16') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedPciex16'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedPciex16']"
+                  [min]="sliderFilters['minPciex16']"
+                  [max]="sliderFilters['maxPciex16']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPciex16', 'minPciex16', 'maxPciex16') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedPciex16'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPciex16', 'minPciex16', 'maxPciex16')"
+                     [style.width.%]="getWidth('minSelectedPciex16', 'maxSelectedPciex16', 'minPciex16', 'maxPciex16')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('usb2')"
+                 [class.underline]="tabs['usb2']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>USB 2.0 HEADER:</b>
+            </div>
+            <div *ngIf="tabs['usb2']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedUsb2Header']"
+                  [min]="sliderFilters['minUsb2Header']"
+                  [max]="sliderFilters['maxUsb2Header']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedUsb2Header', 'minUsb2Header', 'maxUsb2Header') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedUsb2Header'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedUsb2Header']"
+                  [min]="sliderFilters['minUsb2Header']"
+                  [max]="sliderFilters['maxUsb2Header']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedUsb2Header', 'minUsb2Header', 'maxUsb2Header') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedUsb2Header'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedUsb2Header', 'minUsb2Header', 'maxUsb2Header')"
+                     [style.width.%]="getWidth('minSelectedUsb2Header', 'maxSelectedUsb2Header', 'minUsb2Header', 'maxUsb2Header')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('usb3gen1')"
+                 [class.underline]="tabs['usb3gen1']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>USB 3.1 HEADER:</b>
+            </div>
+            <div *ngIf="tabs['usb3gen1']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedUsb3Gen1Header']"
+                  [min]="sliderFilters['minUsb3Gen1Header']"
+                  [max]="sliderFilters['maxUsb3Gen1Header']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedUsb3Gen1Header', 'minUsb3Gen1Header', 'maxUsb3Gen1Header') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedUsb3Gen1Header'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedUsb3Gen1Header']"
+                  [min]="sliderFilters['minUsb3Gen1Header']"
+                  [max]="sliderFilters['maxUsb3Gen1Header']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedUsb3Gen1Header', 'minUsb3Gen1Header', 'maxUsb3Gen1Header') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedUsb3Gen1Header'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedUsb3Gen1Header', 'minUsb3Gen1Header', 'maxUsb3Gen1Header')"
+                     [style.width.%]="getWidth('minSelectedUsb3Gen1Header', 'maxSelectedUsb3Gen1Header', 'minUsb3Gen1Header', 'maxUsb3Gen1Header')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('usb3gen2')"
+                 [class.underline]="tabs['usb3gen2']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>USB 3.2 HEADER:</b>
+            </div>
+            <div *ngIf="tabs['usb3gen2']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedUsb3Gen2Header']"
+                  [min]="sliderFilters['minUsb3Gen2Header']"
+                  [max]="sliderFilters['maxUsb3Gen2Header']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedUsb3Gen2Header', 'minUsb3Gen2Header', 'maxUsb3Gen2Header') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedUsb3Gen2Header'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedUsb3Gen2Header']"
+                  [min]="sliderFilters['minUsb3Gen2Header']"
+                  [max]="sliderFilters['maxUsb3Gen2Header']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedUsb3Gen2Header', 'minUsb3Gen2Header', 'maxUsb3Gen2Header') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedUsb3Gen2Header'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedUsb3Gen2Header', 'minUsb3Gen2Header', 'maxUsb3Gen2Header')"
+                     [style.width.%]="getWidth('minSelectedUsb3Gen2Header', 'maxSelectedUsb3Gen2Header', 'minUsb3Gen2Header', 'maxUsb3Gen2Header')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('usb3gen2x2')"
+                 [class.underline]="tabs['usb3gen2x2']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>USB 3.2x2 HEADER:</b>
+            </div>
+            <div *ngIf="tabs['usb3gen2x2']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedUsb3Gen2x2Header']"
+                  [min]="sliderFilters['minUsb3Gen2x2Header']"
+                  [max]="sliderFilters['maxUsb3Gen2x2Header']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedUsb3Gen2x2Header', 'minUsb3Gen2x2Header', 'maxUsb3Gen2x2Header') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedUsb3Gen2x2Header'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedUsb3Gen2x2Header']"
+                  [min]="sliderFilters['minUsb3Gen2x2Header']"
+                  [max]="sliderFilters['maxUsb3Gen2x2Header']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedUsb3Gen2x2Header', 'minUsb3Gen2x2Header', 'maxUsb3Gen2x2Header') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedUsb3Gen2x2Header'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedUsb3Gen2x2Header', 'minUsb3Gen2x2Header', 'maxUsb3Gen2x2Header')"
+                     [style.width.%]="getWidth('minSelectedUsb3Gen2x2Header', 'maxSelectedUsb3Gen2x2Header', 'minUsb3Gen2x2Header', 'maxUsb3Gen2x2Header')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('usbtypec')"
+                 [class.underline]="tabs['usbtypec']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>USB TYPE C HEADER:</b>
+            </div>
+            <div *ngIf="tabs['usbtypec']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedUsbTypeCHeader']"
+                  [min]="sliderFilters['minUsbTypeCHeader']"
+                  [max]="sliderFilters['maxUsbTypeCHeader']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedUsbTypeCHeader', 'minUsbTypeCHeader', 'maxUsbTypeCHeader') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedUsbTypeCHeader'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedUsbTypeCHeader']"
+                  [min]="sliderFilters['minUsbTypeCHeader']"
+                  [max]="sliderFilters['maxUsbTypeCHeader']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedUsbTypeCHeader', 'minUsbTypeCHeader', 'maxUsbTypeCHeader') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedUsbTypeCHeader'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedUsbTypeCHeader', 'minUsbTypeCHeader', 'maxUsbTypeCHeader')"
+                     [style.width.%]="getWidth('minSelectedUsbTypeCHeader', 'maxSelectedUsbTypeCHeader', 'minUsbTypeCHeader', 'maxUsbTypeCHeader')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('sata')"
+                 [class.underline]="tabs['sata']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>SATA 6Gb/s:</b>
+            </div>
+            <div *ngIf="tabs['sata']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedSata']"
+                  [min]="sliderFilters['minSata']"
+                  [max]="sliderFilters['maxSata']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedSata', 'minSata', 'maxSata') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedSata'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedSata']"
+                  [min]="sliderFilters['minSata']"
+                  [max]="sliderFilters['maxSata']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedSata', 'minSata', 'maxSata') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedSata'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedSata', 'minSata', 'maxSata')"
+                     [style.width.%]="getWidth('minSelectedSata', 'maxSelectedSata', 'minSata', 'maxSata')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('m2')"
+                 [class.underline]="tabs['m2']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>M.2 Slots:</b>
+            </div>
+            <div *ngIf="tabs['m2']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedM2']"
+                  [min]="sliderFilters['minM2']"
+                  [max]="sliderFilters['maxM2']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedM2', 'minM2', 'maxM2') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedM2'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedM2']"
+                  [min]="sliderFilters['minM2']"
+                  [max]="sliderFilters['maxM2']"
+                  (input)="filteredMotherboards"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedM2', 'minM2', 'maxM2') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedM2'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedM2', 'minM2', 'maxM2')"
+                     [style.width.%]="getWidth('minSelectedM2', 'maxSelectedM2', 'minM2', 'maxM2')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('wifi')"
+                 [class.underline]="tabs['wifi']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>WIFI:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['wifi']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(wifiFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="wifiFilter[key]" (ngModelChange)="filteredMotherboards"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('raid')"
+                 [class.underline]="tabs['raid']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>RAID:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['raid']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(checkboxFilter1)">
+                  <input type="checkbox" [id]=key [(ngModel)]="checkboxFilter1[key]" (ngModelChange)="filteredMotherboards"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+        </div>
+      </div>
+
+      <div class="c90">
+        <table>
+          <thead>
+          <tr>
+            <th class="w30">
+              <div class="input-wrapper-s">
+                <input
+                  type = "text"
+                  placeholder="Search {{filteredMotherboards.length}} Motherboards..."
+                  [(ngModel)]="searchQuery"
+                  class="search-input"
+                />
+              </div>
+            </th>
+            <th>Socket</th>
+            <th>Chipset</th>
+            <th>Form Factor</th>
+            <th>Memory Generation</th>
+            <th>Memory Slots</th>
+            <th>PCIex16</th>
+            <th>Price</th>
+            <th class="w7"></th>
+            <th class="w7"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of filteredMotherboards">
+            <td class="w30">
+              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+                <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
+                <div class="name">{{item.name}}</div>
+              </div>
+            </td>
+            <td>{{item.socket}}</td>
+            <td>{{item.motherboardChipset}}</td>
+            <td>{{item.formFactor}}</td>
+            <td>{{item.memoryGeneration}}</td>
+            <td>{{item.memorySlots}}</td>
+            <td>{{item.pciex16}}</td>
+            <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
+            <td class="w7"><div><button class="add" (click)="addToConfig('motherboard', item)">Add to Build</button></div></td>
+            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <!-- Memory -->
+    <ng-container *ngIf="Memories">
+      <div class="c10">
+        <div class="checkbox-container">
+          <div style="margin-top: 15px; font-weight: bold; font-size: 25px;">Filters</div>
+          <div class="line2"></div>
+          <ng-container>
+            <div (click)="toggleTabs('price')"
+                 [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PRICE:</b>
+            </div>
+            <div *ngIf="tabs['price']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['minSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredMemories"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['maxSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredMemories"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice')"
+                     [style.width.%]="getWidth('minSelectedPrice', 'maxSelectedPrice', 'minPrice', 'maxPrice')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('memGen')"
+                 [class.underline]="tabs['memGen']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>GENERATION:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['memGen']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(memGenFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="memGenFilter[key]" (ngModelChange)="onMemGenChange()"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('speeds')"
+                 [class.underline]="tabs['speeds']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>SPEED:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['speeds']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(memSpeedFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="memSpeedFilter[key]" (ngModelChange)="filteredMemories"/>
+                  <label [for]=key>{{ key }} MHz</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('memory')"
+                 [class.underline]="tabs['memory']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MEMORY:</b>
+            </div>
+            <div *ngIf="tabs['memory']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedMemory']"
+                  [min]="sliderFilters['minMemory']"
+                  [max]="sliderFilters['maxMemory']"
+                  (input)="filteredMemories"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedMemory', 'minMemory', 'maxMemory') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedMemory'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedMemory']"
+                  [min]="sliderFilters['minMemory']"
+                  [max]="sliderFilters['maxMemory']"
+                  (input)="filteredMemories"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedMemory', 'minMemory', 'maxMemory') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedMemory'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedMemory', 'minMemory', 'maxMemory')"
+                     [style.width.%]="getWidth('minSelectedMemory', 'maxSelectedMemory', 'minMemory', 'maxMemory')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('modules')"
+                 [class.underline]="tabs['modules']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MODULES:</b>
+            </div>
+            <div *ngIf="tabs['modules']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedModules']"
+                  [min]="sliderFilters['minModules']"
+                  [max]="sliderFilters['maxModules']"
+                  (input)="filteredMemories"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedModules', 'minModules', 'maxModules') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedModules'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedModules']"
+                  [min]="sliderFilters['minModules']"
+                  [max]="sliderFilters['maxModules']"
+                  (input)="filteredMemories"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedModules', 'minModules', 'maxModules') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedModules'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedModules', 'minModules', 'maxModules')"
+                     [style.width.%]="getWidth('minSelectedModules', 'maxSelectedModules', 'minModules', 'maxModules')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('cas')"
+                 [class.underline]="tabs['cas']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>CAS / LATENCY:</b>
+            </div>
+            <div *ngIf="tabs['cas']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedCAS']"
+                  [min]="sliderFilters['minCAS']"
+                  [max]="sliderFilters['maxCAS']"
+                  (input)="filteredMemories"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedCAS', 'minCAS', 'maxCAS') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedCAS'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedCAS']"
+                  [min]="sliderFilters['minCAS']"
+                  [max]="sliderFilters['maxCAS']"
+                  (input)="filteredMemories"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedCAS', 'minCAS', 'maxCAS') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedCAS'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedCAS', 'minCAS', 'maxCAS')"
+                     [style.width.%]="getWidth('minSelectedCAS', 'maxSelectedCAS', 'minCAS', 'maxCAS')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('heatspreader')"
+                 [class.underline]="tabs['heatspreader']" style="cursor: pointer; font-size: 13px;"
+                 >
+              <b>HEATSINK:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['heatspreader']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(checkboxFilter1)">
+                  <input type="checkbox" [id]=key [(ngModel)]="checkboxFilter1[key]" (ngModelChange)="filteredMemories"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+        </div>
+      </div>
+
+      <div class="c90">
+        <table>
+          <thead>
+          <tr>
+            <th class="w30">
+              <div class="input-wrapper-s">
+                <input
+                  type = "text"
+                  placeholder="Search {{filteredMemories?.length}} Memories..."
+                  [(ngModel)]="searchQuery"
+                  class="search-input"
+                />
+              </div>
+            </th>
+            <th>Memory</th>
+            <th>Generation</th>
+            <th>Speed</th>
+            <th>Latency</th>
+            <th>Modules</th>
+            <th>Price</th>
+            <th class="w7"></th>
+            <th class="w7"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of filteredMemories">
+            <td class="w30">
+              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+                <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
+                <div class="name">{{item.name}}</div>
+              </div>
+            </td>
+            <td>{{item.memory}}</td>
+            <td>{{item.generation}}</td>
+            <td>{{item.speed}}</td>
+            <td>{{item.latency}}</td>
+            <td>{{item.modules}}</td>
+            <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
+            <td class="w7"><div><button class="add" (click)="addToConfig('memories', item)">Add to Build</button></div></td>
+            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <!-- GPU -->
+    <ng-container *ngIf="GPUs">
+      <div class="c10">
+        <div class="checkbox-container">
+          <div style="margin-top: 15px; font-weight: bold; font-size: 25px;">Filters</div>
+          <div class="line2"></div>
+          <ng-container>
+            <div (click)="toggleTabs('price')"
+                 [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PRICE:</b>
+            </div>
+            <div *ngIf="tabs['price']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['minSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['maxSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice')"
+                     [style.width.%]="getWidth('minSelectedPrice', 'maxSelectedPrice', 'minPrice', 'maxPrice')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('memGens')"
+                 [class.underline]="tabs['memGens']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MEMORY GENERATION:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['memGens']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(memGenFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="memGenFilter[key]" (ngModelChange)="filteredGPUs"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('memory')"
+                 [class.underline]="tabs['memory']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MEMORY:</b>
+            </div>
+            <div *ngIf="tabs['memory']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedMemory']"
+                  [min]="sliderFilters['minMemory']"
+                  [max]="sliderFilters['maxMemory']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedMemory', 'minMemory', 'maxMemory') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedMemory'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedMemory']"
+                  [min]="sliderFilters['minMemory']"
+                  [max]="sliderFilters['maxMemory']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedMemory', 'minMemory', 'maxMemory') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedMemory'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedMemory', 'minMemory', 'maxMemory')"
+                     [style.width.%]="getWidth('minSelectedMemory', 'maxSelectedMemory', 'minMemory', 'maxMemory')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('clock')"
+                 [class.underline]="tabs['clock']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>CORE CLOCK:</b>
+            </div>
+            <div *ngIf="tabs['clock']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedClock']"
+                  [min]="sliderFilters['minClock']"
+                  [max]="sliderFilters['maxClock']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedClock', 'minClock', 'maxClock') * 0.82"
+                >
+                  {{ sliderFilters['minSelectedClock'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedClock']"
+                  [min]="sliderFilters['minClock']"
+                  [max]="sliderFilters['maxClock']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedClock', 'minClock', 'maxClock') * 0.82"
+                >
+                  {{ sliderFilters['maxSelectedClock'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedClock', 'minClock', 'maxClock')"
+                     [style.width.%]="getWidth('minSelectedClock', 'maxSelectedClock', 'minClock', 'maxClock')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('boost')"
+                 [class.underline]="tabs['boost']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>BOOST CLOCK:</b>
+            </div>
+            <div *ngIf="tabs['boost']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedBoost']"
+                  [min]="sliderFilters['minBoost']"
+                  [max]="sliderFilters['maxBoost']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedBoost', 'minBoost', 'maxBoost') * 0.82"
+                >
+                  {{ sliderFilters['minSelectedBoost'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedBoost']"
+                  [min]="sliderFilters['minBoost']"
+                  [max]="sliderFilters['maxBoost']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedBoost', 'minBoost', 'maxBoost') * 0.82"
+                >
+                  {{ sliderFilters['maxSelectedBoost'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedBoost', 'minBoost', 'maxBoost')"
+                     [style.width.%]="getWidth('minSelectedBoost', 'maxSelectedBoost', 'minBoost', 'maxBoost')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('tdp')"
+                 [class.underline]="tabs['tdp']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>TDP:</b>
+            </div>
+            <div *ngIf="tabs['tdp']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedTDP']"
+                  [min]="sliderFilters['minTDP']"
+                  [max]="sliderFilters['maxTDP']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedTDP', 'minTDP', 'maxTDP') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedTDP'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedTDP']"
+                  [min]="sliderFilters['minTDP']"
+                  [max]="sliderFilters['maxTDP']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedTDP', 'minTDP', 'maxTDP') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedTDP'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedTDP', 'minTDP', 'maxTDP')"
+                     [style.width.%]="getWidth('minSelectedTDP', 'maxSelectedTDP', 'minTDP', 'maxTDP')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('length')"
+                 [class.underline]="tabs['length']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>CARD LENGTH:</b>
+            </div>
+            <div *ngIf="tabs['length']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedLength']"
+                  [min]="sliderFilters['minLength']"
+                  [max]="sliderFilters['maxLength']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedLength', 'minLength', 'maxLength') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedLength'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedLength']"
+                  [min]="sliderFilters['minLength']"
+                  [max]="sliderFilters['maxLength']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedLength', 'minLength', 'maxLength') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedLength'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedLength', 'minLength', 'maxLength')"
+                     [style.width.%]="getWidth('minSelectedLength', 'maxSelectedLength', 'minLength', 'maxLength')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('slots')"
+                 [class.underline]="tabs['slots']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>SLOTS:</b>
+            </div>
+            <div *ngIf="tabs['slots']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedSlots']"
+                  [min]="sliderFilters['minSlots']"
+                  [max]="sliderFilters['maxSlots']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedSlots', 'minSlots', 'maxSlots') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedSlots'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedSlots']"
+                  [min]="sliderFilters['minSlots']"
+                  [max]="sliderFilters['maxSlots']"
+                  (input)="filteredGPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedSlots', 'minSlots', 'maxSlots') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedSlots'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedSlots', 'minSlots', 'maxSlots')"
+                     [style.width.%]="getWidth('minSelectedSlots', 'maxSelectedSlots', 'minSlots', 'maxSlots')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+
+        </div>
+      </div>
+
+      <div class="c90">
+        <table>
+          <thead>
+          <tr>
+            <th class="w30">
+              <div class="input-wrapper-s">
+                <input
+                  type = "text"
+                  placeholder="Search {{filteredGPUs?.length}} GPUs..."
+                  [(ngModel)]="searchQuery"
+                  class="search-input"
+                />
+              </div>
+            </th>
+            <th>Core Clock</th>
+            <th>Boost Clock</th>
+            <th>Memory</th>
+            <th>Length</th>
+            <th>Slots</th>
+            <th>Price</th>
+            <th class="w7"></th>
+            <th class="w7"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of filteredGPUs">
+            <td class="w30">
+              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+                <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
+                <div class="name">{{item.name}}</div>
+              </div>
+            </td>
+            <td>{{item.clock}} MHz</td>
+            <td>{{item.boostClock}} MHz</td>
+            <td>{{item.memory}}</td>
+            <td>{{item.length}}</td>
+            <td>{{item.slots}}</td>
+            <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
+            <td class="w7"><div><button class="add" (click)="addToConfig('gpus', item)">Add to Build</button></div></td>
+            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <!-- Storage -->
+    <ng-container *ngIf="Storages">
+      <div class="c10">
+        <div class="checkbox-container">
+          <div style="margin-top: 15px; font-weight: bold; font-size: 25px;">Filters</div>
+          <div class="line2"></div>
+          <ng-container>
+            <div (click)="toggleTabs('price')"
+                 [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PRICE:</b>
+            </div>
+            <div *ngIf="tabs['price']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['minSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredStorages"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['maxSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredStorages"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice')"
+                     [style.width.%]="getWidth('minSelectedPrice', 'maxSelectedPrice', 'minPrice', 'maxPrice')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('type')"
+                 [class.underline]="tabs['type']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>TYPE:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['type']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(storageTypeFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="storageTypeFilter[key]" (ngModelChange)="onStorageTypeChange()"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('interface')"
+                 [class.underline]="tabs['interface']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>INTERFACE:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['interface']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(storageInterfaceFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="storageInterfaceFilter[key]" (ngModelChange)="filteredStorages"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('formFactor')"
+                 [class.underline]="tabs['formFactor']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>FORM FACTOR:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['formFactor']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(storageFormFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="storageFormFilter[key]" (ngModelChange)="filteredStorages"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('read')"
+                 [class.underline]="tabs['read']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>READ - MB/s:</b>
+            </div>
+            <div *ngIf="tabs['read']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedRead']"
+                  [min]="sliderFilters['minRead']"
+                  [max]="sliderFilters['maxRead']"
+                  (input)="filteredStorages"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedRead', 'minRead', 'maxRead') * 0.82"
+                >
+                  {{ sliderFilters['minSelectedRead'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedRead']"
+                  [min]="sliderFilters['minRead']"
+                  [max]="sliderFilters['maxRead']"
+                  (input)="filteredStorages"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedRead', 'minRead', 'maxRead') * 0.82"
+                >
+                  {{ sliderFilters['maxSelectedRead'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedRead', 'minRead', 'maxRead')"
+                     [style.width.%]="getWidth('minSelectedRead', 'maxSelectedRead', 'minRead', 'maxRead')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('write')"
+                 [class.underline]="tabs['write']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>WRITE - MB/s:</b>
+            </div>
+            <div *ngIf="tabs['write']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedWrite']"
+                  [min]="sliderFilters['minWrite']"
+                  [max]="sliderFilters['maxWrite']"
+                  (input)="filteredStorages"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedWrite', 'minWrite', 'maxWrite') * 0.82"
+                >
+                  {{ sliderFilters['minSelectedWrite'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedWrite']"
+                  [min]="sliderFilters['minWrite']"
+                  [max]="sliderFilters['maxWrite']"
+                  (input)="filteredStorages"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedWrite', 'minWrite', 'maxWrite') * 0.82"
+                >
+                  {{ sliderFilters['maxSelectedWrite'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedWrite', 'minWrite', 'maxWrite')"
+                     [style.width.%]="getWidth('minSelectedWrite', 'maxSelectedWrite', 'minWrite', 'maxWrite')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('cap')"
+                 [class.underline]="tabs['cap']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>CAPACITY - GB:</b>
+            </div>
+            <div *ngIf="tabs['cap']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedCapacity']"
+                  [min]="sliderFilters['minCapacity']"
+                  [max]="sliderFilters['maxCapacity']"
+                  (input)="filteredStorages"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedCapacity', 'minCapacity', 'maxCapacity') * 0.82"
+                >
+                  {{ sliderFilters['minSelectedCapacity'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedCapacity']"
+                  [min]="sliderFilters['minCapacity']"
+                  [max]="sliderFilters['maxCapacity']"
+                  (input)="filteredStorages"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedCapacity', 'minCapacity', 'maxCapacity') * 0.82"
+                >
+                  {{ sliderFilters['maxSelectedCapacity'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedCapacity', 'minCapacity', 'maxCapacity')"
+                     [style.width.%]="getWidth('minSelectedCapacity', 'maxSelectedCapacity', 'minCapacity', 'maxCapacity')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('sink')"
+                 [class.underline]="tabs['sink']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>HEATSINK:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['sink']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(checkboxFilter1)">
+                  <input type="checkbox" [id]=key [(ngModel)]="checkboxFilter1[key]" (ngModelChange)="filteredStorages"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+        </div>
+      </div>
+
+      <div class="c90">
+        <table>
+          <thead>
+          <tr>
+            <th class="w30">
+              <div class="input-wrapper-s">
+                <input
+                  type = "text"
+                  placeholder="Search {{filteredStorages?.length}} Storages..."
+                  [(ngModel)]="searchQuery"
+                  class="search-input"
+                />
+              </div>
+            </th>
+            <th>Capacity</th>
+            <th>Read</th>
+            <th>Write</th>
+            <th>Type</th>
+            <th>Interface</th>
+            <th>GB / €</th>
+            <th>Price</th>
+            <th class="w7"></th>
+            <th class="w7"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of filteredStorages">
+            <td class="w30">
+              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+                <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
+                <div class="name">{{item.name}}</div>
+              </div>
+            </td>
+            <td>{{item.capacity}} GB</td>
+            <td>{{item.readSpeed}} MB/s</td>
+            <td>{{item.writeSpeed}} MB/s</td>
+            <td>{{item.storageType}}</td>
+            <td>{{item.storageInterface}}</td>
+            <td>{{item.capacity / item.price | number: '1.2-2'}} GB/€</td>
+            <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
+            <td class="w7"><div><button class="add" (click)="addToConfig('storages', item)">Add to Build</button></div></td>
+            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <!-- PSU -->
+    <ng-container *ngIf="PSUs">
+      <div class="c10">
+        <div class="checkbox-container">
+          <div style="margin-top: 15px; font-weight: bold; font-size: 25px;">Filters</div>
+          <div class="line2"></div>
+          <ng-container>
+            <div (click)="toggleTabs('price')"
+                 [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PRICE:</b>
+            </div>
+            <div *ngIf="tabs['price']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['minSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['maxSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice')"
+                     [style.width.%]="getWidth('minSelectedPrice', 'maxSelectedPrice', 'minPrice', 'maxPrice')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('formFactor')"
+                 [class.underline]="tabs['formFactor']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>FORM FACTOR:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['formFactor']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(storageFormFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="storageFormFilter[key]" (ngModelChange)="filteredPSUs"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('watt')"
+                 [class.underline]="tabs['watt']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>WATTAGE:</b>
+            </div>
+            <div *ngIf="tabs['watt']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedWattage']"
+                  [min]="sliderFilters['minWattage']"
+                  [max]="sliderFilters['maxWattage']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedWattage', 'minWattage', 'maxWattage') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedWattage'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedWattage']"
+                  [min]="sliderFilters['minWattage']"
+                  [max]="sliderFilters['maxWattage']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedWattage', 'minWattage', 'maxWattage') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedWattage'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedWattage', 'minWattage', 'maxWattage')"
+                     [style.width.%]="getWidth('minSelectedWattage', 'maxSelectedWattage', 'minWattage', 'maxWattage')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('eff')"
+                 [class.underline]="tabs['eff']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>EFFICIENCY:</b>
+            </div>
+            <div *ngIf="tabs['eff']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedEfficiency']"
+                  [min]="sliderFilters['minEfficiency']"
+                  [max]="sliderFilters['maxEfficiency']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedEfficiency', 'minEfficiency', 'maxEfficiency') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedEfficiency'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedEfficiency']"
+                  [min]="sliderFilters['minEfficiency']"
+                  [max]="sliderFilters['maxEfficiency']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedEfficiency', 'minEfficiency', 'maxEfficiency') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedEfficiency'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedEfficiency', 'minEfficiency', 'maxEfficiency')"
+                     [style.width.%]="getWidth('minSelectedEfficiency', 'maxSelectedEfficiency', 'minEfficiency', 'maxEfficiency')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('pcie')"
+                 [class.underline]="tabs['pcie']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PCIe 6+2 PINS:</b>
+            </div>
+            <div *ngIf="tabs['pcie']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelected6Pins']"
+                  [min]="sliderFilters['min6Pins']"
+                  [max]="sliderFilters['max6Pins']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelected6Pins', 'min6Pins', 'max6Pins') * 0.9"
+                >
+                  {{ sliderFilters['minSelected6Pins'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelected6Pins']"
+                  [min]="sliderFilters['min6Pins']"
+                  [max]="sliderFilters['max6Pins']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelected6Pins', 'min6Pins', 'max6Pins') * 0.9"
+                >
+                  {{ sliderFilters['maxSelected6Pins'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelected6Pins', 'min6Pins', 'max6Pins')"
+                     [style.width.%]="getWidth('minSelected6Pins', 'maxSelected6Pins', 'min6Pins', 'max6Pins')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('eps')"
+                 [class.underline]="tabs['eps']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>EPS 8 PINS:</b>
+            </div>
+            <div *ngIf="tabs['eps']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedEPS']"
+                  [min]="sliderFilters['minEPS']"
+                  [max]="sliderFilters['maxEPS']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedEPS', 'minEPS', 'maxEPS') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedEPS'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedEPS']"
+                  [min]="sliderFilters['minEPS']"
+                  [max]="sliderFilters['maxEPS']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedEPS', 'minEPS', 'maxEPS') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedEPS'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedEPS', 'minEPS', 'maxEPS')"
+                     [style.width.%]="getWidth('minSelectedEPS', 'maxSelectedEPS', 'minEPS', 'maxEPS')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('sata')"
+                 [class.underline]="tabs['sata']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>SATA CONNECTORS:</b>
+            </div>
+            <div *ngIf="tabs['sata']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedSata']"
+                  [min]="sliderFilters['minSata']"
+                  [max]="sliderFilters['maxSata']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedSata', 'minSata', 'maxSata') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedSata'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedSata']"
+                  [min]="sliderFilters['minSata']"
+                  [max]="sliderFilters['maxSata']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedSata', 'minSata', 'maxSata') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedSata'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedSata', 'minSata', 'maxSata')"
+                     [style.width.%]="getWidth('minSelectedSata', 'maxSelectedSata', 'minSata', 'maxSata')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('molex')"
+                 [class.underline]="tabs['molex']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MOLEX 4PINS:</b>
+            </div>
+            <div *ngIf="tabs['molex']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['minSelectedMolex']"
+                  [min]="sliderFilters['minMolex']"
+                  [max]="sliderFilters['maxMolex']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedMolex', 'minMolex', 'maxMolex') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedMolex'] }}
+                </div>
+                <input
+                  type="range"
+                  step="1"
+                  [(ngModel)]="sliderFilters['maxSelectedMolex']"
+                  [min]="sliderFilters['minMolex']"
+                  [max]="sliderFilters['maxMolex']"
+                  (input)="filteredPSUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedMolex', 'minMolex', 'maxMolex') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedMolex'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedMolex', 'minMolex', 'maxMolex')"
+                     [style.width.%]="getWidth('minSelectedMolex', 'maxSelectedMolex', 'minMolex', 'maxMolex')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('12v')"
+                 [class.underline]="tabs['12v']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>12VHPR:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['12v']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(checkboxFilter1)">
+                  <input type="checkbox" [id]=key [(ngModel)]="checkboxFilter1[key]" (ngModelChange)="filteredPSUs"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('mod')"
+                 [class.underline]="tabs['mod']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MODULAR:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['mod']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(checkboxFilter2)">
+                  <input type="checkbox" [id]=key [(ngModel)]="checkboxFilter2[key]" (ngModelChange)="filteredPSUs"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+        </div>
+      </div>
+
+      <div class="c90">
+        <table>
+          <thead>
+          <tr>
+            <th class="w30">
+              <div class="input-wrapper-s">
+                <input
+                  type = "text"
+                  placeholder="Search {{filteredPSUs?.length}} PSUs..."
+                  [(ngModel)]="searchQuery"
+                  class="search-input"
+                />
+              </div>
+            </th>
+            <th>Wattage</th>
+            <th>Efficiency</th>
+            <th>Form Factor</th>
+            <th>12VHPR</th>
+            <th>Modular</th>
+            <th>Price</th>
+            <th class="w7"></th>
+            <th class="w7"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of filteredPSUs">
+            <td class="w30">
+              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+                <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
+                <div class="name">{{item.name}}</div>
+              </div>
+            </td>
+            <td>{{item.wattage}} W</td>
+            <td>{{item.efficiency}}+</td>
+            <td>{{item.formFactor}}</td>
+            <td><input type="checkbox" [checked]="item.hpr12vPresent" disabled="disabled"></td>
+            <td><input type="checkbox" [checked]="item.modular" disabled="disabled"></td>
+            <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
+            <td class="w7"><div><button class="add" (click)="addToConfig('psu', item)">Add to Build</button></div></td>
+            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <!-- Case -->
+    <ng-container *ngIf="Cases">
+      <div class="c10">
+        <div class="checkbox-container">
+          <div style="margin-top: 15px; font-weight: bold; font-size: 25px;">Filters</div>
+          <div class="line2"></div>
+          <ng-container>
+            <div (click)="toggleTabs('price')"
+                 [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PRICE:</b>
+            </div>
+            <div *ngIf="tabs['price']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['minSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredCases"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['maxSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice')"
+                     [style.width.%]="getWidth('minSelectedPrice', 'maxSelectedPrice', 'minPrice', 'maxPrice')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('form')"
+                 [class.underline]="tabs['form']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>FORM FACTOR:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['form']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(storageFormFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="storageFormFilter[key]" (ngModelChange)="filteredCases"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('panel')"
+                 [class.underline]="tabs['panel']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>SIDE PANEL:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['panel']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(storageTypeFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="storageTypeFilter[key]" (ngModelChange)="filteredCases"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('length')"
+                 [class.underline]="tabs['length']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MAX CARD LENGTH:</b>
+            </div>
+            <div *ngIf="tabs['length']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedCardLength']"
+                  [min]="sliderFilters['minCardLength']"
+                  [max]="sliderFilters['maxCardLength']"
+                  (input)="filteredCases"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedCardLength', 'minCardLength', 'maxCardLength') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedCardLength'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedCardLength']"
+                  [min]="sliderFilters['minCardLength']"
+                  [max]="sliderFilters['maxCardLength']"
+                  (input)="filteredCases"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedCardLength', 'minCardLength', 'maxCardLength') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedCardLength'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedCardLength', 'minCardLength', 'maxCardLength')"
+                     [style.width.%]="getWidth('minSelectedCardLength', 'maxSelectedCardLength', 'minCardLength', 'maxCardLength')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('height')"
+                 [class.underline]="tabs['height']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>MAX COOLER HEIGHT:</b>
+            </div>
+            <div *ngIf="tabs['height']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedCoolerHeight']"
+                  [min]="sliderFilters['minCoolerHeight']"
+                  [max]="sliderFilters['maxCoolerHeight']"
+                  (input)="filteredCases"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedCoolerHeight', 'minCoolerHeight', 'maxCoolerHeight') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedCoolerHeight'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedCoolerHeight']"
+                  [min]="sliderFilters['minCoolerHeight']"
+                  [max]="sliderFilters['maxCoolerHeight']"
+                  (input)="filteredCases"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedCoolerHeight', 'minCoolerHeight', 'maxCoolerHeight') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedCoolerHeight'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedCoolerHeight', 'minCoolerHeight', 'maxCoolerHeight')"
+                     [style.width.%]="getWidth('minSelectedCoolerHeight', 'maxSelectedCoolerHeight', 'minCoolerHeight', 'maxCoolerHeight')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+        </div>
+      </div>
+
+      <div class="c90">
+        <table>
+          <thead>
+          <tr>
+            <th class="w30">
+              <div class="input-wrapper-s">
+                <input
+                  type = "text"
+                  placeholder="Search {{filteredCases?.length}} Cases..."
+                  [(ngModel)]="searchQuery"
+                  class="search-input"
+                />
+              </div>
+            </th>
+            <th>Sidepanel</th>
+            <th>Form Factor</th>
+            <th>Color</th>
+            <th>Max GPU Length</th>
+            <th>Max Cooler Height</th>
+            <th>Price</th>
+            <th class="w7"></th>
+            <th class="w7"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of filteredCases">
+            <td class="w30">
+              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+                <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
+                <div class="name">{{item.name}}</div>
+              </div>
+            </td>
+            <td>{{item.casSidepanel}}</td>
+            <td>{{item.motherboardFormFactor}}</td>
+            <td>{{ item.color }}</td>
+            <td>{{item.maxCardLength}} mm</td>
+            <td>{{item.maxCoolerHeight}} mm</td>
+            <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
+            <td class="w7"><div><button class="add" (click)="addToConfig('case', item)">Add to Build</button></div></td>
+            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <!-- Fan -->
+    <ng-container *ngIf="Fans">
+      <div class="c10">
+        <div class="checkbox-container">
+          <div style="margin-top: 15px; font-weight: bold; font-size: 25px;">Filters</div>
+          <div class="line2"></div>
+          <ng-container>
+            <div (click)="toggleTabs('price')"
+                 [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>PRICE:</b>
+            </div>
+            <div *ngIf="tabs['price']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['minSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredFans"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['minSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <input
+                  type="range"
+                  step="0.01"
+                  [(ngModel)]="sliderFilters['maxSelectedPrice']"
+                  [min]="sliderFilters['minPrice']"
+                  [max]="sliderFilters['maxPrice']"
+                  (input)="filteredCPUs"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedPrice', 'minPrice', 'maxPrice') * 0.86"
+                >
+                  {{ sliderFilters['maxSelectedPrice'] | number: '1.0-0'}}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedPrice', 'minPrice', 'maxPrice')"
+                     [style.width.%]="getWidth('minSelectedPrice', 'maxSelectedPrice', 'minPrice', 'maxPrice')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('form')"
+                 [class.underline]="tabs['form']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>SIZE:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['form']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(storageFormFilter)">
+                  <input type="checkbox" [id]=key [(ngModel)]="storageFormFilter[key]" (ngModelChange)="filteredFans"/>
+                  <label [for]=key>{{ key }} mm</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('rpm')"
+                 [class.underline]="tabs['rpm']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>RPM:</b>
+            </div>
+            <div *ngIf="tabs['rpm']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['minSelectedRPM']"
+                  [min]="sliderFilters['minRPM']"
+                  [max]="sliderFilters['maxRPM']"
+                  (input)="filteredFans"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedRPM', 'minRPM', 'maxRPM') * 0.82"
+                >
+                  {{ sliderFilters['minSelectedRPM'] }}
+                </div>
+                <input
+                  type="range"
+                  [(ngModel)]="sliderFilters['maxSelectedRPM']"
+                  [min]="sliderFilters['minRPM']"
+                  [max]="sliderFilters['maxRPM']"
+                  (input)="filteredFans"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedRPM', 'minRPM', 'maxRPM') * 0.82"
+                >
+                  {{ sliderFilters['maxSelectedRPM'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedRPM', 'minRPM', 'maxRPM')"
+                     [style.width.%]="getWidth('minSelectedRPM', 'maxSelectedRPM', 'minRPM', 'maxRPM')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('airflow')"
+                 [class.underline]="tabs['airflow']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>AIRFLOW:</b>
+            </div>
+            <div *ngIf="tabs['airflow']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.1"
+                  [(ngModel)]="sliderFilters['minSelectedAirflow']"
+                  [min]="sliderFilters['minAirflow']"
+                  [max]="sliderFilters['maxAirflow']"
+                  (input)="filteredFans"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedAirflow', 'minAirflow', 'maxAirflow') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedAirflow'] }}
+                </div>
+                <input
+                  type="range"
+                  step="0.1"
+                  [(ngModel)]="sliderFilters['maxSelectedAirflow']"
+                  [min]="sliderFilters['minAirflow']"
+                  [max]="sliderFilters['maxAirflow']"
+                  (input)="filteredFans"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedAirflow', 'minAirflow', 'maxAirflow') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedAirflow'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedAirflow', 'minAirflow', 'maxAirflow')"
+                     [style.width.%]="getWidth('minSelectedAirflow', 'maxSelectedAirflow', 'minAirflow', 'maxAirflow')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('noise')"
+                 [class.underline]="tabs['noise']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>NOISE:</b>
+            </div>
+            <div *ngIf="tabs['noise']" @fadeInOut>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  step="0.1"
+                  [(ngModel)]="sliderFilters['minSelectedNoise']"
+                  [min]="sliderFilters['minNoise']"
+                  [max]="sliderFilters['maxNoise']"
+                  (input)="filteredFans"
+                  class="thumb thumb-left"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('minSelectedNoise', 'minNoise', 'maxNoise') * 0.9"
+                >
+                  {{ sliderFilters['minSelectedNoise'] }}
+                </div>
+                <input
+                  type="range"
+                  step="0.1"
+                  [(ngModel)]="sliderFilters['maxSelectedNoise']"
+                  [min]="sliderFilters['minNoise']"
+                  [max]="sliderFilters['maxNoise']"
+                  (input)="filteredFans"
+                  class="thumb thumb-right"
+                />
+                <div
+                  class="value-display"
+                  [style.left.%]="1+getLeftPosition('maxSelectedNoise', 'minNoise', 'maxNoise') * 0.9"
+                >
+                  {{ sliderFilters['maxSelectedNoise'] }}
+                </div>
+                <div class="slider-track"></div>
+                <div class="range-highlight" [style.left.%]="getLeftPosition('minSelectedNoise', 'minNoise', 'maxNoise')"
+                     [style.width.%]="getWidth('minSelectedNoise', 'maxSelectedNoise', 'minNoise', 'maxNoise')"></div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+          <ng-container>
+            <div (click)="toggleTabs('rgb')"
+                 [class.underline]="tabs['rgb']" style="cursor: pointer; font-size: 13px;"
+            >
+              <b>RGB:</b>
+            </div>
+            <div>
+              <div *ngIf="tabs['rgb']" @fadeInOut>
+                <div class="checkbox-item" *ngFor="let key of Object.keys(checkboxFilter1)">
+                  <input type="checkbox" [id]=key [(ngModel)]="checkboxFilter1[key]" (ngModelChange)="filteredFans"/>
+                  <label [for]=key>{{ key }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="line2"></div>
+          </ng-container>
+
+        </div>
+      </div>
+
+      <div class="c90">
+        <table>
+          <thead>
+          <tr>
+            <th class="w30">
+              <div class="input-wrapper-s">
+                <input
+                  type = "text"
+                  placeholder="Search {{filteredFans?.length}} Fans..."
+                  [(ngModel)]="searchQuery"
+                  class="search-input"
+                />
+              </div>
+            </th>
+            <th>Size</th>
+            <th>RPM</th>
+            <th>Airflow</th>
+            <th>Noise</th>
+            <th>RGB?</th>
+            <th>Price</th>
+            <th class="w7"></th>
+            <th class="w7"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of filteredFans">
+            <td class="w30">
+              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+                <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
+                <div class="name">{{item.name}}</div>
+              </div>
+            </td>
+            <td>{{item.size}} mm</td>
+            <td>{{item.rpm}} RPM</td>
+            <td>{{ item.airflow }} CFM</td>
+            <td>{{item.noise}} dB</td>
+            <td><input type="checkbox" [checked]="item.rgbPresent" disabled="disabled"></td>
+            <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
+            <td class="w7"><div><button class="add" (click)="addToConfig('fans', item)">Add to Build</button></div></td>
+            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+
+  </div>
+</div>
+</body>

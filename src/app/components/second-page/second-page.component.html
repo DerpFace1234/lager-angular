@@ -1,0 +1,44 @@
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular</title>
+</head>
+<body>
+<div class="container">
+  <div class="split a">
+    <img src="images/nvidia-gpu.jpg" alt="Image 1" (click)="toPage('/picker', ComponentType.CASE, '0')">
+    <div class="text">Case</div>
+  </div>
+
+  <div class="split a">
+    <img src="images/nvidia-gpu.jpg" alt="Image 1" (click)="toPage('/picker', ComponentType.CPU, '0')">
+    <div class="text">CPU</div>
+  </div>
+
+  <div class="split a" (click)="toPage('/picker', ComponentType.CPUCOOLER, '0')">
+    <img src="images/rgb-computer.jpg" alt="Image 2">
+    <div class="text">CPU Cooler</div>
+  </div>
+
+  <div class="split a">
+    <img src="images/nvidia-gpu.jpg" alt="Image 1" (click)="toPage('/picker', ComponentType.MOTHERBOARD, '0')">
+    <div class="text">Motherboard</div>
+  </div>
+
+  <div class="split a" (click)="toPage('/picker', ComponentType.MEMORY, '0')">
+    <img src="images/rgb-computer.jpg" alt="Image 2">
+    <div class="text">Memory</div>
+  </div>
+
+  <div class="split a">
+    <img src="images/nvidia-gpu.jpg" alt="Image 1" (click)="toPage('/picker', ComponentType.GPU, '0')">
+    <div class="text">GPU</div>
+  </div>
+
+  <div class="split a border-none" (click)="toPage('/picker', ComponentType.PSU, '0')">
+    <img src="images/rgb-computer.jpg" alt="Image 2">
+    <div class="text">PSU</div>
+  </div>
+
+</div>
+</body>

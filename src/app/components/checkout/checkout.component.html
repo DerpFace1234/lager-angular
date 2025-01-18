@@ -1,0 +1,51 @@
+<body>
+
+<div class="shopping">
+  <ng-container>
+    <div class="message" *ngIf="(shoppingService.cart.length === 0) || orderFail || orderSuccessful">
+      {{ feedback }}
+    </div>
+    <ng-container *ngIf="(shoppingService.cart.length > 0) && !orderFail && !orderSuccessful">
+      <div #scrollContainer class="scroll-container" tabindex="0">
+        <table>
+          <thead>
+          <tr>
+            <th></th>
+            <th class="w50"></th>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="scroll-item" *ngFor="let comp of shoppingService.cart; let i = index">
+            <td>
+              <div class="flex align-center">
+                <div>
+                  <img [src]="'data:image/png;base64,' + comp.image" height="100px" width="100px" style="margin-right: 10px;" alt="Item">
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="align-center words">{{comp.name}}</div>
+            </td>
+            <td>
+              <div class="price align-center">
+                {{comp.price | number: '1.2-2'}}€
+              </div>
+            </td>
+            <td>
+              <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon" (click)="shoppingService.removeFromCart(i)">
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+    <div class="buttons" *ngIf="shoppingService.cart.length > 0">
+      <div class="user" *ngIf="shoppingService.cart" (click)="clearCart()">Clear Cart</div>
+      <div class="user" *ngIf="shoppingService.cart" (click)="confirmOrder()">{{shoppingService.total | number: '1.2-2'}}€ - Confirm Order</div>
+    </div>
+  </ng-container>
+</div>
+
+</body>

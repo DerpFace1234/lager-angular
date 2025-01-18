@@ -1,34 +1,98 @@
 <body>
 
-<div class="input-wrapper">
-  <input
-    type = "text"
-    placeholder="Search..."
-    [(ngModel)]="searchQuery"
-    class="search-input"
-  />
+<div class="user-create">
+  <div class="text" (click)="toPageBlank('/user-create')" >Create User</div>
+  <div class="text" style="font-weight: bold;">User List</div>
 </div>
-<br>
 
 <div class="user-display">
   <div class="flex-columns">
-    <div class="c80">
+    <div class="c15">
+      <div class="checkbox-container">
+        <div class="input-wrapper">
+          <input
+            type = "text"
+            placeholder="Search..."
+            [(ngModel)]="searchQuery"
+            class="search-input"
+          />
+        </div>
+        <br>
+
+        <div (click)="toggleTypes()"
+             [class.underline]="tabs['types']" style="cursor: pointer;">
+          <div class="font-20">Display Users:</div>
+        </div>
+        <div *ngIf="tabs['types']" @fadeInOut>
+          <div class="checkbox-item">
+            <input type="checkbox" id="displayCustomers" [(ngModel)]="filters['displayCustomers']" (ngModelChange)="onCheckboxChange()"/>
+            <label for="displayCustomers">Customers</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="displayAdmins" [(ngModel)]="filters['displayAdmins']" (ngModelChange)="onCheckboxChange()"/>
+            <label for="displayAdmins">Admins</label>
+          </div>
+          <div class="checkbox-item m-b-5">
+            <input type="checkbox" id="displayProcessors" [(ngModel)]="filters['displayOrderProcessors']" (ngModelChange)="onCheckboxChange()"/>
+            <label for="displayProcessors">Order Processors</label>
+          </div>
+        </div>
+        <div class="line2 m-b-5"></div>
+
+        <div (click)="toggleAttributes()"
+             [class.underline]="tabs['attr']" style="cursor: pointer;">
+          <div class="font-20">Search by:</div>
+        </div>
+
+        <div *ngIf="tabs['attr']" @fadeInOut>
+          <div class="checkbox-item">
+            <input type="checkbox" id="firstName2" [(ngModel)]="filters['firstName']"/>
+            <label for="firstName2">First Name</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="lastName2" [(ngModel)]="filters['lastName']"/>
+            <label for="lastName2">Last Name</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="address2" [(ngModel)]="filters['address']"/>
+            <label for="address2">Address</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="birthday2" [(ngModel)]="filters['birthday']"/>
+            <label for="birthday2">Birthday</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="email2" [(ngModel)]="filters['email']"/>
+            <label for="email2">Email</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="phone2" [(ngModel)]="filters['phone']"/>
+            <label for="phone2">Phone</label>
+          </div>
+        </div>
+        <div class="line2 m-b-5"></div>
+
+      </div>
+    </div>
+
+    <div class="c85">
       <div #scrollContainer class="scroll-container" tabindex="0">
+
         <div class="scroll-item" *ngFor="let customer of filteredCustomers">
           <div class="flex-columns">
             <div class="column c50">
-              <div class="m-b-20 font-20"><b>{{customer.firstName}} {{customer.lastName}}</b></div>
+              <div class="m-b-20 font-20">[{{customer.id}}] {{customer.firstName}} {{customer.lastName}}</div>
               <div class="m-b-5"> {{customer.address}} </div>
               <div class="m-b-5"> {{customer.email}} {{customer.phone}}</div>
               <div class="m-b-5"> {{customer.birthday | date:'dd.MM.yyyy'}} </div>
             </div>
             <div class="column c40">
-              Customer
+              <div class="b m-b-20">Customer</div>
             </div>
             <div class="column c10">
               <div class="bt-container">
                 <button (click)="openDeleteOverlay(customer.id, customer.firstName, customer.lastName)">🗑️</button>
-                <button (click)="openEditCustomer(customer)">✏️</button>
+                <button (click)="toPage('/edit-user', customer.id)">✏️</button>
               </div>
             </div>
           </div>
@@ -37,18 +101,19 @@
         <div class="scroll-item" *ngFor="let admin of filteredAdmins">
           <div class="flex-columns">
             <div class="column c50">
-              <div class="m-b-20 font-20"><b>{{admin.firstName}} {{admin.lastName}}</b></div>
+              <div class="m-b-20 font-20">[{{admin.id}}] {{admin.firstName}} {{admin.lastName}}</div>
               <div class="m-b-5"> {{admin.address}} </div>
               <div class="m-b-5"> {{admin.email}} {{admin.phone}}</div>
               <div class="m-b-5"> {{admin.birthday | date:'dd.MM.yyyy'}} </div>
             </div>
             <div class="column c40">
-              {{ admin.adminRole }}
+              <div class="b m-b-20">Admin</div>
+              <div>{{ admin.adminRole }}</div>
             </div>
             <div class="column c10">
               <div class="bt-container">
                 <button (click)="openDeleteOverlay(admin.id, admin.firstName, admin.lastName)">🗑️</button>
-                <button (click)="openEditAdmin(admin)">✏️</button>
+                <button (click)="toPage('/edit-user', admin.id)">✏️</button>
               </div>
             </div>
           </div>
@@ -57,20 +122,21 @@
         <div class="scroll-item" *ngFor="let processor of filteredProcessors">
           <div class="flex-columns">
             <div class="column c50">
-              <div class="m-b-20 font-20"><b>{{processor.firstName}} {{processor.lastName}}</b></div>
+              <div class="m-b-20 font-20">[{{processor.id}}] {{processor.firstName}} {{processor.lastName}}</div>
               <div class="m-b-5"> {{processor.address}} </div>
               <div class="m-b-5"> {{processor.email}} {{processor.phone}}</div>
               <div class="m-b-5"> {{processor.birthday | date:'dd.MM.yyyy'}} </div>
             </div>
             <div class="column c40">
-              {{ processor.processingArea }}
-              {{ processor.shift }}
+              <div class="b m-b-20">Order Processor</div>
+              <div>{{ processor.processingArea }}</div>
+              <div>{{ processor.shift }}</div>
             </div>
             <div class="column c10">
               <div class="bt-container">
                 <button (click)="openDeleteOverlay(processor.id, processor.firstName, processor.lastName)">🗑️</button>
-                <button (click)="openEditProcessor(processor)">✏️</button>
-                </div>
+                <button (click)="toPage('/edit-user', processor.id)">✏️</button>
+              </div>
             </div>
           </div>
         </div>
@@ -78,58 +144,6 @@
       </div>
     </div>
 
-    <div class="c20 m-l-20">
-      <div class="checkbox-container">
-        <div (click)="toggleTypes()"
-             [class.underline]="tabs['types']" style="cursor: pointer;">
-        <b>Display Types of Users:</b>
-        </div>
-        <div *ngIf="tabs['types']" @fadeInOut>
-        <div class="checkbox-item">
-          <input type="checkbox" id="displayCustomers" [(ngModel)]="filters['displayCustomers']"/>
-          <label for="displayCustomers">Customers</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="displayAdmins" [(ngModel)]="filters['displayAdmins']"/>
-          <label for="displayAdmins">Admins</label>
-        </div>
-        <div class="checkbox-item m-b-20">
-          <input type="checkbox" id="displayProcessors" [(ngModel)]="filters['displayOrderProcessors']"/>
-          <label for="displayProcessors">Order Processors</label>
-        </div>
-        </div>
-        <div (click)="toggleAttributes()"
-             [class.underline]="tabs['attr']" style="cursor: pointer;">
-        <b>Filter by common attributes:</b>
-        </div>
-        <div *ngIf="tabs['attr']" @fadeInOut>
-        <div class="checkbox-item">
-          <input type="checkbox" id="firstName2" [(ngModel)]="filters['firstName']"/>
-          <label for="firstName2">First Name</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="lastName2" [(ngModel)]="filters['lastName']"/>
-          <label for="lastName2">Last Name</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="address2" [(ngModel)]="filters['address']"/>
-          <label for="address2">Address</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="birthday2" [(ngModel)]="filters['birthday']"/>
-          <label for="birthday2">Birthday</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="email2" [(ngModel)]="filters['email']"/>
-          <label for="email2">Email</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="phone2" [(ngModel)]="filters['phone']"/>
-          <label for="phone2">Phone</label>
-        </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -140,132 +154,6 @@
     </div>
     <div class="overlay-button-holder">
       <button style="background-color: red" (click)="deleteUser(toBeDeleted.id)">Delete</button>
-      <button (click)="closeOverlay()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" *ngIf="showOverlayCustomer">
-  <div class="overlay-content">
-    <div class="overlay-flex-columns">
-      <div class="overlay-column">
-        <label>
-          ID: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.id" readonly />
-        </label>
-        <label>
-          Name: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.firstName" />
-        </label>
-        <label>
-          Lastname: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.lastName" />
-        </label>
-        <label>
-          Address: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.address" />
-        </label>
-      </div>
-      <div class="overlay-column">
-        <label>
-          Birthday: <input class="m-b-20" type="date" [(ngModel)]="editCustomer.birthday" />
-        </label>
-        <label>
-          Email: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.email" />
-        </label>
-        <label>
-          Phone: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.phone" />
-        </label>
-      </div>
-    </div>
-    <div class="overlay-button-holder">
-      <button (click)="saveChanges(UserType.CUSTOMER)">Save</button>
-      <button (click)="closeOverlay()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" *ngIf="showOverlayProcessor">
-  <div class="overlay-content">
-    <div class="overlay-flex-columns m-b-20">
-      <div class="overlay-column">
-        <label>
-          ID: <input class="m-b-20" type="text" [(ngModel)]="editOrderProcessor.id" readonly />
-        </label>
-        <label>
-          Name: <input class="m-b-20" type="text" [(ngModel)]="editOrderProcessor.firstName" />
-        </label>
-        <label>
-          Lastname: <input class="m-b-20" type="text" [(ngModel)]="editOrderProcessor.lastName" />
-        </label>
-        <label>
-          Address: <input type="text" [(ngModel)]="editOrderProcessor.address" />
-        </label>
-      </div>
-      <div class="overlay-column">
-        <label>
-          Birthday: <input class="m-b-20" type="date" [(ngModel)]="editOrderProcessor.birthday" />
-        </label>
-        <label>
-          Email: <input class="m-b-20" type="text" [(ngModel)]="editOrderProcessor.email" />
-        </label>
-        <label>
-          Phone: <input type="text" [(ngModel)]="editOrderProcessor.phone" />
-        </label>
-      </div>
-    </div>
-    <div class="line m-b-20"></div>
-    <div class="overlay-flex-columns">
-      <div class="overlay-column">
-        <label for="processingArea">Processing Area:</label>
-        <input class="m-b-20" id="processingArea" [(ngModel)]="editOrderProcessor.processingArea" name="processingArea" required type="text">
-      </div>
-      <div class="overlay-column">
-        <label for="shift">Shift:</label>
-        <input class="m-b-20" id="shift" [(ngModel)]="editOrderProcessor.shift" name="processingArea" required type="text">
-      </div>
-    </div>
-    <div class="overlay-button-holder">
-      <button (click)="saveChanges(UserType.ORDER_PROCESSOR)">Save</button>
-      <button (click)="closeOverlay()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" *ngIf="showOverlayAdmin">
-  <div class="overlay-content">
-    <div class="overlay-flex-columns m-b-20">
-      <div class="overlay-column">
-        <label>
-          ID: <input class="m-b-20" type="text" [(ngModel)]="editAdmin.id" readonly />
-        </label>
-        <label>
-          Name: <input class="m-b-20" type="text" [(ngModel)]="editAdmin.firstName" />
-        </label>
-        <label>
-          Lastname: <input class="m-b-20" type="text" [(ngModel)]="editAdmin.lastName" />
-        </label>
-        <label>
-          Address: <input type="text" [(ngModel)]="editAdmin.address" />
-        </label>
-      </div>
-      <div class="overlay-column">
-        <label>
-          Birthday: <input class="m-b-20" type="date" [(ngModel)]="editAdmin.birthday" />
-        </label>
-        <label>
-          Email: <input class="m-b-20" type="text" [(ngModel)]="editAdmin.email" />
-        </label>
-        <label>
-          Phone: <input type="text" [(ngModel)]="editAdmin.phone" />
-        </label>
-      </div>
-    </div>
-    <div class="line m-b-20"></div>
-    <div class="overlay-flex-columns">
-      <div class="overlay-column">
-        <label for="adminRole">Admin Role:</label>
-        <input class="m-b-20" id="adminRole" [(ngModel)]="editAdmin.adminRole" name="adminRole" required type="text">
-      </div>
-    </div>
-    <div class="overlay-button-holder">
-      <button (click)="saveChanges(UserType.ADMIN)">Save</button>
       <button (click)="closeOverlay()">Cancel</button>
     </div>
   </div>

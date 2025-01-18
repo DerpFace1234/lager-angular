@@ -68,7 +68,7 @@ form input {
 }
 
 .login-btn {
-  background-color: #0078D4;
+  background-color: #2c87c3;
   color: white;
 }
 
@@ -78,7 +78,7 @@ form input {
 }
 
 .login-btn:hover {
-  background-color: #007700;
+  background-color: #1e5c85;
 }
 
 .cancel-btn:hover {

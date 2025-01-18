@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {Admin, Customer, OrderProcessor, UserType} from '../../../model/user.model';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-user',
@@ -18,7 +19,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 export class CreateUserComponent{
   userTypes:UserType[] = Object.values(UserType);
   selectedUserType: UserType = UserType.CUSTOMER;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   valueStorage = {
     firstName: "",
@@ -75,6 +76,9 @@ export class CreateUserComponent{
         control.markAsTouched();
       });
     }
+  }
+  toPageBlank(nav: string){
+    this.router.navigate([nav]);
   }
 
   private handleCreation(response: any, form: any): void {

@@ -1,8 +1,9 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {Admin, Customer, OrderProcessor, User, UserType} from '../../../model/user.model';
 import {Subscription} from 'rxjs';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-list',
@@ -34,8 +35,8 @@ export class UserListComponent implements OnInit {
     email: false,
     phone: false,
     displayCustomers: true,
-    displayAdmins: true,
-    displayOrderProcessors: true,
+    displayAdmins: false,
+    displayOrderProcessors: false,
   }
   toBeDeleted:{id:number|undefined, firstName:string, lastName:string} = {
     id: 0,
@@ -44,20 +45,12 @@ export class UserListComponent implements OnInit {
   }
 
   showDeleteOverlay: boolean = false;
-  showOverlayCustomer: boolean = false;
-  showOverlayAdmin: boolean = false;
-  showOverlayProcessor: boolean = false;
   private subscriptions: Subscription = new Subscription();
-  editCustomer: Customer = new Customer("", "", "", new Date(), "", "", "", UserType.CUSTOMER, []);
-  editAdmin: Admin = new Admin("", "", "", new Date(), "", "", "", UserType.ADMIN, "");
-  editOrderProcessor: OrderProcessor = new OrderProcessor("", "", "", new Date(), "", "", "", UserType.ORDER_PROCESSOR, [], [], "", "");
   protected readonly UserType = UserType;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router:Router) {}
 
   ngOnInit(): void {
     this.loadCustomers();
-    this.loadAdmins();
-    this.loadOrderProcessors();
 
     this.subscriptions.add(
       this.userService.refreshUserList$.subscribe(() => {
@@ -70,7 +63,12 @@ export class UserListComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-
+  toPage(nav: string, id:number | undefined){
+    this.router.navigate([nav, id]);
+  }
+  toPageBlank(nav: string){
+    this.router.navigate([nav]);
+  }
   loadCustomers() {
     this.userService.getCustomers().subscribe((data: Customer[]) => {
       this.customers = data;
@@ -93,25 +91,6 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  saveChanges(type: UserType){
-    if(type === UserType.CUSTOMER){
-      this.userService.updateCustomer(this.editCustomer.id, this.editCustomer).subscribe(
-        response => this.userService.triggerRefreshUserList(),
-        error => console.error("Error updating user", error)
-      );
-    } else if(type === UserType.ADMIN) {
-      this.userService.updateAdmin(this.editAdmin.id, this.editAdmin).subscribe(
-        response => this.userService.triggerRefreshUserList(),
-        error => console.error("Error updating user", error)
-      );
-    } else if(type === UserType.ORDER_PROCESSOR) {
-      this.userService.updateOrderProcessor(this.editOrderProcessor.id, this.editOrderProcessor).subscribe(
-        response => this.userService.triggerRefreshUserList(),
-        error => console.error("Error updating user", error)
-      );
-    }
-    this.closeOverlay();
-  }
   deleteUser(id: number | undefined){
     this.userService.deleteUser(id).subscribe(
       response => this.userService.triggerRefreshUserList(),
@@ -127,42 +106,25 @@ export class UserListComponent implements OnInit {
   }
   closeOverlay() {
     this.showDeleteOverlay = false;
-    this.showOverlayCustomer = false;
-    this.showOverlayAdmin = false;
-    this.showOverlayProcessor = false;
   }
-  @HostListener('keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    const scrollAmount = 200;
 
-    if (this.scrollContainer) {
-      if (event.key === 'ArrowDown') {
-        this.scrollContainer.nativeElement.scrollBy({
-          top: scrollAmount,
-          behavior: 'smooth'
-        });
-      } else if (event.key === 'ArrowUp') {
-        this.scrollContainer.nativeElement.scrollBy({
-          top: -scrollAmount,
-          behavior: 'smooth'
-        });
-      }
+  onCheckboxChange(){
+    if(this.filters['displayCustomers']){
+      this.loadCustomers();
+    } else {
+      this.customers = [];
+    }
+    if(this.filters['displayAdmins']){
+      this.loadAdmins();
+    } else {
+      this.admins = [];
+    }
+    if(this.filters['displayOrderProcessors']){
+      this.loadOrderProcessors();
+    } else {
+      this.processors = [];
     }
   }
-
-  openEditCustomer(user: Customer){
-    this.editCustomer = {...user};
-    this.showOverlayCustomer = true;
-  }
-  openEditAdmin(user: Admin){
-    this.editAdmin = {...user};
-    this.showOverlayAdmin = true;
-  }
-  openEditProcessor(user: OrderProcessor){
-    this.editOrderProcessor = {...user};
-    this.showOverlayProcessor = true;
-  }
-
   get filteredCustomers(){
     if(this.filters['displayCustomers']){
       return this.filteredUsers(this.customers);

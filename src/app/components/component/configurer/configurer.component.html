@@ -1,0 +1,897 @@
+<body>
+
+<div class="container">
+
+  <div class="flex m-b-20 pos-rel pointer">
+    <div class="top-row">Compatibility Errors: {{compatibilityErrors.length}} Errors, {{warnings.length}} Warnings</div>
+    <div class="top-row-wattage">Estimated Wattage: {{componentsService.estimatedWattage}}W</div>
+    <div class="hover-content" *ngIf="compatibilityErrors.length > 0 || warnings.length > 0">
+      <ng-container *ngFor="let item of compatibilityErrors">
+        <div style="width: 100%;">{{item}}</div>
+      </ng-container>
+      <ng-container *ngFor="let item of warnings">
+        <div style="width: 100%;">{{item}}</div>
+      </ng-container>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th class="w7">Component</th>
+      <th class="w20"></th>
+      <th>Selection</th>
+      <th>Price</th>
+      <th></th>
+      <th class="w7"></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <ng-container *ngIf="pickedCPU || pickedCPUCooler || pickedMotherboard || pickedMemories || pickedGPUs || pickedStorages || pickedPSU || pickedFans || pickedCase">
+      <tr>
+        <td></td>
+        <td></td>
+        <td><button class="add" (click)="addAllToCart()">{{total | number:'1.2-2'}}€ - Add all to cart</button></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </ng-container>
+
+    <tr>
+      <td class="w7">
+        <div class="component pointer" (click)="toPage('/picker', ComponentType.CPU, '0')">CPU</div>
+      </td>
+      <td class="w20"></td>
+      <td>
+        <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.CPU,'0')">
+          <div *ngIf="pickedCPU"><img [src]="'data:image/png;base64,' + pickedCPU.image" alt="CPU" width="100px" height="100px"></div>
+          <div *ngIf="pickedCPU" class="name">{{pickedCPU.name}}</div>
+          <div *ngIf="!pickedCPU"><button>+ Pick CPU</button></div>
+        </div>
+      </td>
+      <td>
+        <div *ngIf="pickedCPU" class="price">{{ pickedCPU.price | number:'1.2-2'}}€</div>
+      </td>
+      <td class="w5">
+        <img *ngIf="pickedCPU" class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+             (click)="removeComponent(ComponentType.CPU, StorageInterface.M2, 0,-1)">
+      </td>
+      <td class="w10">
+        <div *ngIf="pickedCPU"><button class="add" (click)="addToCart(pickedCPU)">Add to cart</button></div>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="w7">
+        <div class="component pointer" (click)="toPage('/picker', ComponentType.CPUCOOLER, '0')">CPU Cooler</div>
+      </td>
+      <td class="w20"></td>
+      <td>
+        <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.CPUCOOLER, '0')">
+          <div *ngIf="pickedCPUCooler"><img [src]="'data:image/png;base64,' + pickedCPUCooler.image" alt="CPUCooler" width="100px" height="100px"></div>
+          <div *ngIf="pickedCPUCooler" class="name">{{pickedCPUCooler.name}}</div>
+          <div *ngIf="!pickedCPUCooler"><button>+ Pick CPU Cooler</button></div>
+        </div>
+      </td>
+      <td>
+        <div *ngIf="pickedCPUCooler" class="price">{{ pickedCPUCooler.price | number:'1.2-2' }}€</div>
+      </td>
+      <td class="w5">
+        <img *ngIf="pickedCPUCooler" class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+             (click)="removeComponent(ComponentType.CPUCOOLER, StorageInterface.M2, 0,-1)">
+      </td>
+      <td class="w10">
+        <div *ngIf="pickedCPUCooler"><button class="add" (click)="addToCart(pickedCPUCooler)">Add to cart</button></div>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="w7">
+        <div class="component pointer" (click)="toPage('/picker', ComponentType.MOTHERBOARD, '0')">Motherboard</div>
+      </td>
+      <td class="w20"></td>
+      <td>
+        <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.MOTHERBOARD, '0')">
+          <div *ngIf="pickedMotherboard"><img [src]="'data:image/png;base64,' + pickedMotherboard.image" alt="Motherboard" width="100px" height="100px"></div>
+          <div *ngIf="pickedMotherboard" class="name">{{pickedMotherboard.name}}</div>
+          <div *ngIf="!pickedMotherboard"><button>+ Pick Motherboard</button></div>
+        </div>
+      </td>
+      <td>
+        <div *ngIf="pickedMotherboard" class="price">{{ pickedMotherboard.price | number:'1.2-2' }}€</div>
+      </td>
+      <td class="w5">
+        <img *ngIf="pickedMotherboard" class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+             (click)="removeComponent(ComponentType.MOTHERBOARD, StorageInterface.M2, 0,-1)">
+      </td>
+      <td class="w10">
+        <div *ngIf="pickedMotherboard"><button class="add" (click)="addToCart(pickedMotherboard)">Add to cart</button></div>
+      </td>
+    </tr>
+
+    <!-- Memory, per Motherboard slot, with module amount in mind -->
+    <ng-container *ngIf="!pickedMemories && !pickedMotherboard">
+      <tr>
+        <td class="w7">
+          <div class="component pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">Memory</div>
+        </td>
+        <td class="w20"></td>
+        <td>
+          <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">
+            <div><button>+ Pick Memory</button></div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="!pickedMotherboard && pickedMemories">
+      <ng-container *ngFor="let _ of pickedMemories; let i = index">
+        <ng-container *ngIf="pickedMemories && pickedMemories[i]">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">Memory</div>
+            </td>
+            <td class="w20"></td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">
+                <div><img [src]="'data:image/png;base64,' + pickedMemories[i].image" alt="Memory" width="100px" height="100px"></div>
+                <div class="name">{{ pickedMemories[i].name}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="price">{{ pickedMemories[i].price | number:'1.2-2' }}€</div>
+            </td>
+            <td class="w5">
+              <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                   (click)="removeComponent(ComponentType.MEMORY, StorageInterface.M2, 0, i)">
+            </td>
+            <td class="w10">
+              <div><button class="add" (click)="addToCart(pickedMemories[i])">Add to cart</button></div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="pickedMotherboard">
+      <ng-container *ngFor="let _ of [].constructor(memSlots); let i = index">
+        <ng-container *ngIf="pickedMemories && pickedMemories[i]">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">Memory</div>
+            </td>
+            <td class="w20">
+              <ng-container *ngIf="pickedMemories[i].modules === 1">Slot {{i+1}}/{{pickedMotherboard.memorySlots}}</ng-container>
+              <ng-container *ngIf="pickedMemories[i].modules > 1">
+                Slot
+                <ng-container *ngFor="let _ of [].constructor(pickedMemories[i]?.modules); let f = index">
+                  {{i+f+1}}/{{pickedMotherboard.memorySlots}},
+                </ng-container>
+              </ng-container>
+            </td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">
+                <div><img [src]="'data:image/png;base64,' + pickedMemories[i].image" alt="Memory" width="100px" height="100px"></div>
+                <div class="name">{{ pickedMemories[i].name}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="price">{{ pickedMemories[i].price | number:'1.2-2' }}€</div>
+            </td>
+            <td class="w5">
+              <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                   (click)="removeComponent(ComponentType.MEMORY, StorageInterface.M2, 0, i)">
+            </td>
+            <td class="w10">
+              <div><button class="add" (click)="addToCart(pickedMemories[i])">Add to cart</button></div>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="pickedMemories && !pickedMemories[i]">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">Memory</div>
+            </td>
+            <td class="w20"></td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">
+                <div><button>+ Pick Memory</button></div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="!pickedMemories">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">Memory</div>
+            </td>
+            <td class="w20">Slot {{i+1}}</td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">
+                <div><button>+ Pick Memory</button></div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="pickedMemories">
+        <ng-container *ngIf="pickedMemories.length > memSlots">
+          <tr *ngFor="let item of pickedMemories.slice(memSlots); let i = index" class="too-many">
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">Memory</div>
+            </td>
+            <td class="w20"></td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.MEMORY, '0')">
+                <div><img [src]="'data:image/png;base64,' + pickedMemories.slice(memSlots)[i].image" alt="Memory" width="100px" height="100px"></div>
+                <div class="name">{{ pickedMemories.slice(memSlots)[i].name}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="price">{{ pickedMemories.slice(memSlots)[i].price | number:'1.2-2' }}€</div>
+            </td>
+            <td class="w5">
+              <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                   (click)="removeComponent(ComponentType.MEMORY, StorageInterface.M2, 0, i+memSlots)">
+            </td>
+            <td class="w10">
+              <div><button class="add" (click)="addToCart(pickedMemories[i])">Add to cart</button></div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
+    <!-- GPU, per PCIex16 -->
+    <ng-container *ngIf="!pickedGPUs && !pickedMotherboard">
+      <tr>
+        <td class="w7">
+          <div class="component pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">GPU</div>
+        </td>
+        <td class="w20"></td>
+        <td>
+          <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">
+            <div><button>+ Pick GPU</button></div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="!pickedGPUs && pickedMotherboard">
+      <tr *ngFor="let _ of [].constructor(pickedMotherboard?.pciex16); let i = index">
+        <td class="w7">
+          <div class="component pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">GPU</div>
+        </td>
+        <td class="w20">PCIex16 {{i+1}}/{{pickedMotherboard.pciex16}}</td>
+        <td>
+          <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">
+            <div><button>+ Pick GPU</button></div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="pickedGPUs && !pickedMotherboard">
+      <tr *ngFor="let item of pickedGPUs; let i = index">
+        <td class="w7">
+          <div class="component pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">GPU</div>
+        </td>
+        <td class="w20"></td>
+        <td>
+          <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">
+            <div><img [src]="'data:image/png;base64,' + pickedGPUs[i].image" alt="Memory" width="100px" height="100px"></div>
+            <div class="name">{{ pickedGPUs[i].name}}</div>
+          </div>
+        </td>
+        <td>
+          <div class="price">{{ pickedGPUs[i].price | number:'1.2-2' }}€</div>
+        </td>
+        <td class="w5">
+          <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+               (click)="removeComponent(ComponentType.GPU, StorageInterface.M2, 0, i)">
+        </td>
+        <td class="w10">
+          <div><button class="add" (click)="addToCart(pickedGPUs[i])">Add to cart</button></div>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="pickedGPUs && pickedMotherboard">
+      <tr *ngFor="let _ of [].constructor(pickedMotherboard.pciex16); let i = index">
+        <td class="w7">
+          <div class="component pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">GPU</div>
+        </td>
+        <td class="w20">PCIEx16 {{i+1}}/{{pickedMotherboard.pciex16}}</td>
+        <td>
+          <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">
+            <div *ngIf="pickedGPUs[i]"><img [src]="'data:image/png;base64,' + pickedGPUs[i].image" alt="Memory" width="100px" height="100px"></div>
+            <div *ngIf="pickedGPUs[i]" class="name">{{ pickedGPUs[i].name}}</div>
+            <div *ngIf="!pickedGPUs[i]"><button>+ Pick GPU</button></div>
+          </div>
+        </td>
+        <td>
+          <div *ngIf="pickedGPUs[i]" class="price">{{ pickedGPUs[i].price | number:'1.2-2' }}€</div>
+        </td>
+        <td class="w5">
+          <img *ngIf="pickedGPUs[i]" class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+               (click)="removeComponent(ComponentType.GPU, StorageInterface.M2, 0, i)">
+        </td>
+        <td class="w10">
+          <div *ngIf="pickedGPUs[i]"><button class="add" (click)="addToCart(pickedGPUs[i])">Add to cart</button></div>
+        </td>
+      </tr>
+
+      <ng-container *ngIf="pickedGPUs.length > pickedMotherboard.pciex16">
+        <tr *ngFor="let item of pickedGPUs.slice(pickedMotherboard.pciex16); let i = index" class="too-many">
+          <td class="w7">
+            <div class="component pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">GPU</div>
+          </td>
+          <td class="w20"></td>
+          <td>
+            <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.GPU, '0')">
+              <div><img [src]="'data:image/png;base64,' + pickedGPUs.slice(pickedMotherboard.pciex16)[i].image" alt="GPU" width="100px" height="100px"></div>
+              <div class="name">{{ pickedGPUs.slice(pickedMotherboard.pciex16)[i].name}}</div>
+            </div>
+          </td>
+          <td>
+            <div class="price">{{ pickedGPUs.slice(pickedMotherboard.pciex16)[i].price | number:'1.2-2' }}€</div>
+          </td>
+          <td class="w5">
+            <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                 (click)="removeComponent(ComponentType.GPU, StorageInterface.M2, 0, i+pickedMotherboard.pciex16)">
+          </td>
+          <td class="w10">
+            <div><button class="add" (click)="addToCart(pickedGPUs[i])">Add to cart</button></div>
+          </td>
+        </tr>
+      </ng-container>
+    </ng-container>
+
+    <!-- Drives, split into M2, SATA -->
+    <ng-container *ngIf="!pickedSATA && !pickedM2 && !pickedMotherboard">
+      <tr>
+        <td class="w7">
+          <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, '0')">Storage</div>
+        </td>
+        <td class="w20"></td>
+        <td>
+          <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, '0')">
+            <div><button>+ Pick Storage</button></div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="pickedStorages && !pickedMotherboard">
+      <tr *ngFor="let item of pickedStorages; let i = index">
+        <td class="w7">
+          <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, '0')">Storage</div>
+        </td>
+        <td class="w20"></td>
+        <td>
+          <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, '0')">
+            <div><img [src]="'data:image/png;base64,' + pickedStorages[i].image" alt="Memory" width="100px" height="100px"></div>
+            <div class="name">{{ pickedStorages[i].name}}</div>
+          </div>
+        </td>
+        <td>
+          <div class="price">{{ pickedStorages[i].price | number:'1.2-2' }}€</div>
+        </td>
+        <td class="w5">
+          <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+               (click)="removeComponent(ComponentType.STORAGE, StorageInterface.M2, -2, i)">
+        </td>
+        <td class="w10">
+          <div><button class="add" (click)="addToCart(pickedStorages[i])">Add to cart</button></div>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="pickedMotherboard">
+      <ng-container *ngFor="let _ of [].constructor(pickedMotherboard.m2Slots); let i = index">
+        <ng-container *ngIf="pickedM2 && pickedM2[i]">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'm2')">Storage</div>
+            </td>
+            <td class="w20">M2, Slot {{i+1}}/{{pickedMotherboard.m2Slots}}</td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'm2')">
+                <div><img [src]="'data:image/png;base64,' + pickedM2[i].image" alt="Memory" width="100px" height="100px"></div>
+                <div class="name">{{ pickedM2[i].name}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="price">{{ pickedM2[i].price | number:'1.2-2' }}€</div>
+            </td>
+            <td class="w5">
+              <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                   (click)="removeComponent(ComponentType.STORAGE, StorageInterface.M2, 0, i)">
+            </td>
+            <td class="w10">
+              <div><button class="add" (click)="addToCart(pickedM2[i])">Add to cart</button></div>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="pickedM2 && !pickedM2[i]">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'm2')">Storage</div>
+            </td>
+            <td class="w20">M2, Slot {{i+1}}/{{pickedMotherboard.m2Slots}}</td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'm2')">
+                <div><button>+ Pick Storage</button></div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="!pickedM2">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'm2')">Storage</div>
+            </td>
+            <td class="w20">M2, Slot {{i+1}}/{{pickedMotherboard.m2Slots}}</td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'm2')">
+                <div><button>+ Pick Storage</button></div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="pickedM2">
+        <ng-container *ngIf="pickedM2.length > pickedMotherboard.m2Slots">
+          <tr *ngFor="let item of pickedM2.slice(pickedMotherboard.m2Slots); let i = index" class="too-many">
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'm2')">Storage</div>
+            </td>
+            <td class="w20">M2</td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'm2')">
+                <div><img [src]="'data:image/png;base64,' + pickedM2.slice(pickedMotherboard.m2Slots)[i].image" alt="Memory" width="100px" height="100px"></div>
+                <div class="name">{{ pickedM2.slice(pickedMotherboard.m2Slots)[i].name}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="price">{{ pickedM2.slice(pickedMotherboard.m2Slots)[i].price | number:'1.2-2' }}€</div>
+            </td>
+            <td class="w5">
+              <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                   (click)="removeComponent(ComponentType.STORAGE, StorageInterface.M2, 0, i+pickedMotherboard.m2Slots)">
+            </td>
+            <td class="w10">
+              <div><button class="add" (click)="addToCart(pickedM2[i])">Add to cart</button></div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngFor="let _ of [].constructor(pickedMotherboard.sata); let i = index">
+        <ng-container *ngIf="pickedSATA && pickedSATA[i]">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'sata')">Storage</div>
+            </td>
+            <td class="w20">SATA, Slot {{i+1}}/{{pickedMotherboard.sata}}</td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'sata')">
+                <div><img [src]="'data:image/png;base64,' + pickedSATA[i].image" alt="Memory" width="100px" height="100px"></div>
+                <div class="name">{{ pickedSATA[i].name}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="price">{{ pickedSATA[i].price | number:'1.2-2' }}€</div>
+            </td>
+            <td class="w5">
+              <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                   (click)="removeComponent(ComponentType.STORAGE, StorageInterface.SATA, 0, i)">
+            </td>
+            <td class="w10">
+              <div><button class="add" (click)="addToCart(pickedSATA[i])">Add to cart</button></div>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="pickedSATA && !pickedSATA[i]">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'sata')">Storage</div>
+            </td>
+            <td class="w20">SATA, Slot {{i+1}}/{{pickedMotherboard.sata}}</td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'sata')">
+                <div><button>+ Pick Storage</button></div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="!pickedSATA">
+          <tr>
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'sata')">Storage</div>
+            </td>
+            <td class="w20">SATA, Slot {{i+1}}/{{pickedMotherboard.sata}}</td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'sata')">
+                <div><button>+ Pick Storage</button></div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="pickedSATA">
+        <ng-container *ngIf="pickedSATA.length > pickedMotherboard.sata">
+          <tr *ngFor="let item of pickedSATA.slice(pickedMotherboard.sata); let i = index" class="too-many">
+            <td class="w7">
+              <div class="component pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'sata')">Storage</div>
+            </td>
+            <td class="w20">SATA</td>
+            <td>
+              <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.STORAGE, 'sata')">
+                <div><img [src]="'data:image/png;base64,' + pickedSATA.slice(pickedMotherboard.sata)[i].image" alt="Memory" width="100px" height="100px"></div>
+                <div class="name">{{ pickedSATA.slice(pickedMotherboard.sata)[i].name}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="price">{{ pickedSATA.slice(pickedMotherboard.sata)[i].price | number:'1.2-2' }}€</div>
+            </td>
+            <td class="w5">
+              <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                   (click)="removeComponent(ComponentType.STORAGE, StorageInterface.SATA, 0, i+pickedMotherboard.sata)">
+            </td>
+            <td class="w10">
+              <div><button class="add" (click)="addToCart(pickedSATA[i])">Add to cart</button></div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
+    <!--- PSU -->
+    <tr>
+      <td class="w7">
+        <div class="component pointer" (click)="toPage('/picker', ComponentType.PSU, '0')">PSU</div>
+      </td>
+      <td class="w20"></td>
+      <td>
+        <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.PSU, '0')">
+          <div *ngIf="pickedPSU"><img [src]="'data:image/png;base64,' + pickedPSU.image" alt="PSU" width="100px" height="100px"></div>
+          <div *ngIf="pickedPSU" class="name">{{pickedPSU.name}}</div>
+          <div *ngIf="!pickedPSU"><button>+ Pick PSU</button></div>
+        </div>
+      </td>
+      <td>
+        <div *ngIf="pickedPSU" class="price">{{ pickedPSU.price | number:'1.2-2' }}€</div>
+      </td>
+      <td class="w10">
+        <img *ngIf="pickedPSU" class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+             (click)="removeComponent(ComponentType.PSU, StorageInterface.M2, 0, -1)">
+      </td>
+      <td class="w5">
+        <div *ngIf="pickedPSU"><button class="add" (click)="addToCart(pickedPSU)">Add to cart</button></div>
+      </td>
+    </tr>
+
+    <!--- Case -->
+    <tr>
+      <td class="w7">
+        <div class="component pointer" (click)="toPage('/picker', ComponentType.CASE, '0')">Case</div>
+      </td>
+      <td class="w20"></td>
+      <td>
+        <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.CASE, '0')">
+          <div *ngIf="pickedCase"><img [src]="'data:image/png;base64,' + pickedCase.image" alt="Case" width="100px" height="100px"></div>
+          <div *ngIf="pickedCase" class="name">{{pickedCase.name}}</div>
+          <div *ngIf="!pickedCase"><button>+ Pick Case</button></div>
+        </div>
+      </td>
+      <td>
+        <div *ngIf="pickedCase" class="price">{{ pickedCase.price | number:'1.2-2' }}€</div>
+      </td>
+      <td class="w10">
+        <img *ngIf="pickedCase" class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+             (click)="removeComponent(ComponentType.CASE, StorageInterface.M2, 0, -1)">
+      </td>
+      <td class="w5">
+        <div *ngIf="pickedCase"><button class="add" (click)="addToCart(pickedCase)">Add to cart</button></div>
+      </td>
+    </tr>
+
+    <!-- Fans, split into 80, 120, 140 -->
+    <ng-container *ngIf="!picked140F && !picked80F && !picked120F && !pickedCase">
+      <tr>
+        <td class="w7">
+          <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '0')">Fan</div>
+        </td>
+        <td class="w20"></td>
+        <td>
+          <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '0')">
+            <div><button>+ Pick Fan</button></div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="pickedFans && !pickedCase">
+      <tr *ngFor="let item of pickedFans; let i = index">
+        <td class="w7">
+          <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '0')">Fan</div>
+        </td>
+        <td class="w20"></td>
+        <td>
+          <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '0')">
+            <div><img [src]="'data:image/png;base64,' + pickedFans[i].image" alt="Memory" width="100px" height="100px"></div>
+            <div class="name">{{ pickedFans[i].name}}</div>
+          </div>
+        </td>
+        <td>
+          <div class="price">{{ pickedFans[i].price | number:'1.2-2' }}€</div>
+        </td>
+        <td class="w5">
+          <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+               (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, -2, i)">
+        </td>
+        <td class="w10">
+          <div><button class="add" (click)="addToCart(pickedFans[i])">Add to cart</button></div>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="pickedCase">
+      <ng-container *ngIf="(fans80 ?? 0) >= 0">
+        <ng-container *ngFor="let _ of [].constructor(fans80); let i = index">
+          <ng-container *ngIf="picked80F && picked80F[i]">
+            <tr>
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '80')">Fan</div>
+              </td>
+              <td class="w20">80mm, Slot {{i+1}}/{{fans80}}</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '80')">
+                  <div><img [src]="'data:image/png;base64,' + picked80F[i].image" alt="Memory" width="100px" height="100px"></div>
+                  <div class="name">{{ picked80F[i].name}}</div>
+                </div>
+              </td>
+              <td>
+                <div class="price">{{ picked80F[i].price | number:'1.2-2' }}€</div>
+              </td>
+              <td class="w5">
+                <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                     (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 80, i)">
+              </td>
+              <td class="w10">
+                <div><button class="add" (click)="addToCart(picked80F[i])">Add to cart</button></div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="picked80F && !picked80F[i]">
+            <tr>
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '80')">Fan</div>
+              </td>
+              <td class="w20">80mm, Slot {{i+1}}/{{fans80}}</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '80')">
+                  <div><button>+ Pick Fan</button></div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="!picked80F">
+            <tr>
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '80')">Fan</div>
+              </td>
+              <td class="w20">80mm, Slot {{i+1}}/{{fans80}}</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '80')">
+                  <div><button>+ Pick Fan</button></div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="picked80F && fans80 !== null && (picked80F.length > fans80)">
+          <ng-container *ngIf="picked80F.length > fans80">
+            <tr *ngFor="let item of picked80F.slice(fans80); let i = index" class="too-many">
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '80')">Fan</div>
+              </td>
+              <td class="w20">80mm</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '80')">
+                  <div><img [src]="'data:image/png;base64,' + picked80F.slice(fans80)[i].image" alt="Memory" width="100px" height="100px"></div>
+                  <div class="name">{{ picked80F.slice(fans80)[i].name}}</div>
+                </div>
+              </td>
+              <td>
+                <div class="price">{{ picked80F.slice(fans80)[i].price | number:'1.2-2' }}€</div>
+              </td>
+              <td class="w5">
+                <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                     (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 80, i+ fans80)">
+              </td>
+              <td class="w10">
+                <div><button class="add" (click)="addToCart(picked80F[i])">Add to cart</button></div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="(fans120 ?? 0) >= 0">
+        <ng-container *ngFor="let _ of [].constructor(fans120); let i = index">
+          <ng-container *ngIf="picked120F && picked120F[i]">
+            <tr>
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '120')">Fan</div>
+              </td>
+              <td class="w20">120mm, Slot {{i+1}}/{{fans120}}</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '120')">
+                  <div><img [src]="'data:image/png;base64,' + picked120F[i].image" alt="Memory" width="100px" height="100px"></div>
+                  <div class="name">{{ picked120F[i].name}}</div>
+                </div>
+              </td>
+              <td>
+                <div class="price">{{ picked120F[i].price | number:'1.2-2' }}€</div>
+              </td>
+              <td class="w5">
+                <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                     (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 120, i)">
+              </td>
+              <td class="w10">
+                <div><button class="add" (click)="addToCart(picked120F[i])">Add to cart</button></div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="picked120F && !picked120F[i]">
+            <tr>
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '120')">Fan</div>
+              </td>
+              <td class="w20">120mm, Slot {{i+1}}/{{fans120}}</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '120')">
+                  <div><button>+ Pick Fan</button></div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="!picked120F">
+            <tr>
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '120')">Fan</div>
+              </td>
+              <td class="w20">120mm, Slot {{i+1}}/{{fans120}}</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '120')">
+                  <div><button>+ Pick Fan</button></div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="picked120F && fans120 !== null && (picked120F.length > fans120)">
+          <ng-container *ngIf="picked120F.length > fans120">
+            <tr *ngFor="let item of picked120F.slice(fans120); let i = index" class="too-many">
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '120')">Fan</div>
+              </td>
+              <td class="w20">120mm</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '120')">
+                  <div><img [src]="'data:image/png;base64,' + picked120F.slice(fans120)[i].image" alt="Memory" width="100px" height="100px"></div>
+                  <div class="name">{{ picked120F.slice(fans120)[i].name}}</div>
+                </div>
+              </td>
+              <td>
+                <div class="price">{{ picked120F.slice(fans120)[i].price | number:'1.2-2' }}€</div>
+              </td>
+              <td class="w5">
+                <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                     (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 120, i+ fans120)">
+              </td>
+              <td class="w10">
+                <div><button class="add" (click)="addToCart(picked120F[i])">Add to cart</button></div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="(fans140 ?? 0) >= 0">
+        <ng-container *ngFor="let _ of [].constructor(fans140); let i = index">
+          <ng-container *ngIf="picked140F && picked140F[i]">
+            <tr>
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '140')">Fan</div>
+              </td>
+              <td class="w20">140mm, Slot {{i+1}}/{{fans140}}</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '140')">
+                  <div><img [src]="'data:image/png;base64,' + picked140F[i].image" alt="Memory" width="100px" height="100px"></div>
+                  <div class="name">{{ picked140F[i].name}}</div>
+                </div>
+              </td>
+              <td>
+                <div class="price">{{ picked140F[i].price | number:'1.2-2' }}€</div>
+              </td>
+              <td class="w5">
+                <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                     (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 140, i)">
+              </td>
+              <td class="w10">
+                <div><button class="add" (click)="addToCart(picked140F[i])">Add to cart</button></div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="picked140F && !picked140F[i]">
+            <tr>
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '140')">Fan</div>
+              </td>
+              <td class="w20">140mm, Slot {{i+1}}/{{fans140}}</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '140')">
+                  <div><button>+ Pick Fan</button></div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="!picked140F">
+            <tr>
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '140')">Fan</div>
+              </td>
+              <td class="w20">140mm, Slot {{i+1}}/{{fans140}}</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '140')">
+                  <div><button>+ Pick Fan</button></div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="picked140F && fans140 !== null && (picked140F.length > fans140)">
+          <ng-container *ngIf="picked140F.length > fans140">
+            <tr *ngFor="let item of picked140F.slice(fans140); let i = index" class="too-many">
+              <td class="w7">
+                <div class="component pointer" (click)="toPage('/picker', ComponentType.FAN, '140')">Fan</div>
+              </td>
+              <td class="w20">140mm</td>
+              <td>
+                <div class="flex align-center pointer" (click)="toPage('/picker', ComponentType.FAN, '140')">
+                  <div><img [src]="'data:image/png;base64,' + picked140F.slice(fans140)[i].image" alt="Memory" width="100px" height="100px"></div>
+                  <div class="name">{{ picked140F.slice(fans140)[i].name}}</div>
+                </div>
+              </td>
+              <td>
+                <div class="price">{{ picked140F.slice(fans140)[i].price | number:'1.2-2' }}€</div>
+              </td>
+              <td class="w5">
+                <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon"
+                     (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 140, i+ fans140)">
+              </td>
+              <td class="w10">
+                <div><button class="add" (click)="addToCart(picked140F[i])">Add to cart</button></div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+    </ng-container>
+
+    <ng-container *ngIf="pickedCPU || pickedCPUCooler || pickedMotherboard || pickedMemories || pickedGPUs
+    || pickedStorages || pickedPSU || pickedFans || pickedCase">
+      <tr>
+        <td></td>
+        <td></td>
+        <td><button class="add" (click)="addAllToCart()">{{total | number:'1.2-2'}}€ - Add all to cart</button></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+
+</div>
+
+</body>
+

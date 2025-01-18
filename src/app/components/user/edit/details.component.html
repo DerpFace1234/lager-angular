@@ -1,0 +1,129 @@
+<body>
+
+<div class="overlay" *ngIf="editCustomer">
+  <div class="overlay-content">
+    <div class="overlay-flex-columns">
+      <div class="overlay-column">
+        <label>
+          ID: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.id" readonly />
+        </label>
+        <label>
+          Name: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.firstName" />
+        </label>
+        <label>
+          Lastname: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.lastName" />
+        </label>
+        <label>
+          Address: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.address" />
+        </label>
+      </div>
+      <div class="overlay-column">
+        <label>
+          Birthday: <input class="m-b-20" type="date" [(ngModel)]="editCustomer.birthday" />
+        </label>
+        <label>
+          Email: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.email" />
+        </label>
+        <label>
+          Phone: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.phone" />
+        </label>
+      </div>
+    </div>
+    <div class="overlay-button-holder">
+      <button (click)="saveChanges(UserType.CUSTOMER)">Save</button>
+      <button (click)="closeOverlay()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="editOrderProcessor">
+  <div class="overlay-content">
+    <div class="overlay-flex-columns m-b-20">
+      <div class="overlay-column">
+        <label>
+          ID: <input class="m-b-20" type="text" [(ngModel)]="editOrderProcessor.id" readonly />
+        </label>
+        <label>
+          Name: <input class="m-b-20" type="text" [(ngModel)]="editOrderProcessor.firstName" />
+        </label>
+        <label>
+          Lastname: <input class="m-b-20" type="text" [(ngModel)]="editOrderProcessor.lastName" />
+        </label>
+        <label>
+          Address: <input type="text" [(ngModel)]="editOrderProcessor.address" />
+        </label>
+      </div>
+      <div class="overlay-column">
+        <label>
+          Birthday: <input class="m-b-20" type="date" [(ngModel)]="editOrderProcessor.birthday" />
+        </label>
+        <label>
+          Email: <input class="m-b-20" type="text" [(ngModel)]="editOrderProcessor.email" />
+        </label>
+        <label>
+          Phone: <input type="text" [(ngModel)]="editOrderProcessor.phone" />
+        </label>
+      </div>
+    </div>
+    <div class="line m-b-20"></div>
+    <div class="overlay-flex-columns">
+      <div class="overlay-column">
+        <label for="processingArea">Processing Area:</label>
+        <input class="m-b-20" id="processingArea" [(ngModel)]="editOrderProcessor.processingArea" name="processingArea" required type="text">
+      </div>
+      <div class="overlay-column">
+        <label for="shift">Shift:</label>
+        <input class="m-b-20" id="shift" [(ngModel)]="editOrderProcessor.shift" name="processingArea" required type="text">
+      </div>
+    </div>
+    <div class="overlay-button-holder">
+      <button (click)="saveChanges(UserType.ORDER_PROCESSOR)">Save</button>
+      <button (click)="closeOverlay()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="editAdmin">
+  <div class="overlay-content">
+    <div class="overlay-flex-columns m-b-20">
+      <div class="overlay-column">
+        <label>
+          ID: <input class="m-b-20" type="text" [(ngModel)]="editAdmin.id" readonly />
+        </label>
+        <label>
+          Name: <input class="m-b-20" type="text" [(ngModel)]="editAdmin.firstName" />
+        </label>
+        <label>
+          Lastname: <input class="m-b-20" type="text" [(ngModel)]="editAdmin.lastName" />
+        </label>
+        <label>
+          Address: <input type="text" [(ngModel)]="editAdmin.address" />
+        </label>
+      </div>
+      <div class="overlay-column">
+        <label>
+          Birthday: <input class="m-b-20" type="date" [(ngModel)]="editAdmin.birthday" />
+        </label>
+        <label>
+          Email: <input class="m-b-20" type="text" [(ngModel)]="editAdmin.email" />
+        </label>
+        <label>
+          Phone: <input type="text" [(ngModel)]="editAdmin.phone" />
+        </label>
+      </div>
+    </div>
+    <div class="line m-b-20"></div>
+    <div class="overlay-flex-columns">
+      <div class="overlay-column">
+        <label for="adminRole">Admin Role:</label>
+        <input class="m-b-20" id="adminRole" [(ngModel)]="editAdmin.adminRole" name="adminRole" required type="text">
+      </div>
+    </div>
+    <div class="overlay-button-holder">
+      <button (click)="saveChanges(UserType.ADMIN)">Save</button>
+      <button (click)="closeOverlay()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+</body>

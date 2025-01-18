@@ -16,7 +16,7 @@ html, body{
   height: 50px;
   margin: 0 5px;
   border-radius: 20px;
-  background-color: #0078D4;
+  background-color: #2c87c3;
   opacity: 0.2;
   animation: loader-animation 1.2s infinite ease-in-out;
 }

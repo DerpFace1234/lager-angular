@@ -81,7 +81,7 @@ export class Case extends Components{
 
 export enum Socket{
   AM4 = "AM4", AM5 = "AM5", LGA1150 = "LGA1150", LGA1151 = "LGA1151", LGA1155 = "LGA1155", LGA1156 = "LGA1156",
-  LGA2011 = "LGA2011", LGA2066 = "LGA2066", LGA1200 = "LGA1200", LGA1700 = "LGA1700", LGA1800 = "LGA1800"
+  LGA2011 = "LGA2011", LGA2066 = "LGA2066", LGA1200 = "LGA1200", LGA1700 = "LGA1700", LGA1851 = "LGA1851"
 }
 
 export class CPU extends Components{
@@ -214,7 +214,8 @@ export class Memory extends Components{
   heatSpreaders:boolean;
 
   constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType, memory:number,
-              speed: number, generation: MemoryGeneration, modules: number, colors: string, latency: number, voltage: number, hasHeatSpreaders: boolean) {
+              speed: number, generation: MemoryGeneration, modules: number, colors: string, latency: number,
+              voltage: number, hasHeatSpreaders: boolean) {
     super(name, quantityStock, price, reorderQuantity, image, type);
     this.memory = memory;
     this.speed = speed;
@@ -263,17 +264,23 @@ export class Motherboard extends Components{
   pciex4: number;
   pciex1: number;
   storageFormFactors: StorageFormFactor[];
+  m2Slots: number;
   sata: number;
   usb2Header: number;
   usb3Gen1Header: number;
   usb3Gen2Header: number;
   usb3Gen2x2Header: number;
   usbTypeCHeader: number;
+  pwmHeader: number;
+  rgbHeader: number;
   wifi: WIFI;
   raidSupported: boolean;
 
   constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
-              socket: Socket, formFactor: MotherboardFormFactor, motherboardChipset: MotherboardChipset, memoryGeneration: MemoryGeneration, memorySlots: number, memorySpeeds: number[], pciex16: number, pciex8: number, pciex4: number, pciex1: number, storageFormfactos: StorageFormFactor[], sata: number, usb2Header: number, usb3Gen1Header: number, usb3Gen2Header: number, usb3Gen2x2Header: number, usbTypeCHeader: number, wifi: WIFI, raidSupported: boolean) {
+              socket: Socket, formFactor: MotherboardFormFactor, motherboardChipset: MotherboardChipset, memoryGeneration: MemoryGeneration,
+              memorySlots: number, memorySpeeds: number[], pciex16: number, pciex8: number, pciex4: number, pciex1: number,
+              storageFormfactos: StorageFormFactor[], m2slots:number, sata: number, usb2Header: number, usb3Gen1Header: number, usb3Gen2Header: number,
+              usb3Gen2x2Header: number, usbTypeCHeader: number, pwmHeader:number, rgbHeader:number, wifi: WIFI, raidSupported: boolean) {
     super(name, quantityStock, price, reorderQuantity, image, type);
     this.socket = socket;
     this.formFactor = formFactor;
@@ -286,12 +293,15 @@ export class Motherboard extends Components{
     this.pciex4 = pciex4;
     this.pciex1 = pciex1;
     this.storageFormFactors = storageFormfactos;
+    this.m2Slots = m2slots;
     this.sata = sata;
     this.usb2Header = usb2Header;
     this.usb3Gen1Header = usb3Gen1Header;
     this.usb3Gen2Header = usb3Gen2Header;
     this.usb3Gen2x2Header = usb3Gen2x2Header;
     this.usbTypeCHeader = usbTypeCHeader;
+    this.pwmHeader = pwmHeader;
+    this.rgbHeader = rgbHeader;
     this.wifi = wifi;
     this.raidSupported = raidSupported;
   }
@@ -310,7 +320,8 @@ export class PSU extends Components{
   color: string;
 
   constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
-              wattage: number, efficiency: number, formFactor: PSUFormFactor, pcie6Pins: number, eps8Pins: number, sataConnectors: number, molex4Pins: number, hpr12vPresent: boolean, modular: boolean, color: string) {
+              wattage: number, efficiency: number, formFactor: PSUFormFactor, pcie6Pins: number, eps8Pins: number, sataConnectors: number,
+              molex4Pins: number, hpr12vPresent: boolean, modular: boolean, color: string) {
     super(name, quantityStock, price, reorderQuantity, image, type);
     this.wattage = wattage;
     this.efficiency = efficiency;
@@ -330,23 +341,28 @@ export enum StorageType{
 }
 
 export enum StorageInterface{
-  SATA = "SATA", M2 = "M2", PCIe = "PCIE", U2 = "U2", mSATA = "MSATA"
+  SATA = "SATA", M2 = "M2",
 }
 
 export class Storage extends Components{
   storageType: StorageType;
   capacity: number;
   storageInterface: StorageInterface;
-  storageformFactor: StorageFormFactor;
+  storageFormFactor: StorageFormFactor;
+  readSpeed: number;
+  writeSpeed: number;
   heatSink: boolean;
 
   constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
-              storageType: StorageType, capacity: number, storageInterface: StorageInterface, storageformFactor: StorageFormFactor, withHeatSink: boolean) {
+              storageType: StorageType, capacity: number, storageInterface: StorageInterface, storageformFactor: StorageFormFactor,
+              read:number, write:number, withHeatSink: boolean) {
     super(name, quantityStock, price, reorderQuantity, image, type);
     this.storageType = storageType;
     this.capacity = capacity;
     this.storageInterface = storageInterface;
-    this.storageformFactor = storageformFactor;
+    this.storageFormFactor = storageformFactor;
+    this.readSpeed = read;
+    this.writeSpeed = write;
     this.heatSink = withHeatSink;
   }
 }

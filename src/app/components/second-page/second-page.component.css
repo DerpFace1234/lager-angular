@@ -50,7 +50,7 @@ body {
 }
 
 .split:hover {
-  flex: 3;
+  flex: 5;
 }
 
 .split:hover .text {
@@ -61,24 +61,17 @@ body {
   flex: 1;
 }
 
-.split.left {
+.split.a {
   background-color: #333;
   border-style: none solid none none;
-  border-color: #ffffff;
+  border-color: #000;
   border-width: 1px;
 }
 
-.split.right {
-  background-color: #000;
-  border-style: none none none solid;
-  border-color: #ffffff;
-  border-width: 1px;
-}
-
-.split.right:hover img{
+.split.a:hover img{
   opacity: 1;
 }
 
-.split.left:hover img{
-  opacity: 1;
+.border-none{
+  border-style: none;
 }

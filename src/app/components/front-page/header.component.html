@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Header</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular</title>
 </head>
 <body>
-<header>
+
   <div class="wrapper-container" (mouseenter)="onWrapperHover()" (mouseleave)="onWrapperLeave()">
     <div class="wrapper">
       <img src="images/TempLogo.png" width="156" height="80px" alt="TempLogo" title="TempLogo" (click)="toPage('')"/>
@@ -13,21 +13,73 @@
         <div class="user" *ngIf="!isUserPresent()" (click)="openLogin()">Login</div>
         <div class="user" *ngIf="isUserPresent()" (click)="toPage('/dashboard')">User</div>
         <div class="user" *ngIf="isUserPresent()" (click)="logout()">Logout</div>
-        <div class="hover" (mouseenter)="onHoverPanel()" (mouseleave)="onHoverLeave()">🛒 0,00€</div>
-        <div class="slide-panel" [ngClass]="{ 'visible': isPanelVisible }">Slide Panel</div>
+        <div class="hover" (mouseenter)="onHoverPanel()" (mouseleave)="onHoverLeave()">🛒 {{shoppingService.total | number: '1.2-2'}}€</div>
+        <div class="slide-panel" [ngClass]="{ 'visible': isPanelVisible }">
+          <div class="shopping">
+            <div class="message" *ngIf="shoppingService.cart.length === 0">
+              Pick some Components and add them to your cart. They will be displayed here!
+            </div>
+            <ng-container *ngIf="shoppingService.cart.length > 0">
+              <div #scrollContainer class="scroll-container" tabindex="0">
+                <table>
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th class="w50"></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="scroll-item" *ngFor="let comp of shoppingService.cart; let i = index">
+                      <td>
+                        <div class="flex align-center">
+                          <div>
+                            <img [src]="'data:image/png;base64,' + comp.image" height="50px" width="50px" style="margin-right: 10px;" alt="Item">
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="align-center">{{comp.name}}</div>
+                      </td>
+                      <td>
+                        <div class="price align-center">
+                          {{comp.price | number: '1.2-2'}}€
+                        </div>
+                      </td>
+                      <td>
+                        <img class="icon" src="images/x-taste.png" width="20px" height="20px" alt="icon" (click)="shoppingService.removeFromCart(i)">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-container>
+            <div class="buttons" *ngIf="shoppingService.cart.length > 0">
+              <div class="user" *ngIf="shoppingService.cart" (click)="clearCart()">Clear Cart</div>
+              <div class="user" *ngIf="shoppingService.cart" (click)="toPage('/checkout')">{{ shoppingService.total | number: '1.2-2' }}€ - Checkout</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <div class="wrapper-container-bottom" [ngClass]="{ 'bottom-visible': isBottomPanelVisible }">
     <div class="wrapper-bottom">
-      <div class="bottom-menus" (click)="toPage('/user-mngmt')">User Management</div>
+      <div class="bottom-menus" (click)="toPage('/comp-list')">Component Management</div>
+      <div class="bottom-menus" (click)="toPage('/user-list')">User Management</div>
       <div class="bottom-menus" (click)="toPage('/configurer')">Build Configurer</div>
-      <div class="bottom-menus" (click)="toPage('')">GPUs</div>
-      <div class="bottom-menus" (click)="toPage('')">GPUs</div>
-      <div class="bottom-menus" (click)="toPage('')">GPUs</div>
+      <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.CPU, '0')">CPUs</div>
+      <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.CPUCOOLER, '0')">CPU Coolers</div>
+      <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.MOTHERBOARD, '0')">Motherboards</div>
+      <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.MEMORY, '0')">Memory</div>
+      <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.GPU, '0')">GPUs</div>
+      <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.STORAGE, '0')">Storage</div>
+      <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.PSU, '0')">PSUs</div>
+      <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.CASE, '0')">Cases</div>
+      <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.FAN, '0')">Fans</div>
     </div>
   </div>
-</header>
 
 </body>
 </html>

@@ -1,0 +1,311 @@
+body{
+  font-family: Cocogoose, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f4f4f3;
+  width: 100%;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Cocogoose', sans-serif;
+  font-style: normal;
+}
+
+.top{
+  display: flex;
+  height: 100px;
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  background-color: #545578;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.flex-columns {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+
+.c10{
+  flex: 10;
+  max-width: 10%;
+  overflow: hidden;
+}
+
+.c20{
+  flex: 20;
+  max-width: 20%;
+  overflow: hidden;
+}
+
+.c80{
+  flex: 80;
+  max-width: 80%;
+  overflow: hidden;
+}
+
+.c85{
+  flex: 85;
+  max-width: 85%;
+  overflow: hidden;
+}
+
+.c90{
+  flex: 90;
+  max-width: 90%;
+  overflow: hidden;
+}
+
+.checkbox-container{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: #f4f4f3;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.checkbox-item{
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-item input{
+  margin-right: 8px;
+}
+
+.checkbox-item label{
+  font-weight: normal;
+  font-size: 14px;
+  color: #333;
+}
+
+.input-wrapper-s {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-wrapper-s input[type="text"] {
+  padding: 5px 10px 5px 10px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  position: relative;
+  width: 100%;
+  font-weight: normal;
+}
+
+.user-display{
+  display: flex;
+  margin: 0 50px 0 50px;
+}
+
+.line2{
+  height: 1px;
+  background-color: #9a9ea0;
+  border-radius: 2px;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  font-weight: normal;
+  margin-top: 14px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+thead th {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-weight: lighter;
+  font-size: 12px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #ccc;
+  border-left: none;
+  border-right: none;
+}
+
+tbody td{
+  border-left: none;
+  border-right: none;
+  font-size: 15px;
+}
+
+.w20 {
+  max-width: 20%;
+  width: 20%;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.w30 {
+  max-width: 30%;
+  width: 30%;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.w5{
+  max-width: 5%;
+  width: 5%;
+}
+
+.w7{
+  max-width: 7%;
+  width: 7%;
+}
+
+.w10{
+  max-width: 10%;
+  width: 10%;
+}
+
+.flex{
+  display: flex;
+}
+
+.align-center{
+  align-items: center;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.name{
+  font-weight: bold;
+  color: #2c87c3;
+}
+
+.name:hover{
+  text-decoration: underline;
+  color: #1e5c85;
+}
+
+.price{
+  font-weight: lighter;
+  font-style: italic;
+}
+
+button{
+  cursor: pointer;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.5rem !important;
+  background-color: #2c87c3;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.25rem;
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+button:hover{
+  background-color: #1e5c85;
+}
+
+.add {
+  padding: 0.4rem 0.5rem;
+  font-size: 0.9rem !important;
+}
+
+img {
+  margin-right: 20px;
+}
+
+img:hover {
+  cursor: pointer;
+}
+
+.range-slider {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+
+.thumb {
+  position: absolute;
+  pointer-events: none;
+  width: 100%;
+  height: 30px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  z-index: 3;
+}
+
+.thumb::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 10px;
+  height: 10px;
+  background-color: #007bff;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.thumb::-moz-range-thumb {
+  pointer-events: all;
+  width: 10px;
+  height: 10px;
+  background-color: #007bff;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+.slider-track {
+  position: absolute;
+  height: 3px;
+  background: #ddd;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.range-highlight {
+  position: absolute;
+  height: 3px;
+  background: #007bff;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  border-radius: 3px;
+}
+
+.value-display {
+  position: absolute;
+  top: -10px;
+  color: #007bff;
+  font-size: 12px;
+  text-align: center;
+  z-index: 3;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+input[type="checkbox"]:disabled:checked{
+  filter: sepia(100) invert(100%) hue-rotate(5deg) saturate(10) brightness(1.0)
+}
+

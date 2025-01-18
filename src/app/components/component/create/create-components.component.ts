@@ -18,6 +18,7 @@ import {
 } from '../../../model/component.model';
 import {ComponentsService} from '../../../services/components.service';
 import {UserType} from '../../../model/user.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-component',
@@ -29,8 +30,7 @@ export class CreateComponentsComponent {
   isDragOver = false;
   imagePreviewUrl: string | null = null;
 
-  selectedCompType: ComponentType = ComponentType.CASE;
-  constructor(public componentService: ComponentsService) {}
+  constructor(public componentService: ComponentsService, private router: Router,) {}
   valueStorage = {
     name: "",
     quantityStock: 0,
@@ -83,7 +83,7 @@ export class CreateComponentsComponent {
     dpPorts: 0,
     usbCPorts: 0,
     slots: 0,
-    speed: 0,
+    speed: 4800,
     memoryGeneration: MemoryGeneration.DDR5,
     modules: 0,
     latency: 0,
@@ -97,12 +97,15 @@ export class CreateComponentsComponent {
     pciex4: 0,
     pciex1: 0,
     storageFormFactors: [] as StorageFormFactor[],
+    m2slots: 0,
     sata: 0,
     usb2Header: 0,
     usb3Gen1Header: 0,
     usb3Gen2Header: 0,
     usb3Gen2x2Header: 0,
     usbTypeCHeader: 0,
+    pwmHeader: 0,
+    rgbHeader: 0,
     wifi: WIFI.WIFI7,
     raidSupported: false,
     wattage: 0,
@@ -118,6 +121,8 @@ export class CreateComponentsComponent {
     capacity: 0,
     storageInterface: StorageInterface.M2,
     storageformFactor: StorageFormFactor.M2280,
+    read: 0,
+    write: 0,
     withHeatSink: false,
     feedbackMessage: "",
   }
@@ -126,10 +131,40 @@ export class CreateComponentsComponent {
   suggestions: any[] = [];
   suggestions2: any[] = [];
 
+  onMemoryGenChange(memoryGeneration: MemoryGeneration): void{
+    this.valueStorage.memoryGeneration = memoryGeneration;
+    const a =  this.componentService.memSpeedMap.get(memoryGeneration);
+    if(a){
+      this.valueStorage.speed = a[0];
+    }
+  }
+  onSocketChange(socket: Socket): void{
+    this.valueStorage.socket = socket;
+    const a = this.componentService.chipsetMap.get(socket);
+    const b = this.componentService.socketMemMap.get(socket);
+    if(a){
+      this.valueStorage.motherboardChipset = a[0];
+    }
+    if(b){
+      this.valueStorage.memoryGeneration = b[0];
+    }
+  }
+  onStorageTypeChange(type: StorageType): void{
+    this.valueStorage.storageType = type;
+    const a = this.componentService.storageInterfaceMap.get(type);
+    const b = this.componentService.storageFormMap.get(type);
+    if(a){
+      this.valueStorage.storageInterface = a[0];
+    }
+    if(b){
+      this.valueStorage.storageformFactor = b[0];
+    }
+  }
+
   onSubmit(form: any): void{
     if(form.valid){
       this.valueStorage.feedbackMessage = "";
-      if(this.selectedCompType === ComponentType.CASE){
+      if(this.valueStorage.type === ComponentType.CASE){
         const comp: Case = new Case(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.casSidepanel, this.valueStorage.color,
           this.valueStorage.motherboardFormFactor, this.valueStorage.maxCoolerHeight, this.valueStorage.maxCardLength, this.valueStorage.fans80,
@@ -141,7 +176,7 @@ export class CreateComponentsComponent {
           response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } else if(this.selectedCompType === ComponentType.CPU){
+      } else if(this.valueStorage.type === ComponentType.CPU){
         const comp: CPU = new CPU(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.clock, this.valueStorage.boostClock,
           this.valueStorage.tdp, this.valueStorage.cores, this.valueStorage.threads,
@@ -152,7 +187,7 @@ export class CreateComponentsComponent {
           response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } else if(this.selectedCompType === ComponentType.CPUCOOLER){
+      } else if(this.valueStorage.type === ComponentType.CPUCOOLER){
         const comp: CPUCooler = new CPUCooler(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.fanRPM, this.valueStorage.noise,
           this.valueStorage.color, this.valueStorage.height, this.valueStorage.sockets,
@@ -162,7 +197,7 @@ export class CreateComponentsComponent {
           response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } else if(this.selectedCompType === ComponentType.FAN){
+      } else if(this.valueStorage.type === ComponentType.FAN){
         const comp: Fan = new Fan(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.size, this.valueStorage.fanRPM,
           this.valueStorage.airflow, this.valueStorage.noise, this.valueStorage.rgbPresent,
@@ -173,7 +208,7 @@ export class CreateComponentsComponent {
           response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } else if(this.selectedCompType === ComponentType.GPU){
+      } else if(this.valueStorage.type === ComponentType.GPU){
         const comp: GPU = new  GPU(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.memory, this.valueStorage.gpuMemoryGeneration,
           this.valueStorage.clock, this.valueStorage.boostClock, this.valueStorage.color, this.valueStorage.length,
@@ -184,7 +219,7 @@ export class CreateComponentsComponent {
           response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } else if(this.selectedCompType === ComponentType.MEMORY){
+      } else if(this.valueStorage.type === ComponentType.MEMORY){
         const comp: Memory = new Memory(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.memory, this.valueStorage.speed, this.valueStorage.memoryGeneration,
           this.valueStorage.modules, this.valueStorage.color, this.valueStorage.latency,
@@ -194,19 +229,19 @@ export class CreateComponentsComponent {
           response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } else if(this.selectedCompType === ComponentType.MOTHERBOARD){
+      } else if(this.valueStorage.type === ComponentType.MOTHERBOARD){
         const comp: Motherboard = new Motherboard(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.socket, this.valueStorage.motherboardFormFactor, this.valueStorage.motherboardChipset,
           this.valueStorage.memoryGeneration, this.valueStorage.memorySlots, this.valueStorage.memorySpeeds, this.valueStorage.pciex16, this.valueStorage.pciex8,
-          this.valueStorage.pciex4, this.valueStorage.pciex1, this.valueStorage.storageFormFactors, this.valueStorage.sata, this.valueStorage.usb2Header,
-          this.valueStorage.usb3Gen1Header, this.valueStorage.usb3Gen2Header, this.valueStorage.usb3Gen2x2Header, this.valueStorage.usbTypeCHeader,
-          this.valueStorage.wifi, this.valueStorage.raidSupported);
+          this.valueStorage.pciex4, this.valueStorage.pciex1, this.valueStorage.storageFormFactors, this.valueStorage.m2slots, this.valueStorage.sata,
+          this.valueStorage.usb2Header, this.valueStorage.usb3Gen1Header, this.valueStorage.usb3Gen2Header, this.valueStorage.usb3Gen2x2Header,
+          this.valueStorage.usbTypeCHeader, this.valueStorage.pwmHeader, this.valueStorage.rgbHeader, this.valueStorage.wifi, this.valueStorage.raidSupported);
 
         this.componentService.createMotherboard(comp).subscribe(
           response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } else if(this.selectedCompType === ComponentType.PSU){
+      } else if(this.valueStorage.type === ComponentType.PSU){
         const comp: PSU = new PSU(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.wattage, this.valueStorage.efficiency,
           this.valueStorage.psuFormFactor, this.valueStorage.pcie6Pins, this.valueStorage.eps8Pins, this.valueStorage.sataConnectors, this.valueStorage.molex4Pins,
@@ -216,10 +251,10 @@ export class CreateComponentsComponent {
           response => this.handleCreation(response, form),
           error => this.handleError(error)
         );
-      } else if(this.selectedCompType === ComponentType.STORAGE){
+      } else if(this.valueStorage.type === ComponentType.STORAGE){
         const comp: Storage = new Storage(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.storageType, this.valueStorage.capacity,
-          this.valueStorage.storageInterface, this.valueStorage.storageformFactor, this.valueStorage.withHeatSink);
+          this.valueStorage.storageInterface, this.valueStorage.storageformFactor, this.valueStorage.read, this.valueStorage.write, this.valueStorage.withHeatSink);
 
         this.componentService.createStorage(comp).subscribe(
           response => this.handleCreation(response, form),
@@ -233,7 +268,9 @@ export class CreateComponentsComponent {
       });
     }
   }
-
+  toPageBlank(nav: string){
+    this.router.navigate([nav]);
+  }
   private handleCreation(response: any, form: any): void {
     this.generateImagePreview(null);
     this.valueStorage.name = "";
@@ -301,6 +338,8 @@ export class CreateComponentsComponent {
     this.valueStorage.usb3Gen2Header = 0;
     this.valueStorage.usb3Gen2x2Header = 0;
     this.valueStorage.usbTypeCHeader = 0;
+    this.valueStorage.rgbHeader = 0;
+    this.valueStorage.pwmHeader = 0;
     this.valueStorage.wifi = WIFI.WIFI6E;
     this.valueStorage.raidSupported = false;
     this.valueStorage.wattage = 0;
@@ -394,7 +433,7 @@ export class CreateComponentsComponent {
   }
   delete(): void {
     this.imagePreviewUrl = "";
-    this.errorMessage = "Drag and drop an image here or click to select"
+    this.errorMessage = "Drag and drop an image here or click to select. 64KB JPEG/PNG only."
   }
 
   onInputChange(suggestions: any[], inputValue: string, allVariables: any[], existingVariables: any[]): void {

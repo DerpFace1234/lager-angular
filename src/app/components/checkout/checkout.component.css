@@ -1,0 +1,168 @@
+body{
+  font-family: Cocogoose, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f4f4f3;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Cocogoose', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+}
+
+.scroll-container {
+  width: 100%;
+  height: calc(90vh - 98px);
+  padding-right: 20px;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
+  text-align: center;
+  justify-content: center;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  font-weight: normal;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  table-layout: fixed;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  overflow: hidden;
+}
+
+thead th {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-weight: lighter;
+  font-size: 12px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #ccc;
+  border-left: none;
+  border-right: none;
+  width: 100%;
+}
+
+tbody td{
+  border-left: none;
+  border-right: none;
+  font-size: 15px;
+}
+
+.price{
+  font-weight: lighter;
+  font-style: italic;
+}
+
+.icon{
+  filter: grayscale(0);
+  transition: filter 0.3s ease;
+}
+
+.icon:hover{
+  color: red;
+  cursor: pointer;
+  filter: sepia(100) invert(100%) hue-rotate(100deg) saturate(100) brightness(1.5);
+}
+
+.align-center{
+  align-items: center;
+}
+
+.shopping{
+  width: 80%;
+  padding: 10px;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  margin: 0px 50px 0px 50px;
+}
+
+.message{
+  width: 85%;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.buttons{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.user{
+  position: relative;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  margin-left: 10px;
+  border-radius: 10px;
+  background-color: #2c87c3;
+  color: white;
+  transition: background-size 0.3s ease-in-out, transform 0.3s ease-in-out;
+  background-size: 100% 100%;
+}
+
+.user:hover {
+  background-color: #1e5c85;
+  background-size: 110% 110%;
+  transform: scale(1.08);
+}
+
+.price{
+  font-weight: lighter;
+  font-style: italic;
+  font-size: 15px;
+}
+
+.icon{
+  filter: grayscale(0);
+  transition: filter 0.3s ease;
+}
+
+.icon:hover{
+  color: red;
+  cursor: pointer;
+  filter: sepia(100) invert(100%) hue-rotate(100deg) saturate(100) brightness(1.5);
+}
+
+.align-center{
+  align-items: center;
+}
+
+.w50{
+  width: 50%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.words{
+  font-size: 18px;
+}

@@ -1,3 +1,4 @@
+
 @font-face {
   font-family: 'Cocogoose';
   src: url('/assets/fonts/Cocogoose-Pro-Bold-Italic-trial.ttf') format('ttf');
@@ -74,9 +75,10 @@
   box-sizing: border-box;
 }
 
-header {
+.header {
   position: relative;
   z-index: 2;
+  width: 100%;
 }
 
 app-login {
