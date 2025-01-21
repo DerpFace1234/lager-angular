@@ -1,5 +1,5 @@
 <body>
-
+<ng-container *ngIf="loginService.userPresent && loginService.userType == UserType.ADMIN">
 <div class="overlay" *ngIf="editCustomer">
   <div class="overlay-content">
     <div class="overlay-flex-columns">
@@ -19,7 +19,7 @@
       </div>
       <div class="overlay-column">
         <label>
-          Birthday: <input class="m-b-20" type="date" [(ngModel)]="editCustomer.birthday" />
+          Birthday: <input class="m-b-20" type="date" [(ngModel)]="birthday" />
         </label>
         <label>
           Email: <input class="m-b-20" type="text" [(ngModel)]="editCustomer.email" />
@@ -55,7 +55,7 @@
       </div>
       <div class="overlay-column">
         <label>
-          Birthday: <input class="m-b-20" type="date" [(ngModel)]="editOrderProcessor.birthday" />
+          Birthday: <input class="m-b-20" type="date" [(ngModel)]="birthday" />
         </label>
         <label>
           Email: <input class="m-b-20" type="text" [(ngModel)]="editOrderProcessor.email" />
@@ -102,7 +102,7 @@
       </div>
       <div class="overlay-column">
         <label>
-          Birthday: <input class="m-b-20" type="date" [(ngModel)]="editAdmin.birthday" />
+          Birthday: <input class="m-b-20" type="date" [(ngModel)]="birthday" />
         </label>
         <label>
           Email: <input class="m-b-20" type="text" [(ngModel)]="editAdmin.email" />
@@ -125,5 +125,5 @@
     </div>
   </div>
 </div>
-
+</ng-container>
 </body>

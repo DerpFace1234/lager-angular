@@ -4,6 +4,7 @@ import {Admin, Customer, OrderProcessor, User, UserType} from '../../../model/us
 import {Subscription} from 'rxjs';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import {Router} from '@angular/router';
+import {LoginService} from '../../../services/login.service';
 
 @Component({
   selector: 'app-user-list',
@@ -47,9 +48,16 @@ export class UserListComponent implements OnInit {
   showDeleteOverlay: boolean = false;
   private subscriptions: Subscription = new Subscription();
   protected readonly UserType = UserType;
-  constructor(private userService: UserService, private router:Router) {}
+  constructor(private userService: UserService, private router:Router, public loginService: LoginService) {}
 
   ngOnInit(): void {
+    this.loginService.handleStuff().then(item => {
+      if(this.loginService.userType !== UserType.ADMIN){
+        this.loginService.errorMessage = "Admin Privileges required."
+        this.loginService.showLogin();
+      }
+    });
+
     this.loadCustomers();
 
     this.subscriptions.add(

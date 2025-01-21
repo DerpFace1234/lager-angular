@@ -1,18 +1,43 @@
 <body>
 
+
+<div class="holder" *ngIf="compatibilityErrors.length > 0 || warnings.length > 0">
+  <div class="floaty error" *ngIf="compatibilityErrors.length > 0">
+    <div class="circle">
+      !
+    </div>
+
+      <div class="display error">
+        <div class="white">
+          <ng-container *ngFor="let item of compatibilityErrors">
+            <div style="width: 100%;">{{ item }}</div>
+          </ng-container>
+        </div>
+      </div>
+  </div>
+
+  <div class="floaty warn" *ngIf="warnings.length > 0">
+    <div class="circle">
+      !
+    </div>
+
+      <div class="display warn">
+        <div class="white">
+          <ng-container *ngFor="let item of warnings">
+            <div style="width: 100%;">{{ item }}</div>
+          </ng-container>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
 <div class="container">
 
   <div class="flex m-b-20 pos-rel pointer">
     <div class="top-row">Compatibility Errors: {{compatibilityErrors.length}} Errors, {{warnings.length}} Warnings</div>
     <div class="top-row-wattage">Estimated Wattage: {{componentsService.estimatedWattage}}W</div>
-    <div class="hover-content" *ngIf="compatibilityErrors.length > 0 || warnings.length > 0">
-      <ng-container *ngFor="let item of compatibilityErrors">
-        <div style="width: 100%;">{{item}}</div>
-      </ng-container>
-      <ng-container *ngFor="let item of warnings">
-        <div style="width: 100%;">{{item}}</div>
-      </ng-container>
-    </div>
   </div>
 
   <table>
@@ -59,7 +84,7 @@
              (click)="removeComponent(ComponentType.CPU, StorageInterface.M2, 0,-1)">
       </td>
       <td class="w10">
-        <div *ngIf="pickedCPU"><button class="add" (click)="addToCart(pickedCPU)">Add to cart</button></div>
+        <div *ngIf="pickedCPU"><button class="add" (click)="shoppingService.addToCart(pickedCPU)">Add to cart</button></div>
       </td>
     </tr>
 
@@ -83,7 +108,7 @@
              (click)="removeComponent(ComponentType.CPUCOOLER, StorageInterface.M2, 0,-1)">
       </td>
       <td class="w10">
-        <div *ngIf="pickedCPUCooler"><button class="add" (click)="addToCart(pickedCPUCooler)">Add to cart</button></div>
+        <div *ngIf="pickedCPUCooler"><button class="add" (click)="shoppingService.addToCart(pickedCPUCooler)">Add to cart</button></div>
       </td>
     </tr>
 
@@ -107,7 +132,7 @@
              (click)="removeComponent(ComponentType.MOTHERBOARD, StorageInterface.M2, 0,-1)">
       </td>
       <td class="w10">
-        <div *ngIf="pickedMotherboard"><button class="add" (click)="addToCart(pickedMotherboard)">Add to cart</button></div>
+        <div *ngIf="pickedMotherboard"><button class="add" (click)="shoppingService.addToCart(pickedMotherboard)">Add to cart</button></div>
       </td>
     </tr>
 
@@ -147,7 +172,7 @@
                    (click)="removeComponent(ComponentType.MEMORY, StorageInterface.M2, 0, i)">
             </td>
             <td class="w10">
-              <div><button class="add" (click)="addToCart(pickedMemories[i])">Add to cart</button></div>
+              <div><button class="add" (click)="shoppingService.addToCart(pickedMemories[i])">Add to cart</button></div>
             </td>
           </tr>
         </ng-container>
@@ -183,7 +208,7 @@
                    (click)="removeComponent(ComponentType.MEMORY, StorageInterface.M2, 0, i)">
             </td>
             <td class="w10">
-              <div><button class="add" (click)="addToCart(pickedMemories[i])">Add to cart</button></div>
+              <div><button class="add" (click)="shoppingService.addToCart(pickedMemories[i])">Add to cart</button></div>
             </td>
           </tr>
         </ng-container>
@@ -236,7 +261,7 @@
                    (click)="removeComponent(ComponentType.MEMORY, StorageInterface.M2, 0, i+memSlots)">
             </td>
             <td class="w10">
-              <div><button class="add" (click)="addToCart(pickedMemories[i])">Add to cart</button></div>
+              <div><button class="add" (click)="shoppingService.addToCart(pickedMemories[i])">Add to cart</button></div>
             </td>
           </tr>
         </ng-container>
@@ -290,7 +315,7 @@
                (click)="removeComponent(ComponentType.GPU, StorageInterface.M2, 0, i)">
         </td>
         <td class="w10">
-          <div><button class="add" (click)="addToCart(pickedGPUs[i])">Add to cart</button></div>
+          <div><button class="add" (click)="shoppingService.addToCart(pickedGPUs[i])">Add to cart</button></div>
         </td>
       </tr>
     </ng-container>
@@ -315,7 +340,7 @@
                (click)="removeComponent(ComponentType.GPU, StorageInterface.M2, 0, i)">
         </td>
         <td class="w10">
-          <div *ngIf="pickedGPUs[i]"><button class="add" (click)="addToCart(pickedGPUs[i])">Add to cart</button></div>
+          <div *ngIf="pickedGPUs[i]"><button class="add" (click)="shoppingService.addToCart(pickedGPUs[i])">Add to cart</button></div>
         </td>
       </tr>
 
@@ -339,7 +364,7 @@
                  (click)="removeComponent(ComponentType.GPU, StorageInterface.M2, 0, i+pickedMotherboard.pciex16)">
           </td>
           <td class="w10">
-            <div><button class="add" (click)="addToCart(pickedGPUs[i])">Add to cart</button></div>
+            <div><button class="add" (click)="shoppingService.addToCart(pickedGPUs[i])">Add to cart</button></div>
           </td>
         </tr>
       </ng-container>
@@ -379,7 +404,7 @@
                (click)="removeComponent(ComponentType.STORAGE, StorageInterface.M2, -2, i)">
         </td>
         <td class="w10">
-          <div><button class="add" (click)="addToCart(pickedStorages[i])">Add to cart</button></div>
+          <div><button class="add" (click)="shoppingService.addToCart(pickedStorages[i])">Add to cart</button></div>
         </td>
       </tr>
     </ng-container>
@@ -405,7 +430,7 @@
                    (click)="removeComponent(ComponentType.STORAGE, StorageInterface.M2, 0, i)">
             </td>
             <td class="w10">
-              <div><button class="add" (click)="addToCart(pickedM2[i])">Add to cart</button></div>
+              <div><button class="add" (click)="shoppingService.addToCart(pickedM2[i])">Add to cart</button></div>
             </td>
           </tr>
         </ng-container>
@@ -457,7 +482,7 @@
                    (click)="removeComponent(ComponentType.STORAGE, StorageInterface.M2, 0, i+pickedMotherboard.m2Slots)">
             </td>
             <td class="w10">
-              <div><button class="add" (click)="addToCart(pickedM2[i])">Add to cart</button></div>
+              <div><button class="add" (click)="shoppingService.addToCart(pickedM2[i])">Add to cart</button></div>
             </td>
           </tr>
         </ng-container>
@@ -484,7 +509,7 @@
                    (click)="removeComponent(ComponentType.STORAGE, StorageInterface.SATA, 0, i)">
             </td>
             <td class="w10">
-              <div><button class="add" (click)="addToCart(pickedSATA[i])">Add to cart</button></div>
+              <div><button class="add" (click)="shoppingService.addToCart(pickedSATA[i])">Add to cart</button></div>
             </td>
           </tr>
         </ng-container>
@@ -536,7 +561,7 @@
                    (click)="removeComponent(ComponentType.STORAGE, StorageInterface.SATA, 0, i+pickedMotherboard.sata)">
             </td>
             <td class="w10">
-              <div><button class="add" (click)="addToCart(pickedSATA[i])">Add to cart</button></div>
+              <div><button class="add" (click)="shoppingService.addToCart(pickedSATA[i])">Add to cart</button></div>
             </td>
           </tr>
         </ng-container>
@@ -564,7 +589,7 @@
              (click)="removeComponent(ComponentType.PSU, StorageInterface.M2, 0, -1)">
       </td>
       <td class="w5">
-        <div *ngIf="pickedPSU"><button class="add" (click)="addToCart(pickedPSU)">Add to cart</button></div>
+        <div *ngIf="pickedPSU"><button class="add" (click)="shoppingService.addToCart(pickedPSU)">Add to cart</button></div>
       </td>
     </tr>
 
@@ -589,7 +614,7 @@
              (click)="removeComponent(ComponentType.CASE, StorageInterface.M2, 0, -1)">
       </td>
       <td class="w5">
-        <div *ngIf="pickedCase"><button class="add" (click)="addToCart(pickedCase)">Add to cart</button></div>
+        <div *ngIf="pickedCase"><button class="add" (click)="shoppingService.addToCart(pickedCase)">Add to cart</button></div>
       </td>
     </tr>
 
@@ -627,7 +652,7 @@
                (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, -2, i)">
         </td>
         <td class="w10">
-          <div><button class="add" (click)="addToCart(pickedFans[i])">Add to cart</button></div>
+          <div><button class="add" (click)="shoppingService.addToCart(pickedFans[i])">Add to cart</button></div>
         </td>
       </tr>
     </ng-container>
@@ -654,7 +679,7 @@
                      (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 80, i)">
               </td>
               <td class="w10">
-                <div><button class="add" (click)="addToCart(picked80F[i])">Add to cart</button></div>
+                <div><button class="add" (click)="shoppingService.addToCart(picked80F[i])">Add to cart</button></div>
               </td>
             </tr>
           </ng-container>
@@ -706,7 +731,7 @@
                      (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 80, i+ fans80)">
               </td>
               <td class="w10">
-                <div><button class="add" (click)="addToCart(picked80F[i])">Add to cart</button></div>
+                <div><button class="add" (click)="shoppingService.addToCart(picked80F[i])">Add to cart</button></div>
               </td>
             </tr>
           </ng-container>
@@ -735,7 +760,7 @@
                      (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 120, i)">
               </td>
               <td class="w10">
-                <div><button class="add" (click)="addToCart(picked120F[i])">Add to cart</button></div>
+                <div><button class="add" (click)="shoppingService.addToCart(picked120F[i])">Add to cart</button></div>
               </td>
             </tr>
           </ng-container>
@@ -787,7 +812,7 @@
                      (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 120, i+ fans120)">
               </td>
               <td class="w10">
-                <div><button class="add" (click)="addToCart(picked120F[i])">Add to cart</button></div>
+                <div><button class="add" (click)="shoppingService.addToCart(picked120F[i])">Add to cart</button></div>
               </td>
             </tr>
           </ng-container>
@@ -816,7 +841,7 @@
                      (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 140, i)">
               </td>
               <td class="w10">
-                <div><button class="add" (click)="addToCart(picked140F[i])">Add to cart</button></div>
+                <div><button class="add" (click)="shoppingService.addToCart(picked140F[i])">Add to cart</button></div>
               </td>
             </tr>
           </ng-container>
@@ -868,7 +893,7 @@
                      (click)="removeComponent(ComponentType.FAN, StorageInterface.M2, 140, i+ fans140)">
               </td>
               <td class="w10">
-                <div><button class="add" (click)="addToCart(picked140F[i])">Add to cart</button></div>
+                <div><button class="add" (click)="shoppingService.addToCart(picked140F[i])">Add to cart</button></div>
               </td>
             </tr>
           </ng-container>

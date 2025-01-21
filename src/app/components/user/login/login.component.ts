@@ -12,30 +12,42 @@ import {HeaderComponent} from '../../front-page/header.component';
 export class LoginComponent {
   email: string = '';
   password: string = '';
-  errorMessage: string = '';
   @Input() isVisible = false;
   @Output() closeOverlay = new EventEmitter<void>();
 
-  constructor(private loginService: LoginService, private router: Router) {}
+  constructor(public loginService: LoginService, private router: Router) {}
 
   onSubmit(): void {
     this.loginService.login(this.email, this.password).subscribe({
       next: (response: any) => {
-        this.close();
+        this.loginService.userPresent = true;
+        this.close(false);
         this.email = "";
         this.password = "";
-        this.errorMessage = "";
-        this.router.navigate(['/dashboard']);
+        this.loginService.errorMessage = "";
+        const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate([currentUrl]);
+        });
+
         this.loginService.triggerRefreshLogin();
       },
       error: (err: any) => {
-        this.errorMessage = 'Invalid credentials, please try again.';
+        this.loginService.errorMessage = 'Invalid credentials, please try again.';
       }
     });
   }
 
-  close() {
+  close(other: boolean = false): void {
+    if(other){
+      const currentUrl = this.router.url;
+      if ((currentUrl !== '/configurer') && (currentUrl !== '/picker/:type/:variant')
+        && (currentUrl !== 'all') && (currentUrl !== 'checkout') && (currentUrl !== '')) {
+        this.router.navigate(['']).then(() => location.reload());
+      }
+    }
     this.closeOverlay.emit();
+    this.loginService.errorMessage = '';
   }
 
   protected readonly UserType = UserType;

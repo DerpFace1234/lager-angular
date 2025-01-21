@@ -1,5 +1,5 @@
 <body>
-
+<ng-container *ngIf="loginService.userPresent && loginService.userType === UserType.ADMIN">
 <div class="overlay">
   <div class="form-container">
 
@@ -848,5 +848,5 @@
     </div>
   </div>
 </div>
-
+</ng-container>
 </body>

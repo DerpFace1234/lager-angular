@@ -39,25 +39,19 @@ export class Admin extends User{
 }
 
 export class OrderProcessor extends User{
-  workingOnOrders: Order[];
-  finishedOrders: Order[];
   processingArea: string;
   shift: string;
 
-  constructor(firstName:string, lastName:string, address:string, birthday:Date, email:string, phone: string, password: string, type: UserType, workingOnOrders: Order[], finishedOrders: Order[], processingArea: string, shift: string) {
+  constructor(firstName:string, lastName:string, address:string, birthday:Date, email:string, phone: string, password: string, type: UserType, processingArea: string, shift: string) {
     super(firstName, lastName, address, birthday, email, phone, password, type);
-    this.workingOnOrders = workingOnOrders;
-    this.finishedOrders = finishedOrders;
     this.processingArea = processingArea;
     this.shift = shift;
   }
 }
 
 export class Customer extends User{
-  allOrders: Order[];
 
-  constructor(firstName:string, lastName:string, address:string, birthday:Date, email:string, phone: string, password: string, type: UserType, allOrders: Order[]) {
+  constructor(firstName:string, lastName:string, address:string, birthday:Date, email:string, phone: string, password: string, type: UserType) {
     super(firstName, lastName, address, birthday, email, phone, password, type);
-    this.allOrders = allOrders;
   }
 }

@@ -27,11 +27,8 @@ body{
   display: flex;
   flex-direction: column;
   white-space: nowrap;
-  align-items: center;
   position: relative;
   margin-bottom: 20px;
-  text-align: center;
-  justify-content: center;
 }
 
 table{
@@ -99,7 +96,7 @@ tbody td{
 }
 
 .message{
-  width: 85%;
+  margin-top: 30px;
   align-content: center;
   align-items: center;
   text-align: center;

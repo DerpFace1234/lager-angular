@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Components} from '../model/component.model';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +18,32 @@ export class ShoppingService {
     this.refreshShoppingListSource.next();
     this.total = 0.00;
     for(let i=0; i<this.cart.length; i++){
-      this.total += this.cart[i].price;
+      this.total += this.cart[i].price*this.cart[i].orderedQuantity;
     }
     this.storeComponentInLS("cart", this.cart);
   }
   removeFromCart(i:number){
-    this.cart = this.cart.filter((_, index) => index !== i) ?? this.cart;
+    this.cart = this.cart.filter((_, index) => {
+      if(index === i){
+        if(this.cart[i].orderedQuantity > 1){
+          this.cart[i].orderedQuantity -= 1;
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
+    }) ?? this.cart;
+    this.triggerRefresh();
+  }
+  addToCart(comp: Components): void {
+    const i = this.cart.findIndex(item => item.id === comp.id)
+    if(i !== -1){
+      this.cart[i].orderedQuantity += 1
+    } else {
+      this.cart.push(comp);
+    }
     this.triggerRefresh();
   }
 

@@ -24,10 +24,10 @@
                 <table>
                   <thead>
                   <tr>
+                    <th class="w10"></th>
+                    <th class="w55"></th>
                     <th></th>
-                    <th class="w50"></th>
-                    <th></th>
-                    <th></th>
+                    <th class="w10"></th>
                   </tr>
                   </thead>
                   <tbody>
@@ -44,7 +44,7 @@
                       </td>
                       <td>
                         <div class="price align-center">
-                          {{comp.price | number: '1.2-2'}}€
+                          {{comp.orderedQuantity}} x {{comp.price | number: '1.2-2'}}€
                         </div>
                       </td>
                       <td>
@@ -66,8 +66,8 @@
   </div>
   <div class="wrapper-container-bottom" [ngClass]="{ 'bottom-visible': isBottomPanelVisible }">
     <div class="wrapper-bottom">
-      <div class="bottom-menus" (click)="toPage('/comp-list')">Component Management</div>
-      <div class="bottom-menus" (click)="toPage('/user-list')">User Management</div>
+      <div class="bottom-menus" *ngIf="loginService.userType === UserType.ADMIN" (click)="toPage('/comp-list')">Component Management</div>
+      <div class="bottom-menus" *ngIf="loginService.userType === UserType.ADMIN" (click)="toPage('/user-list')">User Management</div>
       <div class="bottom-menus" (click)="toPage('/configurer')">Build Configurer</div>
       <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.CPU, '0')">CPUs</div>
       <div class="bottom-menus" (click)="toPagePicker('/picker', ComponentType.CPUCOOLER, '0')">CPU Coolers</div>

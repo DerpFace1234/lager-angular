@@ -5,11 +5,11 @@
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
       <input type="email" placeholder="Email" id="email" required [(ngModel)]="email" name="email" #emailInput="ngModel">
       <input type="password" placeholder="Password" id="password" required [(ngModel)]="password" name="password" #passwordInput="ngModel">
-      <div *ngIf="errorMessage !== ''">{{errorMessage}}</div>
+      <div *ngIf="loginService.errorMessage !== ''">{{loginService.errorMessage}}</div>
       <div class="m-b-20"></div>
       <div class="buttons">
         <button type="submit" class="login-btn" [disabled]="loginForm.invalid">Login</button>
-        <button type="button" class="cancel-btn" (click)="close()">Cancel</button>
+        <button type="button" class="cancel-btn" (click)="close(true)">Cancel</button>
       </div>
     </form>
   </div>

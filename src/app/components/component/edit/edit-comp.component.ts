@@ -14,6 +14,8 @@ import {
   PSU,
   Storage
 } from '../../../model/component.model';
+import {UserType} from '../../../model/user.model';
+import {LoginService} from '../../../services/login.service';
 
 @Component({
   selector: 'app-edit-comp',
@@ -22,7 +24,7 @@ import {
 })
 export class EditCompComponent {
 
-  constructor(private route: ActivatedRoute, private router: Router, public componentsService: ComponentsService) {}
+  constructor(private route: ActivatedRoute, private router: Router, public componentsService: ComponentsService, public loginService: LoginService) {}
   id!: number;
 
   editCase: any = null;
@@ -45,6 +47,12 @@ export class EditCompComponent {
   suggestions2: any[] = [];
 
   ngOnInit(): void {
+    this.loginService.handleStuff().then(item => {
+      if(this.loginService.userType !== UserType.ADMIN){
+        this.loginService.errorMessage = "Admin Privileges required."
+        this.loginService.showLogin();
+      }
+    });
     this.id = +this.route.snapshot.paramMap.get('id')!;
     this.loadCaseById(this.id);
     this.loadCPUById(this.id);
@@ -305,4 +313,5 @@ export class EditCompComponent {
   }
 
   protected readonly ComponentType = ComponentType;
+  protected readonly UserType = UserType;
 }

@@ -1,5 +1,5 @@
 <body>
-
+<ng-container *ngIf="loginService.userPresent && loginService.userType === UserType.ADMIN">
 <div class="user-create">
   <div class="text" (click)="toPageBlank('/user-create')" >Create User</div>
   <div class="text" style="font-weight: bold;">User List</div>
@@ -158,5 +158,5 @@
     </div>
   </div>
 </div>
-
+</ng-container>
 </body>

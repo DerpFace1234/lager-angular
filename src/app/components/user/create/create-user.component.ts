@@ -3,6 +3,7 @@ import {UserService} from '../../../services/user.service';
 import {Admin, Customer, OrderProcessor, UserType} from '../../../model/user.model';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Router} from '@angular/router';
+import {LoginService} from '../../../services/login.service';
 
 @Component({
   selector: 'app-create-user',
@@ -19,7 +20,7 @@ import {Router} from '@angular/router';
 export class CreateUserComponent{
   userTypes:UserType[] = Object.values(UserType);
   selectedUserType: UserType = UserType.CUSTOMER;
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router, public loginService: LoginService) {}
 
   valueStorage = {
     firstName: "",
@@ -36,6 +37,15 @@ export class CreateUserComponent{
     feedbackMessage: ""
   }
 
+  ngOnInit(): void {
+    this.loginService.handleStuff().then(item => {
+      if(this.loginService.userType !== UserType.ADMIN){
+        this.loginService.errorMessage = "Admin Privileges required."
+        this.loginService.showLogin();
+      }
+    });
+  }
+
   onSubmit(form: any): void{
     if(form.valid){
       if(this.selectedUserType === UserType.CUSTOMER){
@@ -43,7 +53,7 @@ export class CreateUserComponent{
                                                 this.valueStorage.address,
                                                 this.valueStorage.birthday, this.valueStorage.email,
                                                 this.valueStorage.phone, this.valueStorage.password,
-                                                UserType.CUSTOMER, []);
+                                                UserType.CUSTOMER);
         this.userService.createCustomer(customer).subscribe(
           response => this.handleCreation(response, form),
           error => this.handleError(error)
@@ -63,7 +73,7 @@ export class CreateUserComponent{
                                                             this.valueStorage.address, this.valueStorage.birthday,
                                                             this.valueStorage.email, this.valueStorage.phone,
                                                             this.valueStorage.password, UserType.ORDER_PROCESSOR,
-                                                            [], [], this.valueStorage.processingArea,
+                                                            this.valueStorage.processingArea,
                                                             this.valueStorage.shift);
         this.userService.createOrderProcessor(processor).subscribe(
           response => this.handleCreation(response, form),

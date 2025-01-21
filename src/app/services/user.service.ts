@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Admin, Customer, OrderProcessor, User} from '../model/user.model';
 import { Subject } from 'rxjs';
@@ -28,13 +28,14 @@ export class UserService {
     return this.http.get<OrderProcessor[]>(`${this.apiUrl}/order-processor`);
   }
 
-  getCustomerById(id: number): Observable<Customer> {
+  getCustomerById(id: number | undefined): Observable<Customer> {
     return this.http.get<Customer>(`${this.apiUrl}/customer/${id}`);
   }
   getAdminById(id: number): Observable<Admin> {
     return this.http.get<Admin>(`${this.apiUrl}/admin/${id}`);
   }
-  getOrderProcessorById(id: number): Observable<OrderProcessor> {
+
+  getOrderProcessorById(id: number | undefined): Observable<OrderProcessor> {
     return this.http.get<OrderProcessor>(`${this.apiUrl}/order-processor/${id}`);
   }
 
@@ -55,7 +56,8 @@ export class UserService {
     return this.http.put<Admin>(`${this.apiUrl}/admin/${id}`, user);
   }
   updateOrderProcessor(id: number | undefined, user: OrderProcessor): Observable<OrderProcessor>{
-    return this.http.put<OrderProcessor>(`${this.apiUrl}/order-processor/${id}`, user);
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.http.put<OrderProcessor>(`${this.apiUrl}/order-processor/${id}`, user, {headers});
   }
 
   deleteUser(id: number | undefined): Observable<void> {

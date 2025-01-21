@@ -3,7 +3,7 @@ import {ComponentsService} from '../../../services/components.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
   Case,
-  CaseSidepanel,
+  CaseSidepanel, Components,
   ComponentType,
   CPU,
   CPUCooler,
@@ -377,7 +377,8 @@ export class PickerComponent {
           .map(([key]) => key).every(requiredSocket => item.sockets.includes(requiredSocket as Socket)) &&
         item.price >= (this.sliderFilters['minSelectedPrice'] ?? 0.00) && item.price <= (this.sliderFilters['maxSelectedPrice'] ?? Number.MAX_VALUE) &&
         item.fanRPM >= (this.sliderFilters['minSelectedRPM'] ?? 0.00) && item.fanRPM <= (this.sliderFilters['maxSelectedRPM'] ?? Number.MAX_VALUE) &&
-        item.height >= (this.sliderFilters['minSelectedHeight'] ?? 0.00) && item.height <= (this.sliderFilters['maxSelectedHeight'] ?? Number.MAX_VALUE) &&
+        (item.height >= (this.sliderFilters['minSelectedHeight'] ?? 0.00) && item.height <= (this.sliderFilters['maxSelectedHeight'] ?? Number.MAX_VALUE)
+          || item.watercooled) &&
         this.checkboxFilter1[item.fanless.toString()] &&
         this.checkboxFilter2[item.watercooled.toString()]
     }) || []
@@ -743,7 +744,7 @@ export class PickerComponent {
     }
   }
 
-  addToConfig(name: string, comp: CPU | CPUCooler | Motherboard | Memory | PSU | Fan | Case | Storage | GPU) {
+  addToConfig(name: string, comp: Components) {
     if (name === 'storages') {
       let storages: Storage[] | null = this.componentsService.getComponentFromLS("storages");
       if (storages) {
@@ -783,11 +784,6 @@ export class PickerComponent {
     }
 
     this.toPageL('/configurer');
-  }
-
-  addToCart(comp: CPU | CPUCooler | Motherboard | Memory | PSU | Fan | Case | Storage | GPU): void {
-    this.shoppingService.cart.push(comp);
-    this.shoppingService.triggerRefresh();
   }
 
   toPage(page: string, type: number | undefined) {

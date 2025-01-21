@@ -1,5 +1,5 @@
 <body>
-
+<ng-container *ngIf="loginService.userPresent && loginService.userType === UserType.ADMIN">
 <div class="comp-create">
   <div class="text" (click)="toPageBlank('/comp-create')" style="font-weight: bold;">Create Component</div>
   <div class="text" (click)="toPageBlank('/comp-list')" >Component List</div>
@@ -655,5 +655,6 @@
     <div class="feedback-message">{{ valueStorage.feedbackMessage }}</div>
   </form>
 </div>
-
+</ng-container>
 </body>
+

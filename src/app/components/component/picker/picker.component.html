@@ -14,7 +14,7 @@
           <ng-container>
             <div (click)="toggleTabs('price')"
                  [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
-            >
+            class="cl">
               <b>PRICE:</b>
             </div>
             <div *ngIf="tabs['price']" @fadeInOut>
@@ -60,7 +60,7 @@
           <ng-container>
             <div (click)="toggleTabs('sockets')"
                  [class.underline]="tabs['sockets']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>SOCKETS:</b>
             </div>
             <div>
@@ -77,7 +77,7 @@
           <ng-container>
             <div (click)="toggleTabs('clock')"
                  [class.underline]="tabs['clock']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>CORE CLOCK:</b>
             </div>
             <div *ngIf="tabs['clock']" @fadeInOut>
@@ -121,7 +121,7 @@
           <ng-container>
             <div (click)="toggleTabs('boost')"
                  [class.underline]="tabs['boost']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>BOOST CLOCK:</b>
             </div>
             <div *ngIf="tabs['boost']" @fadeInOut>
@@ -165,7 +165,7 @@
           <ng-container>
             <div (click)="toggleTabs('tdp')"
                  [class.underline]="tabs['tdp']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>TDP:</b>
             </div>
             <div *ngIf="tabs['tdp']" @fadeInOut>
@@ -209,7 +209,7 @@
           <ng-container>
             <div (click)="toggleTabs('memory')"
                  [class.underline]="tabs['memory']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>MAX MEMORY:</b>
             </div>
             <div *ngIf="tabs['memory']" @fadeInOut>
@@ -253,7 +253,7 @@
           <ng-container>
             <div (click)="toggleTabs('cores')"
                  [class.underline]="tabs['cores']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>CORES:</b>
             </div>
             <div *ngIf="tabs['cores']" @fadeInOut>
@@ -297,7 +297,7 @@
           <ng-container>
             <div (click)="toggleTabs('threads')"
                  [class.underline]="tabs['threads']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>THREADS:</b>
             </div>
             <div *ngIf="tabs['threads']" @fadeInOut>
@@ -341,7 +341,7 @@
           <ng-container>
             <div (click)="toggleTabs('l2')"
                  [class.underline]="tabs['l2']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>L2 CACHE:</b>
             </div>
             <div *ngIf="tabs['l2']" @fadeInOut>
@@ -387,7 +387,7 @@
           <ng-container>
             <div (click)="toggleTabs('l3')"
                  [class.underline]="tabs['l3']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>L3 CACHE:</b>
             </div>
             <div *ngIf="tabs['l3']" @fadeInOut>
@@ -433,7 +433,7 @@
           <ng-container>
             <div (click)="toggleTabs('igpu')"
                  [class.underline]="tabs['igpu']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>iGPU:</b>
             </div>
             <div>
@@ -476,7 +476,7 @@
           <tbody>
           <tr *ngFor="let item of filteredCPUs">
             <td class="w30">
-              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+              <div class="flex align-center pointer" >
                 <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
                 <div class="name">{{item.name}}</div>
               </div>
@@ -487,7 +487,7 @@
             <td>{{item.threads}}</td>
             <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
             <td class="w7"><div><button class="add" (click)="addToConfig('cpu', item)">Add to Build</button></div></td>
-            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+            <td class="w7"><div><button class="add" (click)="shoppingService.addToCart(item)">Add to cart</button></div></td>
           </tr>
           </tbody>
         </table>
@@ -503,7 +503,7 @@
           <ng-container>
             <div (click)="toggleTabs('price')"
                  [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PRICE:</b>
             </div>
             <div *ngIf="tabs['price']" @fadeInOut>
@@ -549,7 +549,7 @@
           <ng-container>
             <div (click)="toggleTabs('sockets')"
                  [class.underline]="tabs['sockets']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>SOCKETS:</b>
             </div>
             <div>
@@ -566,7 +566,7 @@
           <ng-container>
             <div (click)="toggleTabs('rpm')"
                  [class.underline]="tabs['rpm']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>RPM:</b>
             </div>
             <div *ngIf="tabs['rpm']" @fadeInOut>
@@ -610,7 +610,7 @@
           <ng-container>
             <div (click)="toggleTabs('height')"
                  [class.underline]="tabs['height']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>HEIGHT:</b>
             </div>
             <div *ngIf="tabs['height']" @fadeInOut>
@@ -654,7 +654,7 @@
           <ng-container>
             <div (click)="toggleTabs('fanless')"
                  [class.underline]="tabs['fanless']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>Fanless:</b>
             </div>
             <div>
@@ -671,7 +671,7 @@
           <ng-container>
             <div (click)="toggleTabs('watercooled')"
                  [class.underline]="tabs['watercooled']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>Watercooled:</b>
             </div>
             <div>
@@ -715,7 +715,7 @@
           <tbody>
           <tr *ngFor="let item of filteredCPUCoolers">
             <td class="w30">
-              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+              <div class="flex align-center pointer" >
                 <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
                 <div class="name">{{item.name}}</div>
               </div>
@@ -731,7 +731,7 @@
             <td>{{item.color}}</td>
             <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
             <td class="w7"><div><button class="add" (click)="addToConfig('cpu-cooler', item)">Add to Build</button></div></td>
-            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+            <td class="w7"><div><button class="add" (click)="shoppingService.addToCart(item)">Add to cart</button></div></td>
           </tr>
           </tbody>
         </table>
@@ -747,7 +747,7 @@
           <ng-container>
             <div (click)="toggleTabs('price')"
                  [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PRICE:</b>
             </div>
             <div *ngIf="tabs['price']" @fadeInOut>
@@ -793,7 +793,7 @@
           <ng-container>
             <div (click)="toggleTabs('sockets')"
                  [class.underline]="tabs['sockets']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>SOCKETS:</b>
             </div>
             <div>
@@ -810,7 +810,7 @@
           <ng-container>
             <div (click)="toggleTabs('chipsets')"
                  [class.underline]="tabs['chipsets']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>CHIPSET:</b>
             </div>
             <div>
@@ -827,7 +827,7 @@
           <ng-container>
             <div (click)="toggleTabs('formFactor')"
                  [class.underline]="tabs['formFactor']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>FORM FACTOR:</b>
             </div>
             <div>
@@ -844,7 +844,7 @@
           <ng-container>
             <div (click)="toggleTabs('memoryGen')"
                  [class.underline]="tabs['memoryGen']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MEMORY GENERATION:</b>
             </div>
             <div>
@@ -861,7 +861,7 @@
           <ng-container>
             <div (click)="toggleTabs('memorySlots')"
                  [class.underline]="tabs['memorySlots']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MEMORY SLOTS:</b>
             </div>
             <div *ngIf="tabs['memorySlots']" @fadeInOut>
@@ -907,7 +907,7 @@
           <ng-container>
             <div (click)="toggleTabs('pciex16')"
                  [class.underline]="tabs['pciex16']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PCIe x16:</b>
             </div>
             <div *ngIf="tabs['pciex16']" @fadeInOut>
@@ -953,7 +953,7 @@
           <ng-container>
             <div (click)="toggleTabs('usb2')"
                  [class.underline]="tabs['usb2']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>USB 2.0 HEADER:</b>
             </div>
             <div *ngIf="tabs['usb2']" @fadeInOut>
@@ -999,7 +999,7 @@
           <ng-container>
             <div (click)="toggleTabs('usb3gen1')"
                  [class.underline]="tabs['usb3gen1']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>USB 3.1 HEADER:</b>
             </div>
             <div *ngIf="tabs['usb3gen1']" @fadeInOut>
@@ -1045,7 +1045,7 @@
           <ng-container>
             <div (click)="toggleTabs('usb3gen2')"
                  [class.underline]="tabs['usb3gen2']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>USB 3.2 HEADER:</b>
             </div>
             <div *ngIf="tabs['usb3gen2']" @fadeInOut>
@@ -1091,7 +1091,7 @@
           <ng-container>
             <div (click)="toggleTabs('usb3gen2x2')"
                  [class.underline]="tabs['usb3gen2x2']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>USB 3.2x2 HEADER:</b>
             </div>
             <div *ngIf="tabs['usb3gen2x2']" @fadeInOut>
@@ -1137,7 +1137,7 @@
           <ng-container>
             <div (click)="toggleTabs('usbtypec')"
                  [class.underline]="tabs['usbtypec']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>USB TYPE C HEADER:</b>
             </div>
             <div *ngIf="tabs['usbtypec']" @fadeInOut>
@@ -1183,7 +1183,7 @@
           <ng-container>
             <div (click)="toggleTabs('sata')"
                  [class.underline]="tabs['sata']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>SATA 6Gb/s:</b>
             </div>
             <div *ngIf="tabs['sata']" @fadeInOut>
@@ -1229,7 +1229,7 @@
           <ng-container>
             <div (click)="toggleTabs('m2')"
                  [class.underline]="tabs['m2']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>M.2 Slots:</b>
             </div>
             <div *ngIf="tabs['m2']" @fadeInOut>
@@ -1275,7 +1275,7 @@
           <ng-container>
             <div (click)="toggleTabs('wifi')"
                  [class.underline]="tabs['wifi']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>WIFI:</b>
             </div>
             <div>
@@ -1292,7 +1292,7 @@
           <ng-container>
             <div (click)="toggleTabs('raid')"
                  [class.underline]="tabs['raid']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>RAID:</b>
             </div>
             <div>
@@ -1337,7 +1337,7 @@
           <tbody>
           <tr *ngFor="let item of filteredMotherboards">
             <td class="w30">
-              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+              <div class="flex align-center pointer" >
                 <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
                 <div class="name">{{item.name}}</div>
               </div>
@@ -1350,7 +1350,7 @@
             <td>{{item.pciex16}}</td>
             <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
             <td class="w7"><div><button class="add" (click)="addToConfig('motherboard', item)">Add to Build</button></div></td>
-            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+            <td class="w7"><div><button class="add" (click)="shoppingService.addToCart(item)">Add to cart</button></div></td>
           </tr>
           </tbody>
         </table>
@@ -1366,7 +1366,7 @@
           <ng-container>
             <div (click)="toggleTabs('price')"
                  [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PRICE:</b>
             </div>
             <div *ngIf="tabs['price']" @fadeInOut>
@@ -1412,7 +1412,7 @@
           <ng-container>
             <div (click)="toggleTabs('memGen')"
                  [class.underline]="tabs['memGen']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>GENERATION:</b>
             </div>
             <div>
@@ -1429,7 +1429,7 @@
           <ng-container>
             <div (click)="toggleTabs('speeds')"
                  [class.underline]="tabs['speeds']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>SPEED:</b>
             </div>
             <div>
@@ -1446,7 +1446,7 @@
           <ng-container>
             <div (click)="toggleTabs('memory')"
                  [class.underline]="tabs['memory']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MEMORY:</b>
             </div>
             <div *ngIf="tabs['memory']" @fadeInOut>
@@ -1492,7 +1492,7 @@
           <ng-container>
             <div (click)="toggleTabs('modules')"
                  [class.underline]="tabs['modules']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MODULES:</b>
             </div>
             <div *ngIf="tabs['modules']" @fadeInOut>
@@ -1538,7 +1538,7 @@
           <ng-container>
             <div (click)="toggleTabs('cas')"
                  [class.underline]="tabs['cas']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>CAS / LATENCY:</b>
             </div>
             <div *ngIf="tabs['cas']" @fadeInOut>
@@ -1584,7 +1584,7 @@
           <ng-container>
             <div (click)="toggleTabs('heatspreader')"
                  [class.underline]="tabs['heatspreader']" style="cursor: pointer; font-size: 13px;"
-                 >
+class="cl">
               <b>HEATSINK:</b>
             </div>
             <div>
@@ -1628,19 +1628,19 @@
           <tbody>
           <tr *ngFor="let item of filteredMemories">
             <td class="w30">
-              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+              <div class="flex align-center pointer" >
                 <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
                 <div class="name">{{item.name}}</div>
               </div>
             </td>
-            <td>{{item.memory}}</td>
+            <td>{{item.memory}} GB</td>
             <td>{{item.generation}}</td>
-            <td>{{item.speed}}</td>
-            <td>{{item.latency}}</td>
+            <td>{{item.speed}} MHz</td>
+            <td>{{item.latency}} ns</td>
             <td>{{item.modules}}</td>
             <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
             <td class="w7"><div><button class="add" (click)="addToConfig('memories', item)">Add to Build</button></div></td>
-            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+            <td class="w7"><div><button class="add" (click)="shoppingService.addToCart(item)">Add to cart</button></div></td>
           </tr>
           </tbody>
         </table>
@@ -1656,7 +1656,7 @@
           <ng-container>
             <div (click)="toggleTabs('price')"
                  [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PRICE:</b>
             </div>
             <div *ngIf="tabs['price']" @fadeInOut>
@@ -1702,7 +1702,7 @@
           <ng-container>
             <div (click)="toggleTabs('memGens')"
                  [class.underline]="tabs['memGens']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MEMORY GENERATION:</b>
             </div>
             <div>
@@ -1719,7 +1719,7 @@
           <ng-container>
             <div (click)="toggleTabs('memory')"
                  [class.underline]="tabs['memory']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MEMORY:</b>
             </div>
             <div *ngIf="tabs['memory']" @fadeInOut>
@@ -1763,7 +1763,7 @@
           <ng-container>
             <div (click)="toggleTabs('clock')"
                  [class.underline]="tabs['clock']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>CORE CLOCK:</b>
             </div>
             <div *ngIf="tabs['clock']" @fadeInOut>
@@ -1807,7 +1807,7 @@
           <ng-container>
             <div (click)="toggleTabs('boost')"
                  [class.underline]="tabs['boost']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>BOOST CLOCK:</b>
             </div>
             <div *ngIf="tabs['boost']" @fadeInOut>
@@ -1851,7 +1851,7 @@
           <ng-container>
             <div (click)="toggleTabs('tdp')"
                  [class.underline]="tabs['tdp']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>TDP:</b>
             </div>
             <div *ngIf="tabs['tdp']" @fadeInOut>
@@ -1895,7 +1895,7 @@
           <ng-container>
             <div (click)="toggleTabs('length')"
                  [class.underline]="tabs['length']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>CARD LENGTH:</b>
             </div>
             <div *ngIf="tabs['length']" @fadeInOut>
@@ -1939,7 +1939,7 @@
           <ng-container>
             <div (click)="toggleTabs('slots')"
                  [class.underline]="tabs['slots']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>SLOTS:</b>
             </div>
             <div *ngIf="tabs['slots']" @fadeInOut>
@@ -2013,19 +2013,19 @@
           <tbody>
           <tr *ngFor="let item of filteredGPUs">
             <td class="w30">
-              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+              <div class="flex align-center pointer" >
                 <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
                 <div class="name">{{item.name}}</div>
               </div>
             </td>
             <td>{{item.clock}} MHz</td>
             <td>{{item.boostClock}} MHz</td>
-            <td>{{item.memory}}</td>
-            <td>{{item.length}}</td>
+            <td>{{item.memory}} GB</td>
+            <td>{{item.length}} mm</td>
             <td>{{item.slots}}</td>
             <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
             <td class="w7"><div><button class="add" (click)="addToConfig('gpus', item)">Add to Build</button></div></td>
-            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+            <td class="w7"><div><button class="add" (click)="shoppingService.addToCart(item)">Add to cart</button></div></td>
           </tr>
           </tbody>
         </table>
@@ -2041,7 +2041,7 @@
           <ng-container>
             <div (click)="toggleTabs('price')"
                  [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PRICE:</b>
             </div>
             <div *ngIf="tabs['price']" @fadeInOut>
@@ -2087,7 +2087,7 @@
           <ng-container>
             <div (click)="toggleTabs('type')"
                  [class.underline]="tabs['type']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>TYPE:</b>
             </div>
             <div>
@@ -2104,7 +2104,7 @@
           <ng-container>
             <div (click)="toggleTabs('interface')"
                  [class.underline]="tabs['interface']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>INTERFACE:</b>
             </div>
             <div>
@@ -2121,7 +2121,7 @@
           <ng-container>
             <div (click)="toggleTabs('formFactor')"
                  [class.underline]="tabs['formFactor']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>FORM FACTOR:</b>
             </div>
             <div>
@@ -2138,7 +2138,7 @@
           <ng-container>
             <div (click)="toggleTabs('read')"
                  [class.underline]="tabs['read']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>READ - MB/s:</b>
             </div>
             <div *ngIf="tabs['read']" @fadeInOut>
@@ -2182,7 +2182,7 @@
           <ng-container>
             <div (click)="toggleTabs('write')"
                  [class.underline]="tabs['write']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>WRITE - MB/s:</b>
             </div>
             <div *ngIf="tabs['write']" @fadeInOut>
@@ -2226,7 +2226,7 @@
           <ng-container>
             <div (click)="toggleTabs('cap')"
                  [class.underline]="tabs['cap']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>CAPACITY - GB:</b>
             </div>
             <div *ngIf="tabs['cap']" @fadeInOut>
@@ -2270,7 +2270,7 @@
           <ng-container>
             <div (click)="toggleTabs('sink')"
                  [class.underline]="tabs['sink']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>HEATSINK:</b>
             </div>
             <div>
@@ -2315,7 +2315,7 @@
           <tbody>
           <tr *ngFor="let item of filteredStorages">
             <td class="w30">
-              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+              <div class="flex align-center pointer" >
                 <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
                 <div class="name">{{item.name}}</div>
               </div>
@@ -2328,7 +2328,7 @@
             <td>{{item.capacity / item.price | number: '1.2-2'}} GB/€</td>
             <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
             <td class="w7"><div><button class="add" (click)="addToConfig('storages', item)">Add to Build</button></div></td>
-            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+            <td class="w7"><div><button class="add" (click)="shoppingService.addToCart(item)">Add to cart</button></div></td>
           </tr>
           </tbody>
         </table>
@@ -2344,7 +2344,7 @@
           <ng-container>
             <div (click)="toggleTabs('price')"
                  [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PRICE:</b>
             </div>
             <div *ngIf="tabs['price']" @fadeInOut>
@@ -2390,7 +2390,7 @@
           <ng-container>
             <div (click)="toggleTabs('formFactor')"
                  [class.underline]="tabs['formFactor']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>FORM FACTOR:</b>
             </div>
             <div>
@@ -2407,7 +2407,7 @@
           <ng-container>
             <div (click)="toggleTabs('watt')"
                  [class.underline]="tabs['watt']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>WATTAGE:</b>
             </div>
             <div *ngIf="tabs['watt']" @fadeInOut>
@@ -2451,7 +2451,7 @@
           <ng-container>
             <div (click)="toggleTabs('eff')"
                  [class.underline]="tabs['eff']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>EFFICIENCY:</b>
             </div>
             <div *ngIf="tabs['eff']" @fadeInOut>
@@ -2495,7 +2495,7 @@
           <ng-container>
             <div (click)="toggleTabs('pcie')"
                  [class.underline]="tabs['pcie']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PCIe 6+2 PINS:</b>
             </div>
             <div *ngIf="tabs['pcie']" @fadeInOut>
@@ -2541,7 +2541,7 @@
           <ng-container>
             <div (click)="toggleTabs('eps')"
                  [class.underline]="tabs['eps']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>EPS 8 PINS:</b>
             </div>
             <div *ngIf="tabs['eps']" @fadeInOut>
@@ -2587,7 +2587,7 @@
           <ng-container>
             <div (click)="toggleTabs('sata')"
                  [class.underline]="tabs['sata']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>SATA CONNECTORS:</b>
             </div>
             <div *ngIf="tabs['sata']" @fadeInOut>
@@ -2633,7 +2633,7 @@
           <ng-container>
             <div (click)="toggleTabs('molex')"
                  [class.underline]="tabs['molex']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MOLEX 4PINS:</b>
             </div>
             <div *ngIf="tabs['molex']" @fadeInOut>
@@ -2679,7 +2679,7 @@
           <ng-container>
             <div (click)="toggleTabs('12v')"
                  [class.underline]="tabs['12v']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>12VHPR:</b>
             </div>
             <div>
@@ -2696,7 +2696,7 @@
           <ng-container>
             <div (click)="toggleTabs('mod')"
                  [class.underline]="tabs['mod']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MODULAR:</b>
             </div>
             <div>
@@ -2740,7 +2740,7 @@
           <tbody>
           <tr *ngFor="let item of filteredPSUs">
             <td class="w30">
-              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+              <div class="flex align-center pointer" >
                 <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
                 <div class="name">{{item.name}}</div>
               </div>
@@ -2752,7 +2752,7 @@
             <td><input type="checkbox" [checked]="item.modular" disabled="disabled"></td>
             <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
             <td class="w7"><div><button class="add" (click)="addToConfig('psu', item)">Add to Build</button></div></td>
-            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+            <td class="w7"><div><button class="add" (click)="shoppingService.addToCart(item)">Add to cart</button></div></td>
           </tr>
           </tbody>
         </table>
@@ -2768,7 +2768,7 @@
           <ng-container>
             <div (click)="toggleTabs('price')"
                  [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PRICE:</b>
             </div>
             <div *ngIf="tabs['price']" @fadeInOut>
@@ -2814,7 +2814,7 @@
           <ng-container>
             <div (click)="toggleTabs('form')"
                  [class.underline]="tabs['form']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>FORM FACTOR:</b>
             </div>
             <div>
@@ -2831,7 +2831,7 @@
           <ng-container>
             <div (click)="toggleTabs('panel')"
                  [class.underline]="tabs['panel']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>SIDE PANEL:</b>
             </div>
             <div>
@@ -2848,7 +2848,7 @@
           <ng-container>
             <div (click)="toggleTabs('length')"
                  [class.underline]="tabs['length']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MAX CARD LENGTH:</b>
             </div>
             <div *ngIf="tabs['length']" @fadeInOut>
@@ -2892,7 +2892,7 @@
           <ng-container>
             <div (click)="toggleTabs('height')"
                  [class.underline]="tabs['height']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>MAX COOLER HEIGHT:</b>
             </div>
             <div *ngIf="tabs['height']" @fadeInOut>
@@ -2963,7 +2963,7 @@
           <tbody>
           <tr *ngFor="let item of filteredCases">
             <td class="w30">
-              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+              <div class="flex align-center pointer" >
                 <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
                 <div class="name">{{item.name}}</div>
               </div>
@@ -2975,7 +2975,7 @@
             <td>{{item.maxCoolerHeight}} mm</td>
             <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
             <td class="w7"><div><button class="add" (click)="addToConfig('case', item)">Add to Build</button></div></td>
-            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+            <td class="w7"><div><button class="add" (click)="shoppingService.addToCart(item)">Add to cart</button></div></td>
           </tr>
           </tbody>
         </table>
@@ -2991,7 +2991,7 @@
           <ng-container>
             <div (click)="toggleTabs('price')"
                  [class.underline]="tabs['price']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>PRICE:</b>
             </div>
             <div *ngIf="tabs['price']" @fadeInOut>
@@ -3037,7 +3037,7 @@
           <ng-container>
             <div (click)="toggleTabs('form')"
                  [class.underline]="tabs['form']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>SIZE:</b>
             </div>
             <div>
@@ -3054,7 +3054,7 @@
           <ng-container>
             <div (click)="toggleTabs('rpm')"
                  [class.underline]="tabs['rpm']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>RPM:</b>
             </div>
             <div *ngIf="tabs['rpm']" @fadeInOut>
@@ -3098,7 +3098,7 @@
           <ng-container>
             <div (click)="toggleTabs('airflow')"
                  [class.underline]="tabs['airflow']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>AIRFLOW:</b>
             </div>
             <div *ngIf="tabs['airflow']" @fadeInOut>
@@ -3144,7 +3144,7 @@
           <ng-container>
             <div (click)="toggleTabs('noise')"
                  [class.underline]="tabs['noise']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>NOISE:</b>
             </div>
             <div *ngIf="tabs['noise']" @fadeInOut>
@@ -3190,7 +3190,7 @@
           <ng-container>
             <div (click)="toggleTabs('rgb')"
                  [class.underline]="tabs['rgb']" style="cursor: pointer; font-size: 13px;"
-            >
+                 class="cl">
               <b>RGB:</b>
             </div>
             <div>
@@ -3234,7 +3234,7 @@
           <tbody>
           <tr *ngFor="let item of filteredFans">
             <td class="w30">
-              <div class="flex align-center pointer" (click)="toPage('/details', item.id)">
+              <div class="flex align-center pointer" >
                 <div><img [src]="'data:image/png;base64,' + item.image" alt="CPU" width="50px" height="50px"></div>
                 <div class="name">{{item.name}}</div>
               </div>
@@ -3246,7 +3246,7 @@
             <td><input type="checkbox" [checked]="item.rgbPresent" disabled="disabled"></td>
             <td><div class="price">{{ item.price | number:'1.2-2'}}€</div></td>
             <td class="w7"><div><button class="add" (click)="addToConfig('fans', item)">Add to Build</button></div></td>
-            <td class="w7"><div><button class="add" (click)="addToCart(item)">Add to cart</button></div></td>
+            <td class="w7"><div><button class="add" (click)="shoppingService.addToCart(item)">Add to cart</button></div></td>
           </tr>
           </tbody>
         </table>

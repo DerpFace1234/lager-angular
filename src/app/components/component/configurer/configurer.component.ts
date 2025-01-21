@@ -26,7 +26,7 @@ import {ShoppingService} from '../../../services/shopping.service';
 })
 export class ConfigurerComponent{
 
-  constructor(public componentsService: ComponentsService, private router: Router, private shoppingService: ShoppingService){}
+  constructor(public componentsService: ComponentsService, private router: Router, public shoppingService: ShoppingService){}
   pickedCPU: CPU | null = null;
   pickedCPUCooler: CPUCooler | null = null;
   pickedMotherboard: Motherboard | null = null;
@@ -433,21 +433,16 @@ export class ConfigurerComponent{
     }
   }
 
-  addToCart(comp: CPU | CPUCooler | Motherboard | Memory | PSU | Fan | Case | Storage | GPU): void{
-    this.shoppingService.cart.push(comp);
-    this.shoppingService.triggerRefresh();
-  }
   addAllToCart(): void{
-    this.pickedCPU?this.shoppingService.cart.push(this.pickedCPU):0;
-    this.pickedCPUCooler?this.shoppingService.cart.push(this.pickedCPUCooler):0;
-    this.pickedMotherboard?this.shoppingService.cart.push(this.pickedMotherboard):0;
-    this.pickedMemories?this.shoppingService.cart.push(...this.pickedMemories):0;
-    this.pickedGPUs?this.shoppingService.cart.push(...this.pickedGPUs):0;
-    this.pickedStorages?this.shoppingService.cart.push(...this.pickedStorages):0;
-    this.pickedFans?this.shoppingService.cart.push(...this.pickedFans):0;
-    this.pickedCase?this.shoppingService.cart.push(this.pickedCase):0;
-    this.pickedPSU?this.shoppingService.cart.push(this.pickedPSU):0;
-    this.shoppingService.triggerRefresh();
+    this.pickedCPU?this.shoppingService.addToCart(this.pickedCPU):0;
+    this.pickedCPUCooler?this.shoppingService.addToCart(this.pickedCPUCooler):0;
+    this.pickedMotherboard?this.shoppingService.addToCart(this.pickedMotherboard):0;
+    this.pickedMemories?this.pickedMemories.forEach(item => this.shoppingService.addToCart(item)):0;
+    this.pickedGPUs?this.pickedGPUs.forEach(item => this.shoppingService.addToCart(item)):0;
+    this.pickedStorages?this.pickedStorages.forEach(item => this.shoppingService.addToCart(item)):0;
+    this.pickedFans?this.pickedFans.forEach(item => this.shoppingService.addToCart(item)):0;
+    this.pickedCase?this.shoppingService.addToCart(this.pickedCase):0;
+    this.pickedPSU?this.shoppingService.addToCart(this.pickedPSU):0;
   }
   calculateTotal(): void{
     this.total = 0.00;
@@ -460,6 +455,25 @@ export class ConfigurerComponent{
     if(this.pickedMemories){for(let i=0; i<this.pickedMemories.length;i++){this.total += this.pickedMemories[i].price}}
     if(this.pickedFans){for(let i=0; i<this.pickedFans.length;i++){this.total += this.pickedFans[i].price}}
     if(this.pickedStorages){for(let i=0; i<this.pickedStorages.length;i++){this.total += this.pickedStorages[i].price}}
+  }
+
+  isOverlayVisibleError = false;
+  isOverlayVisibleWarn = false;
+
+  showOverlayError(): void {
+    this.isOverlayVisibleError = true;
+  }
+
+  hideOverlayError(): void {
+    this.isOverlayVisibleError = false;
+  }
+
+  showOverlayWarn(): void {
+    this.isOverlayVisibleError = true;
+  }
+
+  hideOverlayWarn(): void {
+    this.isOverlayVisibleError = false;
   }
 
   protected readonly ComponentType = ComponentType;

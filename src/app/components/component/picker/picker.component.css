@@ -309,3 +309,14 @@ input[type="checkbox"]:disabled:checked{
   filter: sepia(100) invert(100%) hue-rotate(5deg) saturate(10) brightness(1.0)
 }
 
+.cl{
+  transition: background-size 0.3s ease-in-out, transform 0.3s ease-in-out;
+  background-size: 100% 100%;
+}
+
+.cl:hover {
+  cursor: pointer;
+  background-size: 110% 110%;
+  transform: scale(1.08);
+}
+

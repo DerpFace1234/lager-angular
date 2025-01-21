@@ -6,7 +6,7 @@
       {{ feedback }}
     </div>
     <ng-container *ngIf="(shoppingService.cart.length > 0) && !orderFail && !orderSuccessful">
-      <div #scrollContainer class="scroll-container" tabindex="0">
+      <div class="scroll-container">
         <table>
           <thead>
           <tr>
@@ -30,7 +30,7 @@
             </td>
             <td>
               <div class="price align-center">
-                {{comp.price | number: '1.2-2'}}€
+                {{comp.orderedQuantity}} x {{comp.price | number: '1.2-2'}}€
               </div>
             </td>
             <td>
@@ -41,7 +41,7 @@
         </table>
       </div>
     </ng-container>
-    <div class="buttons" *ngIf="shoppingService.cart.length > 0">
+    <div class="buttons" *ngIf="(shoppingService.cart.length > 0)">
       <div class="user" *ngIf="shoppingService.cart" (click)="clearCart()">Clear Cart</div>
       <div class="user" *ngIf="shoppingService.cart" (click)="confirmOrder()">{{shoppingService.total | number: '1.2-2'}}€ - Confirm Order</div>
     </div>

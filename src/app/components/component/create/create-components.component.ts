@@ -3,11 +3,17 @@ import {
   Case,
   CaseSidepanel,
   ComponentType,
-  CPU, CPUCooler, Fan, GPU,
-  GPUMemoryGeneration, Memory,
-  MemoryGeneration, Motherboard,
+  CPU,
+  CPUCooler,
+  Fan,
+  GPU,
+  GPUMemoryGeneration,
+  Memory,
+  MemoryGeneration,
+  Motherboard,
   MotherboardChipset,
-  MotherboardFormFactor, PSU,
+  MotherboardFormFactor,
+  PSU,
   PSUFormFactor,
   Socket,
   Storage,
@@ -19,6 +25,7 @@ import {
 import {ComponentsService} from '../../../services/components.service';
 import {UserType} from '../../../model/user.model';
 import {Router} from '@angular/router';
+import {LoginService} from '../../../services/login.service';
 
 @Component({
   selector: 'app-create-component',
@@ -30,7 +37,7 @@ export class CreateComponentsComponent {
   isDragOver = false;
   imagePreviewUrl: string | null = null;
 
-  constructor(public componentService: ComponentsService, private router: Router,) {}
+  constructor(public componentService: ComponentsService, private router: Router, public loginService: LoginService) {}
   valueStorage = {
     name: "",
     quantityStock: 0,
@@ -131,6 +138,15 @@ export class CreateComponentsComponent {
   suggestions: any[] = [];
   suggestions2: any[] = [];
 
+  ngOnInit(): void{
+    this.loginService.handleStuff().then(item => {
+      if(this.loginService.userType !== UserType.ADMIN){
+        this.loginService.errorMessage = "Admin Privileges required."
+        this.loginService.showLogin();
+      }
+    });
+  }
+
   onMemoryGenChange(memoryGeneration: MemoryGeneration): void{
     this.valueStorage.memoryGeneration = memoryGeneration;
     const a =  this.componentService.memSpeedMap.get(memoryGeneration);
@@ -165,7 +181,7 @@ export class CreateComponentsComponent {
     if(form.valid){
       this.valueStorage.feedbackMessage = "";
       if(this.valueStorage.type === ComponentType.CASE){
-        const comp: Case = new Case(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
+        const comp: Case = new Case(this.valueStorage.name, 1, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.casSidepanel, this.valueStorage.color,
           this.valueStorage.motherboardFormFactor, this.valueStorage.maxCoolerHeight, this.valueStorage.maxCardLength, this.valueStorage.fans80,
           this.valueStorage.fans120, this.valueStorage.fans140, this.valueStorage.usb2Port, this.valueStorage.usb3Gen1Port,
@@ -177,7 +193,7 @@ export class CreateComponentsComponent {
           error => this.handleError(error)
         );
       } else if(this.valueStorage.type === ComponentType.CPU){
-        const comp: CPU = new CPU(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
+        const comp: CPU = new CPU(this.valueStorage.name, 1, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.clock, this.valueStorage.boostClock,
           this.valueStorage.tdp, this.valueStorage.cores, this.valueStorage.threads,
           this.valueStorage.socket, this.valueStorage.l2Cache, this.valueStorage.l3Cache,
@@ -188,7 +204,7 @@ export class CreateComponentsComponent {
           error => this.handleError(error)
         );
       } else if(this.valueStorage.type === ComponentType.CPUCOOLER){
-        const comp: CPUCooler = new CPUCooler(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
+        const comp: CPUCooler = new CPUCooler(this.valueStorage.name, 1, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.fanRPM, this.valueStorage.noise,
           this.valueStorage.color, this.valueStorage.height, this.valueStorage.sockets,
           this.valueStorage.isFanless, this.valueStorage.isWatercooled);
@@ -198,7 +214,7 @@ export class CreateComponentsComponent {
           error => this.handleError(error)
         );
       } else if(this.valueStorage.type === ComponentType.FAN){
-        const comp: Fan = new Fan(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
+        const comp: Fan = new Fan(this.valueStorage.name, 1, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.size, this.valueStorage.fanRPM,
           this.valueStorage.airflow, this.valueStorage.noise, this.valueStorage.rgbPresent,
           this.valueStorage.pwm4PinPresent, this.valueStorage.dc3PinPresent, this.valueStorage.splitterPresent,
@@ -209,7 +225,7 @@ export class CreateComponentsComponent {
           error => this.handleError(error)
         );
       } else if(this.valueStorage.type === ComponentType.GPU){
-        const comp: GPU = new  GPU(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
+        const comp: GPU = new  GPU(this.valueStorage.name, 1, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.memory, this.valueStorage.gpuMemoryGeneration,
           this.valueStorage.clock, this.valueStorage.boostClock, this.valueStorage.color, this.valueStorage.length,
           this.valueStorage.tdp, this.valueStorage.hdmiPorts, this.valueStorage.dpPorts,
@@ -220,7 +236,7 @@ export class CreateComponentsComponent {
           error => this.handleError(error)
         );
       } else if(this.valueStorage.type === ComponentType.MEMORY){
-        const comp: Memory = new Memory(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
+        const comp: Memory = new Memory(this.valueStorage.name, 1, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.memory, this.valueStorage.speed, this.valueStorage.memoryGeneration,
           this.valueStorage.modules, this.valueStorage.color, this.valueStorage.latency,
           this.valueStorage.voltage, this.valueStorage.hasHeatSpreaders);
@@ -230,7 +246,7 @@ export class CreateComponentsComponent {
           error => this.handleError(error)
         );
       } else if(this.valueStorage.type === ComponentType.MOTHERBOARD){
-        const comp: Motherboard = new Motherboard(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
+        const comp: Motherboard = new Motherboard(this.valueStorage.name, 1, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.socket, this.valueStorage.motherboardFormFactor, this.valueStorage.motherboardChipset,
           this.valueStorage.memoryGeneration, this.valueStorage.memorySlots, this.valueStorage.memorySpeeds, this.valueStorage.pciex16, this.valueStorage.pciex8,
           this.valueStorage.pciex4, this.valueStorage.pciex1, this.valueStorage.storageFormFactors, this.valueStorage.m2slots, this.valueStorage.sata,
@@ -242,7 +258,7 @@ export class CreateComponentsComponent {
           error => this.handleError(error)
         );
       } else if(this.valueStorage.type === ComponentType.PSU){
-        const comp: PSU = new PSU(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
+        const comp: PSU = new PSU(this.valueStorage.name, 1, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.wattage, this.valueStorage.efficiency,
           this.valueStorage.psuFormFactor, this.valueStorage.pcie6Pins, this.valueStorage.eps8Pins, this.valueStorage.sataConnectors, this.valueStorage.molex4Pins,
           this.valueStorage.hpr12vPresent, this.valueStorage.modular, this.valueStorage.color);
@@ -252,7 +268,7 @@ export class CreateComponentsComponent {
           error => this.handleError(error)
         );
       } else if(this.valueStorage.type === ComponentType.STORAGE){
-        const comp: Storage = new Storage(this.valueStorage.name, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
+        const comp: Storage = new Storage(this.valueStorage.name, 1, this.valueStorage.quantityStock, this.valueStorage.price, this.valueStorage.reorderQuantity,
           this.valueStorage.image, this.valueStorage.type, this.valueStorage.storageType, this.valueStorage.capacity,
           this.valueStorage.storageInterface, this.valueStorage.storageformFactor, this.valueStorage.read, this.valueStorage.write, this.valueStorage.withHeatSink);
 
@@ -463,4 +479,5 @@ export class CreateComponentsComponent {
   }
 
   protected readonly ComponentType = ComponentType;
+  protected readonly UserType = UserType;
 }

@@ -1,38 +1,410 @@
-<div *ngIf="customer">
-  <h2>Welcome, Customer {{ customer.email }}!</h2>
-  <div>
-    <p>{{customer.firstName}}</p>
-    <p>{{customer.lastName}}</p>
-    <p>{{customer.address}}</p>
-    <p>{{customer.birthday}}</p>
-    <p>{{customer.email}}</p>
-    <p>{{customer.phone}}</p>
-  </div>
-</div>
+<ng-container *ngIf="loginService.userPresent">
+  <ng-container *ngIf="customer">
+    <div class="flex-columns">
+      <div class="c33 b-r-b">
+        <div class="profile">
+          <img src="images/cat-blahaj.jpg" alt="Profile Image" width="200px" height="200px" (click)="flip('details', 0)">
+          <div class="b" (click)="flip('details', 0)">{{customer.email}}</div>
+        </div>
+        <div class="tabs">
+          <div class="tab" (click)="flip('details', 0)">Edit Details ></div>
+          <div class="tab" (click)="flip('order-one', 0)">View Orders ></div>
+        </div>
+      </div>
 
-<div *ngIf="admin">
-  <h2>Welcome, Admin {{ admin.email }}!</h2>
-  <div>
-    <p>{{admin.firstName}}</p>
-    <p>{{admin.lastName}}</p>
-    <p>{{admin.address}}</p>
-    <p>{{admin.birthday}}</p>
-    <p>{{admin.email}}</p>
-    <p>{{admin.phone}}</p>
-    <p>{{admin.adminRole}}</p>
-  </div>
-</div>
+      <div class="c66">
+        <ng-container *ngIf="details">
+          <div class="form-container">
+            <div class="form-group">
+              <label for="firstName">First Name:</label>
+              <input type="text" id="firstName" required [(ngModel)]="customer.firstName" #firstNameCtrl="ngModel" name="firstName"
+                     [ngClass]="{'invalid-field': firstNameCtrl.invalid && firstNameCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name:</label>
+              <input type="text" id="lastName" required [(ngModel)]="customer.lastName" #lastNameCtrl="ngModel" name="lastName"
+                     [ngClass]="{'invalid-field': lastNameCtrl.invalid && lastNameCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="address">Address:</label>
+              <input type="text" id="address" required [(ngModel)]="customer.address" #addressCtrl="ngModel" name="address"
+                     [ngClass]="{'invalid-field': addressCtrl.invalid && addressCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="birthday">Birthday:</label>
+              <input type="date" id="birthday" required [(ngModel)]="birthday" name="birthday">
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="text" id="email" required [(ngModel)]="customer.email" #emailCtrl="ngModel" name="email"
+                     [ngClass]="{'invalid-field': emailCtrl.invalid && emailCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone:</label>
+              <input type="text" id="phone" required [(ngModel)]="customer.phone" #phoneCtrl="ngModel" name="phone"
+                     [ngClass]="{'invalid-field': phoneCtrl.invalid && phoneCtrl.touched}">
+            </div>
+            <div class="form-group full-width">
+              <button (click)="saveChanges()">Save Changes</button>
+            </div>
+            <div class="feedback-message">{{ feedbackMessage }}</div>
+          </div>
+        </ng-container>
 
-<div *ngIf="orderProcessor">
-  <h2>Welcome, Order Processor {{ orderProcessor.email }}!</h2>
-  <div>
-    <p>{{orderProcessor.firstName}}</p>
-    <p>{{orderProcessor.lastName}}</p>
-    <p>{{orderProcessor.address}}</p>
-    <p>{{orderProcessor.birthday}}</p>
-    <p>{{orderProcessor.email}}</p>
-    <p>{{orderProcessor.phone}}</p>
-    <p>{{orderProcessor.processingArea}}</p>
-    <p>{{orderProcessor.shift}}</p>
-  </div>
-</div>
+        <ng-container *ngIf="order">
+          <div class="scroll-container" tabindex="0">
+            <ng-container *ngFor="let item of orders; let i = index">
+              <div class="order-header" (click)="flip('order-single', item.id)">
+                <div class="b m-b-10 f-14">{{item.price | number: '1.2-2'}} €</div>
+                <div class="m-b-20 f-14">Status: {{item.status}}</div>
+                <div class="f-14 gray">{{calcNumberOfComponents(item)}} Components</div>
+                <div class="f-14 gray">Nr: {{item.id}} - {{item.orderDateTime | date: 'dd.MM.yyyy HH:mm'}}</div>
+              </div>
+            </ng-container>
+          </div>
+       </ng-container>
+
+        <div class="flex-columns" *ngIf="orderActive && activeOrder">
+          <div class="w30 info">
+            <div class="inf">
+              <div class="b2">Order-Nr. {{activeOrder.id}} {{activeOrder.orderDateTime | date: 'dd.MM.yyyy HH:mm'}}</div>
+              <div class="f-14">{{numbers}} Components {{activeOrder.price | number: '1.2-2'}}€</div>
+            </div>
+            <div>
+              <div class="b2">Assigned to:</div>
+              <div class="f-14">{{activeOrder.processor.firstName}} {{activeOrder.processor.lastName}}</div>
+              <div class="f-14">Shift: {{activeOrder.processor.shift}}</div>
+              <div class="f-14">Status: {{activeOrder.status}}</div>
+            </div>
+            <div>
+              <div class="b2">Ordered by:</div>
+              <div class="f-14">{{activeOrder.customer.firstName}} {{activeOrder.customer.lastName}}</div>
+              <div class="m-b-20  f-14">{{activeOrder.customer.address}}</div>
+              <div class="f-14">{{activeOrder.customer.email}}</div>
+              <div class="f-14">{{activeOrder.customer.phone}}</div>
+            </div>
+          </div>
+          <div>
+            <div class="scroll-container" tabindex="0" #scrollContainer>
+            <table>
+              <thead>
+              <tr>
+                <th></th>
+                <th class="w50"></th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="scroll-item" *ngFor="let key of activeOrder.components.keys(); let i = index">
+                <td>
+                  <div class="flex align-center">
+                    <div>
+                      <img [src]="'data:image/png;base64,' + key.image" height="100px" width="100px" style="margin-right: 10px;" alt="Item">
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="align-center words">{{key.name}}</div>
+                </td>
+                <td>
+                  <div class="price align-center">
+                    {{activeOrder.components.get(key)}} x {{key.price | number: '1.2-2'}}€
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <ng-container *ngIf="admin">
+    <div class="flex-columns">
+      <div class="c33 b-r-b">
+        <div class="profile">
+          <img src="images/cat-blahaj.jpg" alt="Profile Image" width="250px" height="250px" (click)="flip('details', 0)">
+          <div class="b" (click)="flip('details', 0)">{{admin.email}}</div>
+        </div>
+        <div class="tabs">
+          <div class="tab" (click)="flip('details', 0)">Edit Details ></div>
+          <div class="tab" (click)="flip('order-all', 0)">View All Orders ></div>
+          <div class="tab" (click)="toPage('/user-list')">User Management ></div>
+          <div class="tab" (click)="toPage('/comp-list')">Component Management ></div>
+        </div>
+      </div>
+
+      <div class="c66">
+        <ng-container *ngIf="details">
+          <div class="form-container">
+            <div class="form-group">
+              <label for="firstName2">First Name:</label>
+              <input type="text" id="firstName2" required [(ngModel)]="admin.firstName" #firstNameCtrl="ngModel" name="firstName2"
+                     [ngClass]="{'invalid-field': firstNameCtrl.invalid && firstNameCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="lastName2">Last Name:</label>
+              <input type="text" id="lastName2" required [(ngModel)]="admin.lastName" #lastNameCtrl="ngModel" name="lastName2"
+                     [ngClass]="{'invalid-field': lastNameCtrl.invalid && lastNameCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="address2">Address:</label>
+              <input type="text" id="address2" required [(ngModel)]="admin.address" #addressCtrl="ngModel" name="address2"
+                     [ngClass]="{'invalid-field': addressCtrl.invalid && addressCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="birthday2">Birthday:</label>
+              <input type="date" id="birthday2" required [(ngModel)]="birthday" name="birthday2">
+            </div>
+            <div class="form-group">
+              <label for="email2">Email:</label>
+              <input type="text" id="email2" required [(ngModel)]="admin.email" #emailCtrl="ngModel" name="email2"
+                     [ngClass]="{'invalid-field': emailCtrl.invalid && emailCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="phone2">Phone:</label>
+              <input type="text" id="phone2" required [(ngModel)]="admin.phone" #phoneCtrl="ngModel" name="phone2"
+                     [ngClass]="{'invalid-field': phoneCtrl.invalid && phoneCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="role">Admin Role:</label>
+              <input type="text" id="role" required [(ngModel)]="admin.adminRole" #roleCtrl="ngModel" name="role"
+                     [ngClass]="{'invalid-field': roleCtrl.invalid && roleCtrl.touched}">
+            </div>
+            <div class="form-group full-width">
+              <button (click)="saveChanges()">Save Changes</button>
+            </div>
+            <div class="feedback-message">{{ feedbackMessage }}</div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="order">
+          <div class="scroll-container" tabindex="0">
+            <ng-container *ngFor="let item of orders; let i = index">
+              <div class="order-header" (click)="flip('order-single', item.id)">
+                <div class="b m-b-10 f-14">{{item.price | number: '1.2-2'}} €</div>
+                <div class="m-b-20 f-14">Status: {{item.status}}</div>
+                <div class="f-14 gray">{{calcNumberOfComponents(item)}} Components</div>
+                <div class="f-14 gray">Nr: {{item.id}} - {{item.orderDateTime | date: 'dd.MM.yyyy HH:mm'}}</div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <div class="flex-columns" *ngIf="orderActive && activeOrder">
+          <div class="w30 info">
+            <div class="inf">
+              <div class="b2">Order-Nr. {{activeOrder.id}} {{activeOrder.orderDateTime | date: 'dd.MM.yyyy HH:mm'}}</div>
+              <div class="f-14">{{numbers}} Components {{activeOrder.price | number: '1.2-2'}}€</div>
+            </div>
+            <div>
+              <div class="b2">Assigned to:</div>
+              <div class="f-14">{{activeOrder.processor.firstName}} {{activeOrder.processor.lastName}}</div>
+              <div class="f-14">Shift: {{activeOrder.processor.shift}}</div>
+              <div class="f-14">Status:
+                <select [(ngModel)]="activeOrder.status" (change)="updateStatus(activeOrder.id, activeOrder.status)">
+                  <option *ngFor="let str of statusStrings" [value]="str">{{str}}</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <div class="b2">Ordered by:</div>
+              <div class="f-14">{{activeOrder.customer.firstName}} {{activeOrder.customer.lastName}}</div>
+              <div class="m-b-20  f-14">{{activeOrder.customer.address}}</div>
+              <div class="f-14">{{activeOrder.customer.email}}</div>
+              <div class="f-14">{{activeOrder.customer.phone}}</div>
+            </div>
+          </div>
+          <div>
+            <div class="scroll-container" tabindex="0" #scrollContainer>
+              <table>
+                <thead>
+                <tr>
+                  <th></th>
+                  <th class="w50"></th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="scroll-item" *ngFor="let key of activeOrder.components.keys(); let i = index">
+                  <td>
+                    <div class="flex align-center">
+                      <div>
+                        <img [src]="'data:image/png;base64,' + key.image" height="100px" width="100px" style="margin-right: 10px;" alt="Item">
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="align-center words">{{key.name}}</div>
+                  </td>
+                  <td>
+                    <div class="price align-center">
+                      {{activeOrder.components.get(key)}} x {{key.price | number: '1.2-2'}}€
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <ng-container *ngIf="orderProcessor">
+    <div class="flex-columns">
+      <div class="c33 b-r-b">
+        <div class="profile">
+          <img src="images/cat-blahaj.jpg" alt="Profile Image" width="250px" height="250px" (click)="flip('details', 0)">
+          <div class="b" (click)="flip('details', 0)">{{orderProcessor.email}}</div>
+        </div>
+        <div class="tabs">
+          <div class="tab" (click)="flip('details', 0)">Edit Details ></div>
+          <div class="tab" (click)="flip('order-personal', 0)">View Your Tasks ></div>
+          <div class="tab" (click)="flip('order-all', 0)">View All Orders ></div>
+        </div>
+      </div>
+
+      <div class="c66">
+        <ng-container *ngIf="details">
+          <div class="form-container">
+            <div class="form-group">
+              <label for="firstName3">First Name:</label>
+              <input type="text" id="firstName3" required [(ngModel)]="orderProcessor.firstName" #firstNameCtrl="ngModel" name="firstName3"
+                     [ngClass]="{'invalid-field': firstNameCtrl.invalid && firstNameCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="lastName3">Last Name:</label>
+              <input type="text" id="lastName3" required [(ngModel)]="orderProcessor.lastName" #lastNameCtrl="ngModel" name="lastName3"
+                     [ngClass]="{'invalid-field': lastNameCtrl.invalid && lastNameCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="address3">Address:</label>
+              <input type="text" id="address3" required [(ngModel)]="orderProcessor.address" #addressCtrl="ngModel" name="address3"
+                     [ngClass]="{'invalid-field': addressCtrl.invalid && addressCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="birthday3">Birthday:</label>
+              <input type="date" id="birthday3" required [(ngModel)]="birthday" name="birthday3">
+            </div>
+            <div class="form-group">
+              <label for="email3">Email:</label>
+              <input type="text" id="email3" required [(ngModel)]="orderProcessor.email" #emailCtrl="ngModel" name="email3"
+                     [ngClass]="{'invalid-field': emailCtrl.invalid && emailCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="phone3">Phone:</label>
+              <input type="text" id="phone3" required [(ngModel)]="orderProcessor.phone" #phoneCtrl="ngModel" name="phone3"
+                     [ngClass]="{'invalid-field': phoneCtrl.invalid && phoneCtrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="role2">Processing Area:</label>
+              <input type="text" id="role2" required [(ngModel)]="orderProcessor.processingArea" #role2Ctrl="ngModel" name="role2"
+                     [ngClass]="{'invalid-field': role2Ctrl.invalid && role2Ctrl.touched}">
+            </div>
+            <div class="form-group">
+              <label for="shift">Shift:</label>
+              <input type="text" id="shift" required [(ngModel)]="orderProcessor.shift" #shiftCtrl="ngModel" name="shift"
+                     [ngClass]="{'invalid-field': shiftCtrl.invalid && shiftCtrl.touched}">
+            </div>
+            <div class="form-group full-width">
+              <button (click)="saveChanges()">Save Changes</button>
+            </div>
+            <div class="feedback-message">{{ feedbackMessage }}</div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="orderPersonal">
+          <div class="scroll-container" tabindex="0">
+            <ng-container *ngFor="let item of ordersPersonal; let i = index">
+              <div class="order-header" (click)="flip('order-single', item.id)">
+                <div class="b m-b-10 f-14">{{item.price | number: '1.2-2'}} €</div>
+                <div class="m-b-20 f-14">Status: {{item.status}}</div>
+                <div class="f-14 gray">{{calcNumberOfComponents(item)}} Components</div>
+                <div class="f-14 gray">Nr: {{item.id}} - {{item.orderDateTime | date: 'dd.MM.yyyy HH:mm'}}</div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="order">
+          <div class="scroll-container" tabindex="0">
+            <ng-container *ngFor="let item of orders; let i = index">
+              <div class="order-header" (click)="flip('order-single', item.id)">
+                <div class="b m-b-10 f-14">{{item.price | number: '1.2-2'}} €</div>
+                <div class="m-b-20 f-14">Status: {{item.status}}</div>
+                <div class="f-14 gray">{{calcNumberOfComponents(item)}} Components</div>
+                <div class="f-14 gray">Nr: {{item.id}} - {{item.orderDateTime | date: 'dd.MM.yyyy HH:mm'}}</div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <div class="flex-columns" *ngIf="orderActive && activeOrder">
+          <div class="w30 info">
+            <div class="inf">
+              <div class="b2">Order-Nr. {{activeOrder.id}} {{activeOrder.orderDateTime | date: 'dd.MM.yyyy HH:mm'}}</div>
+              <div class="f-14">{{numbers}} Components {{activeOrder.price | number: '1.2-2'}}€</div>
+            </div>
+            <div>
+              <div class="b2">Assigned to:</div>
+              <div class="f-14">{{activeOrder.processor.firstName}} {{activeOrder.processor.lastName}}</div>
+              <div class="f-14">Shift: {{activeOrder.processor.shift}}</div>
+              <div class="f-14">Status:
+                <select [(ngModel)]="activeOrder.status" (change)="updateStatus(activeOrder.id, activeOrder.status)">
+                  <option *ngFor="let str of statusStrings" [value]="str">{{str}}</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <div class="b2">Ordered by:</div>
+              <div class="f-14">{{activeOrder.customer.firstName}} {{activeOrder.customer.lastName}}</div>
+              <div class="m-b-20  f-14">{{activeOrder.customer.address}}</div>
+              <div class="f-14">{{activeOrder.customer.email}}</div>
+              <div class="f-14">{{activeOrder.customer.phone}}</div>
+            </div>
+          </div>
+          <div>
+            <div class="scroll-container" tabindex="0" #scrollContainer>
+              <table>
+                <thead>
+                <tr>
+                  <th></th>
+                  <th class="w50"></th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="scroll-item" *ngFor="let key of activeOrder.components.keys(); let i = index">
+                  <td>
+                    <div class="flex align-center">
+                      <div>
+                        <img [src]="'data:image/png;base64,' + key.image" height="100px" width="100px" style="margin-right: 10px;" alt="Item">
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="align-center words">{{key.name}}</div>
+                  </td>
+                  <td>
+                    <div class="price align-center">
+                      {{activeOrder.components.get(key)}} x {{key.price | number: '1.2-2'}}€
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+
+</ng-container>

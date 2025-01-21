@@ -129,7 +129,7 @@ img:hover{
   position: fixed;
   top: calc(96px + 4px);
   right: 0%;
-  width: 25%;
+  width: 30%;
   height: calc(100vh - calc(96px + 4px));
   background-color: #ffffff;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
@@ -278,8 +278,15 @@ tbody td{
   align-items: center;
 }
 
-.w50{
-  width: 50%;
+.w55{
+  width: 53%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.w10{
+  width: 12%;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;

@@ -7,14 +7,16 @@ export enum ComponentType{
 export class Components {
   id?: number;
   name: string;
+  orderedQuantity: number;
   quantityStock: number;
   price: number;
   reorderQuantity: number;
   image: string;
   componentType: ComponentType;
 
-  constructor(name:string, quantityStock: number, price:number, reorderQuantity: number, image: string, componentType:ComponentType,){
+  constructor(name:string, orderedQuantity:number, quantityStock: number, price:number, reorderQuantity: number, image: string, componentType:ComponentType,){
     this.name = name;
+    this.orderedQuantity = orderedQuantity;
     this.quantityStock = quantityStock;
     this.price = price;
     this.reorderQuantity = reorderQuantity;
@@ -54,12 +56,12 @@ export class Case extends Components{
   driveBays25: number;
   compatiblePSUFormFactors: PSUFormFactor[];
 
-  constructor(name:string, quantityStock: number, price:number, reorderQuantity: number, image: string, type:ComponentType,
+  constructor(name:string, orderedQuantity:number, quantityStock: number, price:number, reorderQuantity: number, image: string, type:ComponentType,
               casSidepanel: CaseSidepanel, color: string, formFactor: MotherboardFormFactor, maxCoolerHeight:number, maxCardLength: number,
               fans80:number, fans120:number, fans140:number, usb2Port: number, usb3Gen1Port: number,
               usb3Gen2Port: number, usb3Gen2x2Port: number, usbTypeCPort: number, driveBays35: number, driveBays25: number,
               compatiblePSUFormFactors: PSUFormFactor[]){
-    super(name, quantityStock, price, reorderQuantity, image, type);
+    super(name, orderedQuantity, quantityStock, price, reorderQuantity, image, type);
     this.casSidepanel = casSidepanel;
     this.color = color;
     this.motherboardFormFactor = formFactor;
@@ -96,10 +98,10 @@ export class CPU extends Components{
   igpu: boolean;
   maxMemory: number;
 
-  constructor(name:string, quantityStock: number, price:number, reorderQuantity: number, image: string, type:ComponentType,
+  constructor(name:string, orderedQuantity:number, quantityStock: number, price:number, reorderQuantity: number, image: string, type:ComponentType,
               clock: number, boostClock: number, tdp: number, cores: number, threads: number, socket: Socket,
               l2Cache: number, l3Cache: number, iGPU: boolean, maxMemory: number){
-    super(name, quantityStock, price, reorderQuantity, image, type);
+    super(name, orderedQuantity, quantityStock, price, reorderQuantity, image, type);
     this.clock = clock;
     this.boostClock = boostClock;
     this.tdp = tdp;
@@ -122,10 +124,10 @@ export class CPUCooler extends Components{
   fanless: boolean;
   watercooled: boolean;
 
-  constructor(name:string, quantityStock:number, price:number, reorderQuantity:number, image:string, type:ComponentType,
+  constructor(name:string, orderedQuantity:number, quantityStock:number, price:number, reorderQuantity:number, image:string, type:ComponentType,
               fanRPM:number, noise:number,color:string, height:number, sockets:Socket[],
               isFanless:boolean, isWatercooled:boolean){
-    super(name, quantityStock, price, reorderQuantity, image, type);
+    super(name, orderedQuantity, quantityStock, price, reorderQuantity, image, type);
     this.fanRPM = fanRPM;
     this.noise = noise;
     this.height = height;
@@ -147,10 +149,10 @@ export class Fan extends Components{
   splitterPresent: boolean;
   color: string;
 
-  constructor(name:string, quantityStock:number, price:number, reorderQuantity:number, image:string, type:ComponentType,
+  constructor(name:string, orderedQuantity:number, quantityStock:number, price:number, reorderQuantity:number, image:string, type:ComponentType,
               size:number, rpm:number, airflow:number, noise:number, rgbPresent: boolean,
               pwm4PinPresent: boolean, dc3pinPresent: boolean, splitterPresent:boolean, color:string){
-    super(name, quantityStock, price, reorderQuantity, image, type);
+    super(name, orderedQuantity, quantityStock, price, reorderQuantity, image, type);
     this.size = size;
     this.rpm = rpm;
     this.airflow = airflow;
@@ -181,10 +183,10 @@ export class GPU extends Components{
   usbCPorts: number;
   slots: number;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
+  constructor(name: string, orderedQuantity:number, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
               memory: number, memoryGeneration: GPUMemoryGeneration, clock: number, boostClock: number,
               color: string, length: number, tdp: number, hdmiPorts: number, dpPorts: number, usbCPorts: number, slots: number) {
-    super(name, quantityStock, price, reorderQuantity, image, type);
+    super(name, orderedQuantity, quantityStock, price, reorderQuantity, image, type);
     this.memory = memory;
     this.memoryGeneration = memoryGeneration;
     this.clock = clock;
@@ -213,10 +215,10 @@ export class Memory extends Components{
   voltage:number;
   heatSpreaders:boolean;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType, memory:number,
+  constructor(name: string, orderedQuantity:number, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType, memory:number,
               speed: number, generation: MemoryGeneration, modules: number, colors: string, latency: number,
               voltage: number, hasHeatSpreaders: boolean) {
-    super(name, quantityStock, price, reorderQuantity, image, type);
+    super(name, orderedQuantity, quantityStock, price, reorderQuantity, image, type);
     this.memory = memory;
     this.speed = speed;
     this.generation = generation;
@@ -276,12 +278,12 @@ export class Motherboard extends Components{
   wifi: WIFI;
   raidSupported: boolean;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
+  constructor(name: string, orderedQuantity:number, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
               socket: Socket, formFactor: MotherboardFormFactor, motherboardChipset: MotherboardChipset, memoryGeneration: MemoryGeneration,
               memorySlots: number, memorySpeeds: number[], pciex16: number, pciex8: number, pciex4: number, pciex1: number,
               storageFormfactos: StorageFormFactor[], m2slots:number, sata: number, usb2Header: number, usb3Gen1Header: number, usb3Gen2Header: number,
               usb3Gen2x2Header: number, usbTypeCHeader: number, pwmHeader:number, rgbHeader:number, wifi: WIFI, raidSupported: boolean) {
-    super(name, quantityStock, price, reorderQuantity, image, type);
+    super(name, orderedQuantity, quantityStock, price, reorderQuantity, image, type);
     this.socket = socket;
     this.formFactor = formFactor;
     this.motherboardChipset = motherboardChipset;
@@ -319,10 +321,10 @@ export class PSU extends Components{
   modular: boolean;
   color: string;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
+  constructor(name: string, orderedQuantity:number, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
               wattage: number, efficiency: number, formFactor: PSUFormFactor, pcie6Pins: number, eps8Pins: number, sataConnectors: number,
               molex4Pins: number, hpr12vPresent: boolean, modular: boolean, color: string) {
-    super(name, quantityStock, price, reorderQuantity, image, type);
+    super(name, orderedQuantity, quantityStock, price, reorderQuantity, image, type);
     this.wattage = wattage;
     this.efficiency = efficiency;
     this.formFactor = formFactor;
@@ -353,10 +355,10 @@ export class Storage extends Components{
   writeSpeed: number;
   heatSink: boolean;
 
-  constructor(name: string, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
+  constructor(name: string, orderedQuantity:number, quantityStock: number, price: number, reorderQuantity: number, image: string, type:ComponentType,
               storageType: StorageType, capacity: number, storageInterface: StorageInterface, storageformFactor: StorageFormFactor,
               read:number, write:number, withHeatSink: boolean) {
-    super(name, quantityStock, price, reorderQuantity, image, type);
+    super(name, orderedQuantity, quantityStock, price, reorderQuantity, image, type);
     this.storageType = storageType;
     this.capacity = capacity;
     this.storageInterface = storageInterface;

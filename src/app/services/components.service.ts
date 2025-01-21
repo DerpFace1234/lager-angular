@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 import {
   Case,
-  CaseSidepanel,
+  CaseSidepanel, Components,
   ComponentType,
   CPU,
   CPUCooler,
@@ -99,6 +99,7 @@ export class ComponentsService {
     this.refreshComponentsListSource.next();
   }
 
+
   getCPUs(): Observable<CPU[]> {
     return this.http.get<CPU[]>(`${this.apiUrl}/cpus`);
   }
@@ -127,6 +128,9 @@ export class ComponentsService {
     return this.http.get<Storage[]>(`${this.apiUrl}/storages`);
   }
 
+  getComponentById(id:number): Observable<Components> {
+    return this.http.get<Components>(`${this.apiUrl}/${id}`);
+  }
   getCPUById(id: number): Observable<CPU> {
     return this.http.get<CPU>(`${this.apiUrl}/cpus/${id}`);
   }

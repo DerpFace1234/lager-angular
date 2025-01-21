@@ -16,6 +16,7 @@ import {ComponentsService} from '../../../services/components.service';
 import {UserType} from '../../../model/user.model';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Router} from '@angular/router';
+import {LoginService} from '../../../services/login.service';
 
 @Component({
   selector: 'app-list-components',
@@ -68,10 +69,17 @@ export class ListComponentsComponent{
 
   showDeleteOverlay: boolean = false;
   private subscriptions: Subscription = new Subscription();
-  constructor(private router: Router, public componentsService:ComponentsService) {}
+  constructor(private router: Router, public componentsService:ComponentsService, public loginService: LoginService,) {}
 
   ngOnInit(): void {
     this.loadCases();
+
+    this.loginService.handleStuff().then(item => {
+      if(this.loginService.userType !== UserType.ADMIN){
+        this.loginService.errorMessage = "Admin Privileges required."
+        this.loginService.showLogin();
+      }
+    });
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
